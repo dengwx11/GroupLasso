@@ -53,8 +53,8 @@ logistic<-function(X,beta){
 
 # Parameters
 tau1<-0.001
-lambda1<-0.5
-lambda2<-0.5
+lambda1<-1
+lambda2<-2^0.5
 x0<-double(p)
 
 
