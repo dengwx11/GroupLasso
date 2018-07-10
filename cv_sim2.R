@@ -39,7 +39,7 @@ for(i in 1:t){
   lamb_opt<-0.75
   sol<-FASTA2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 1000, w = 10, 
                backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-               eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_opt,lamb_opt,restart=TRUE)
+               eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda1,lambda2,restart=TRUE)
   estbeta<-split_beta2(sol$x,m_X,m_W,m_G,m_I)
   estbeta$G1<-estbeta$G1*(abs(estbeta$G1)>0.05)
   estbeta$G2<-estbeta$G2*(abs(estbeta$G2)>0.05)

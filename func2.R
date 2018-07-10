@@ -39,15 +39,18 @@ proxg2 <- function(X,beta,m_X,m_W,m_G,m_I,tau,lambda1,lambda2) {
   beta<-split_beta2(beta,m_X,m_W,m_G,m_I)
   para<-group_penalty2(X,m_X,m_W,m_G,m_I)
   
-  #gamma<-mapply(FUN=function(x,y,z1,z2) { if( x!=0 || y!=0 ) return((x-lambda1*tau*z1*sign(x))*(1+lambda2*tau*z2/sqrt((x-lambda1*tau*z1*sign(x))^2+(y)^2))) else return(0) }, beta$I, beta$G, para$I, para$MI)
-  #alpha<-mapply(FUN=function(x,y,z1,z2) { if( x!=0 || y!=0 ) return(y*(1+lambda2*tau*z2/sqrt((x-lambda1*tau*z1*sign(x))^2+(y)^2))) else return(0) }, beta$I, beta$G, para$I, para$MI)
+  #gamma<-mapply(FUN=function(x,y,z1,z2) { if( x!=0 || y!=0 ) { if(tau*lambda1*z1<abs(x)) return(sign(x)*(x-lambda1*tau*z1*sign(x))*(1-lambda2*tau*z2/sqrt((x-lambda1*tau*z1*sign(x))^2+(y)^2))) else return(0)} else return(0) }, beta$I, beta$G, 1, para$MI)
+  #alpha<-mapply(FUN=function(x,y,z1,z2) { if( x!=0 || y!=0 ) { if(tau*lambda1*z1<abs(x)) return(y*(1-lambda2*tau*z2/sqrt((x-lambda1*tau*z1*sign(x))^2+(y)^2))) else return(0)} else return(0) }, beta$I, beta$G, 1, para$MI)
   
-  gamma<-mapply(FUN=function(x,y,z1,z2) { if( x!=0 || y!=0 ) { if(tau*lambda1*z1<abs(x)) return((x-lambda1*tau*z1*sign(x))*(1-lambda2*tau*z2/sqrt((x-lambda1*tau*z1*sign(x))^2+(y)^2))) else return(0)} else return(0) }, beta$I, beta$G, para$I, para$MI)
-  alpha<-mapply(FUN=function(x,y,z1,z2) { if( x!=0 || y!=0 ) return(y*(1-lambda2*tau*z2/sqrt((x-lambda1*tau*z1*sign(x))^2+(y)^2))) else return(0) }, beta$I, beta$G, para$I, para$MI)
+  beta_temp<-cbind(beta$G,beta$I)
+  beta_temp<-split(beta_temp,rep(1:m_G,rep(1,m_G)))
+  #beta_temp<-apply(beta_temp,1,FUN=function(x) { max(0,1-lambda2*tau/(sum(x^2))^0.5) *x})
+  beta_temp<-mapply(FUN=function(x,y,z) { max(0,1-lambda2*tau*z/(x[1]^2+(sign(x[2])*max(abs(x[2])-lambda1*tau*y,0))^2)^0.5) * c(x[1],sign(x[2])*max(abs(x[2])-lambda1*tau*y,0))},beta_temp,para$I,para$MI)
+  beta$G<-beta_temp[1,]
+  beta$I<-beta_temp[2,]
   
-  
-  beta$G<-alpha
-  beta$I<-gamma
+  #beta$G<-alpha
+  #beta$I<-gamma
   
   beta<-unlist(beta,use.names = F)
   return(beta)

@@ -6,7 +6,7 @@ n=100
 m_X=2
 m_W=1
 m_G=20
-m_I=p_G
+m_I=m_G
 p<-m_X+m_W+m_G+m_I
 
 main_zero=floor(m_G*0.7)
@@ -28,9 +28,9 @@ sim_beta2<-function(m_X,m_W,m_G,main_zero,inter_zero,bit=TRUE){
   beta_W<-matrix(rnorm(m_W),m_W,1)
   beta_G<-matrix(rnorm(m_G),m_G,1)
   zero_main<-sample(1:m_G,main_zero,replace = F)
-  beta_G[zero_main]<-0   # Only two are nonzero
-  beta_I<-matrix(rnorm(m_G),m_G,1)
   zero<-sample(1:m_G,inter_zero,replace = F)
+  beta_G[intersect(zero_main,zero)]<-0   # Only two are nonzero
+  beta_I<-matrix(rnorm(m_G),m_G,1)
   beta_I[zero]<-0   # Onl three are nonzero
   
   if(bit){
