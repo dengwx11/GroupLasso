@@ -73,9 +73,8 @@ FNR<-FNR[!is.na(FNR)]
 rst_X<-data.frame("True Base"=true_beta$X,"Est Base"=estbeta$X)
 rst_W<-data.frame("True Treatment"=true_beta$W,"Est Treatment"=estbeta$W)
 rst_G<-data.frame("True Inter"=true_beta$I,"Est Inter"=estbeta$I, 
-                  "True G1"=true_beta$G1, "Est G1"=estbeta$G1,
-                  "True G2"=true_beta$G2,"Est G2"=estbeta$G2,
-                  "True Main"=true_beta$G,"Est Main"=estbeta$G)
+                  "True G1"=true_beta$G, "Est G1"=estbeta$G)
+rst_G
 
 png("C:\\Users\\auz5836\\Desktop\\papers\\simulation\\Wenxuan\\GroupLasso\\G.png", height=600, width=1200)
 p<-tableGrob(rst_G)
