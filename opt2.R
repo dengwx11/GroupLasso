@@ -107,7 +107,7 @@ FASTA2<-function (X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 100, w = 10,
     iterates <- iterates[, 1:(i + 1), drop = FALSE]
   }
   return(list(x = bestObjectiveIterate, objective = objective[1:(i + 
-                                                                   1)], fVals = fVals[1:i], totalBacktracks = totalBacktracks, 
+              1)], fVals = fVals[1:i], totalBacktracks = totalBacktracks, 
               residual = residual[1:i], taus = taus[1:i], iterates = iterates))
 }
 
