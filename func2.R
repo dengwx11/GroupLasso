@@ -25,7 +25,7 @@ split_X2<-function(X,m_X,m_W,m_G,m_I){
 group_penalty2<-function(X,m_X,m_W,m_G,m_I){
   X_split<-split_X2(X,m_X,m_W,m_G,m_I)
   para_I<-sapply(X_split[-1:-2], function(x) norm(as.matrix(x[,2]),'2'))
-  para_mI<-sapply(X_split, function(x) norm(cbind(x[,1],sqrt(2*(1-sqrt(2/pi)))*x[,2]),'F'))[-1:-2]
+  para_mI<-sapply(X_split[-1:-2], function(x) norm(cbind(x[,1],sqrt(2*(1-sqrt(2/pi)))*x[,2]),'F'))
   para<-list("I"=para_I,"MI"=para_mI)
   return(para)
 }
