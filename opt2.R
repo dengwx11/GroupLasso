@@ -1,6 +1,6 @@
 FASTA2<-function (X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 100, w = 10, 
                  backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                 eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda1,lambda2,restart=TRUE) 
+                 eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda,restart=TRUE) 
 {
   residual <- double(max_iters)
   normalizedResid <- double(max_iters)
@@ -22,7 +22,7 @@ FASTA2<-function (X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 100, w = 10,
   }
   maxResidual <- -Inf
   minObjectiveValue <- Inf
-  objective[1] <- f1 + g2(X,x0,m_X,m_W,m_G,m_I,lambda1,lambda2)
+  objective[1] <- f1 + g2(X,x0,m_X,m_W,m_G,m_I,lambda)
   t0=1
   y0<-x0
   for (i in 1:max_iters) {
@@ -30,7 +30,7 @@ FASTA2<-function (X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 100, w = 10,
     gradf0 <- matrix(gradf1)
     tau0 <- tau1
     x1hat <- x0 - tau0 * c(gradf0)
-    x1 <- proxg2(X,x1hat,m_X,m_W,m_G,m_I, tau0, lambda1,lambda2)
+    x1 <- proxg2(X,x1hat,m_X,m_W,m_G,m_I, tau0, lambda)
     Dx <- matrix(x1 - x0)
     d1 <- x1
     f1 <- f(d1,X,y)
@@ -43,7 +43,7 @@ FASTA2<-function (X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 100, w = 10,
       while (prop) {
         tau0 <- tau0 * stepsizeShrink
         x1hat <- x0 - tau0 * c(gradf0)
-        x1 <- proxg2(X,x1hat,m_X,m_W,m_G,m_I, tau0, lambda1, lambda2)
+        x1 <- proxg2(X,x1hat,m_X,m_W,m_G,m_I, tau0, lambda)
         d1 <- x1
         f1 <- f(d1,X,y)
         Dx <- matrix(x1 - x0)
@@ -74,7 +74,7 @@ FASTA2<-function (X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 100, w = 10,
                                                           x1hat), "f")/tau0) + eps_n
     normalizedResid[i] <- residual[i]/normalizer
     fVals[i] <- f1
-    objective[i + 1] <- f1 + g2(X,x1,m_X,m_W,m_G,m_I,lambda1,lambda2)
+    objective[i + 1] <- f1 + g2(X,x1,m_X,m_W,m_G,m_I,lambda)
     newObjectiveValue <- objective[i + 1]
     if (recordIterates) {
       iterates[, i + 1] <- x1
@@ -107,7 +107,7 @@ FASTA2<-function (X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 100, w = 10,
     iterates <- iterates[, 1:(i + 1), drop = FALSE]
   }
   return(list(x = bestObjectiveIterate, objective = objective[1:(i + 
-                                                                   1)], fVals = fVals[1:i], totalBacktracks = totalBacktracks, 
+              1)], fVals = fVals[1:i], totalBacktracks = totalBacktracks, 
               residual = residual[1:i], taus = taus[1:i], iterates = iterates))
 }
 
