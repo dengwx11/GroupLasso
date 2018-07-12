@@ -1,7 +1,13 @@
 # Cross Validation CI plots
-#require(plotrix)
-#plotCI(seq(from=0,to=5,by=0.25), sol_cv$mean, ui=sol_cv$mean+sqrt(sol_cv$var),
-#       li=sol_cv$mean-sqrt(sol_cv$var), xlab="lambda", ylab="Prediction error")
+require(plotrix)
+library(gridExtra)
+library(grid)
+CI<-plotCI(seq(from=0.5,to=5,by=0.25), sol_cv$mean, ui=sol_cv$mean+sqrt(sol_cv$var),
+       li=sol_cv$mean-sqrt(sol_cv$var), xlab="lambda", ylab="Prediction error")
+png("./G.png", height=600, width=1200)
+p<-tableGrob(CI)
+grid.arrange(p)
+dev.off()
 
 
 # Simulation
@@ -35,15 +41,15 @@ for(i in 1:t){
   #y<-logistic(X,true_beta)
   sol_cv<-opt_lambda2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 500, w = 10, 
                      backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                     eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,from=0.5,to=2,by=0.25,restart=TRUE)
+                     eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,from=0.5,to=5,by=0.25,restart=TRUE)
   lamb_candidate<-seq(from=0.5,to=2,by=0.25)
   lamb_opt<-lamb_candidate[which.min(sol_cv$mean+sol_cv$var)]
   
   
-  #lamb_opt<-0.75
+  lamb_opt<-0.75
   sol<-FASTA2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 1000, w = 10, 
                backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-               eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda,restart=TRUE)
+               eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_opt,restart=TRUE)
   
   
   estbeta<-split_beta2(sol$x,m_X,m_W,m_G,m_I)

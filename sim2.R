@@ -5,7 +5,7 @@ t=100 # iteration times
 n=100
 m_X=2
 m_W=1
-m_G=100
+m_G=20
 m_I=m_G
 p<-m_X+m_W+m_G+m_I
 
@@ -16,7 +16,7 @@ inter_zero=floor(m_G*0.8)
 # Design matrix
 sim_X2<-function(m_X,m_W,m_G){
   X0<-matrix(rnorm(n*m_X),n,m_X)
-  W<-sample(c(0,1),nrow(X0),replace = T)
+  W<-(sample(c(0,1),nrow(X0),replace = T)*2-1)
   G<-matrix(rnorm(n*m_G),n,m_G)
   X<-cbind(X0,W,G,W*G)
   return(X)
