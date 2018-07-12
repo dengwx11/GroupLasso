@@ -1,0 +1,1 @@
+diffExp<-function(X,y,m_X,m_W,m_G,m_I)

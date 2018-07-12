@@ -5,6 +5,8 @@
 
 
 # Simulation
+K=10
+
 TP_G1<-rep(0,t)
 TP_G2<-rep(0,t)
 TP_I<-rep(0,t)
@@ -31,15 +33,19 @@ for(i in 1:t){
   true_beta<-split_beta2(true_beta,m_X,m_W,m_G,m_I)
 
   #y<-logistic(X,true_beta)
-  #sol_cv<-opt_lambda(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
-  #                   backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-  #                   eps_n = 1e-15,m_X,m_W,m_G1,m_G2,m_I,K=10,n=100,from=0.5,to=2,by=0.25,restart=TRUE)
-  #lamb_candidate<-seq(from=0.5,to=2,by=0.25)
-  #lamb_opt<-lamb_candidate[which.min(sol_cv$mean+sol_cv$var)]
-  lamb_opt<-0.75
+  sol_cv<-opt_lambda2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 500, w = 10, 
+                     backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
+                     eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,from=0.5,to=2,by=0.25,restart=TRUE)
+  lamb_candidate<-seq(from=0.5,to=2,by=0.25)
+  lamb_opt<-lamb_candidate[which.min(sol_cv$mean+sol_cv$var)]
+  
+  
+  #lamb_opt<-0.75
   sol<-FASTA2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 1000, w = 10, 
                backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda,restart=TRUE)
+  
+  
   estbeta<-split_beta2(sol$x,m_X,m_W,m_G,m_I)
   estbeta$G1<-estbeta$G1*(abs(estbeta$G1)>0.05)
   estbeta$G2<-estbeta$G2*(abs(estbeta$G2)>0.05)

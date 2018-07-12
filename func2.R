@@ -43,8 +43,7 @@ proxg2 <- function(X,beta,m_X,m_W,m_G,m_I,tau,lambda) {
   beta_temp<-split(beta_temp,rep(1:m_G,rep(1,m_G)))
   #beta_temp<-apply(beta_temp,1,FUN=function(x) { max(0,1-lambda2*tau/(sum(x^2))^0.5) *x})
   beta_temp<-mapply(FUN=function(x,y,z) 
-    { max(0,1-lambda*tau*z/(x[1]^2+(sign(x[2])*max(abs(x[2])-lambda*tau*y,0))^2)^0.5) 
-    * c(x[1],sign(x[2])*max(abs(x[2])-lambda*tau*y,0))},beta_temp,para$I,para$MI)
+    { max(0,1-lambda*tau*z/(x[1]^2+(sign(x[2])*max(abs(x[2])-lambda*tau*y,0))^2)^0.5) * c(x[1],sign(x[2])*max(abs(x[2])-lambda*tau*y,0))},beta_temp,para$I,para$MI)
   beta$G<-beta_temp[1,]
   beta$I<-beta_temp[2,]
   

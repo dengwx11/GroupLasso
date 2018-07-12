@@ -10,9 +10,9 @@ divide<-function(K,n){
 }
 
 
-cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
+cv.FASTA2<-function(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 500, w = 10, 
                    backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                   eps_n = 1e-15,m_X,m_W,m_G1,m_G2,m_I,lambda1,lambda2,K=10,n=100,restart){
+                   eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda,K=10,n=100,restart){
   
   folds<-divide(K,n)
   
@@ -28,9 +28,9 @@ cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10,
     train_y<-y[setdiff(c(1:n),folds[[k]])]
     
     # Training model on training dataset
-    sol_cv[[k]]<-FASTA(train_X,train_y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
+    sol_cv[[k]]<-FASTA2(train_X,train_y,f, gradf, g2, proxg2, x0, tau1, max_iters = 500, w = 10, 
                        backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                       eps_n = 1e-15,m_X,m_W,m_G1,m_G2,m_I,lambda1,lambda2,restart)
+                       eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda,restart)
     x0<-sol_cv[[k]]$x
     
     # Test on the validation group
@@ -42,9 +42,9 @@ cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10,
 }
 
 
-opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
+opt_lambda2<-function(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 500, w = 10, 
                      backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                     eps_n = 1e-15,m_X,m_W,m_G1,m_G2,m_I,K=10,n=100,from=0,to=2,by=0.5,restart){
+                     eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,from=0,to=2,by=0.5,restart){
   
   lamb_candidate<-seq(to,from,-by)
   
@@ -52,9 +52,9 @@ opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10,
   VarErr<-rep(0,length(lamb_candidate))
   
   for(i in seq_along(lamb_candidate)){
-    rst<-cv.FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
+    rst<-cv.FASTA2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 500, w = 10, 
                   backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                  eps_n = 1e-15,m_X,m_W,m_G1,m_G2,m_I,lamb_candidate[i],lamb_candidate[i],K,n,restart=TRUE)
+                  eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_candidate[i],K,n,restart=TRUE)
     cv.Err<-rst$Err
     x0<-rst$start
     TestErr[i]<-mean(cv.Err)

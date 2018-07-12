@@ -52,7 +52,7 @@ logistic<-function(X,beta){
 
 
 # Parameters
-tau1<-0.001
+tau1<-0.1
 lambda<-1
 x0<-double(p)
 sdErr<-1
