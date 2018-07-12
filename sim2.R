@@ -5,12 +5,12 @@ t=100 # iteration times
 n=100
 m_X=2
 m_W=1
-m_G=20
+m_G=30
 m_I=m_G
 p<-m_X+m_W+m_G+m_I
 
-main_zero=floor(m_G*0.7)
-inter_zero=floor(m_G*0.8)
+main_zero=floor(m_G*0.8)
+inter_zero=floor(m_G*0.7)
 
 
 # Design matrix
@@ -23,7 +23,7 @@ sim_X2<-function(m_X,m_W,m_G){
 }
 
 # Coefficients
-sim_beta2<-function(m_X,m_W,m_G,main_zero,inter_zero,bit=TRUE){
+sim_beta2<-function(m_X,m_W,m_G,main_zero,inter_zero,bit=FALSE){
   beta_X<-matrix(rnorm(m_X),m_X,1)
   beta_W<-matrix(rnorm(m_W),m_W,1)
   beta_G<-matrix(rnorm(m_G),m_G,1)
