@@ -74,8 +74,6 @@ split_rst<-function(rst,bk,type='G'){
     compare_sign<-split(compare_sign, rep(1:ncol(compare_sign), each = nrow(compare_sign)))
   }
   
-  
-  
   return(compare_sign)
 }
 
