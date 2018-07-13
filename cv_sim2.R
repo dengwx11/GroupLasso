@@ -1,42 +1,52 @@
 # Cross Validation CI plots
-require(plotrix)
-library(gridExtra)
-library(grid)
-CI<-plotCI(seq(from=0.5,to=5,by=0.25), sol_cv$mean, ui=sol_cv$mean+sqrt(sol_cv$var),
-           li=sol_cv$mean-sqrt(sol_cv$var), xlab="lambda", ylab="Prediction error")
-png("./G.png", height=600, width=1200)
-p<-tableGrob(CI)
-grid.arrange(p)
-dev.off()
+# require(plotrix)
+# library(gridExtra)
+# library(grid)
+# CI<-plotCI(seq(from=0.5,to=5,by=0.25), sol_cv$mean, ui=sol_cv$mean+sqrt(sol_cv$var),
+#            li=sol_cv$mean-sqrt(sol_cv$var), xlab="lambda", ylab="Prediction error")
+# png("./G.png", height=600, width=1200)
+# p<-tableGrob(CI)
+# grid.arrange(p)
+# dev.off()
 
 
 # Simulation
 K=10
 
-# FDR
-TP_G<-rep(0,t)
-TP_I<-rep(0,t)
-
-cnt_G<-rep(0,t)
-cnt_I<-rep(0,t)
-
-TP_G<-rep(0,t)
-
-FDR_I<-rep(0,t) # False Discovery Rate
-FNR_I<-rep(0,t) # False Negative Rate
-FDR_G<-rep(0,t) # False Discovery Rate
-FNR_G<-rep(0,t) # False Negative Rate
-
-MSE_G<-rep(0,t)
-MSE_base<-rep(0,t)
-
-FNR_record_I<-NULL
-FNR_record_G<-NULL
-FDR_record_I<-NULL
-FDR_record_G<-NULL
 
 # Signal/Noise Ratio
 signal_to_ratio<-c(0.1,0.5,1,2,5,10,100)
+#signal_to_ratio<-c(1,10)
+
+# FDR
+TP_G<-matrix(0,nrow = t, ncol = length(signal_to_ratio))
+TP_I<-matrix(0,nrow = t, ncol = length(signal_to_ratio))
+
+cnt_G<-matrix(0,nrow = t, ncol = length(signal_to_ratio))
+cnt_I<-matrix(0,nrow = t, ncol = length(signal_to_ratio))
+
+TP_G<-matrix(0,nrow = t, ncol = length(signal_to_ratio))
+
+FDR_I<-matrix(0,nrow = t, ncol = length(signal_to_ratio)) # False Discovery Rate
+FNR_I<-matrix(0,nrow = t, ncol = length(signal_to_ratio)) # False Negative Rate
+FDR_G<-matrix(0,nrow = t, ncol = length(signal_to_ratio)) # False Discovery Rate
+FNR_G<-matrix(0,nrow = t, ncol = length(signal_to_ratio)) # False Negative Rate
+
+MSE_G<-matrix(0,nrow = t, ncol = length(signal_to_ratio))
+MSE_base<-matrix(0,nrow = t, ncol = length(signal_to_ratio))
+
+
+# Compare FNR/FDR with TP
+
+FNR_record_I<-vector("list", length = length(signal_to_ratio))
+FNR_record_G<-vector("list", length = length(signal_to_ratio))
+FDR_record_I<-vector("list", length = length(signal_to_ratio))
+FDR_record_G<-vector("list", length = length(signal_to_ratio))
+
+TPR_record_I<-vector("list", length = length(signal_to_ratio))
+TPR_record_G<-vector("list", length = length(signal_to_ratio))
+TDR_record_I<-vector("list", length = length(signal_to_ratio))
+TDR_record_G<-vector("list", length = length(signal_to_ratio))
 
 # Strong/Weak Comparison
 compare_sign_G_total<-list(NULL,NULL,NULL,NULL)
@@ -72,11 +82,22 @@ split_rst<-function(rst,bk,type='G'){
 # Record best lambda
 lamb_opt<-matrix(0,nrow=t,ncol = length(signal_to_ratio))
 
+# Main/Interaction Ratio
+main_inter_ratio<-data.frame("ratio"=NULL,"I"=NULL,"G"=NULL)
+MIratio<-function(rst){
+  rst<-rst[which(rst[,1]!=0),]
+  rst$ratio<-log(abs(rst$True.G1/rst$True.Inter))
+  rst$I<-1*(sign(rst$True.Inter)==sign(rst$Est.Inter))
+  rst$G<-1*(sign(rst$True.G1)==sign(rst$Est.G1))
+  
+  return(rst[,c(5:7)])
+}
+
 
 for(i in 1:t){
   
   for(j in seq_along(signal_to_ratio)){
-    print(i)
+    print(c(i,j))
     
     SNR<-signal_to_ratio[j]
     
@@ -94,8 +115,8 @@ for(i in 1:t){
     #y<-logistic(X,true_beta)
     sol_cv<-opt_lambda2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 500, w = 10, 
                         backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                        eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,from=0.5,to=5,by=0.25,restart=TRUE)
-    lamb_candidate<-seq(from=0.5,to=2,by=0.25)
+                        eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,from=0.5,to=1.5,by=0.5,restart=TRUE)
+    lamb_candidate<-seq(from=0.5,to=1.5,by=0.5)
     lamb_opt[i,j]<-lamb_candidate[which.min(sol_cv$mean+sol_cv$var)]
     
     
@@ -115,31 +136,39 @@ for(i in 1:t){
     #estbeta$G<-estbeta$G*(abs(estbeta$G)>=abs(estbeta$G[order(abs(estbeta$G),decreasing = T)][num_nonzero]))
     
     
-    TP_G[i]<-sum(1*(sign(true_beta$G)==sign(estbeta$G)))
+    TP_G[i,j]<-sum(1*(sign(true_beta$G)==sign(estbeta$G)))
     
-    TP_I[i]<-sum(1*(sign(true_beta$I)==sign(estbeta$I)))
-    cnt_I[i]<-sum(1*(estbeta$I!=0))
+    TP_I[i,j]<-sum(1*(sign(true_beta$I)==sign(estbeta$I)))
+    cnt_I[i,j]<-sum(1*(estbeta$I!=0))
     
-    FDR_I[i]<-length(setdiff(which(estbeta$I!=0),which(true_beta$I!=0)))/length(which(estbeta$I!=0))
-    FNR_I[i]<-length(setdiff(which(true_beta$I!=0),which(estbeta$I!=0)))/length(which(true_beta$I!=0))
-    FDR_G[i]<-length(setdiff(which(estbeta$G!=0),which(true_beta$G!=0)))/length(which(estbeta$G!=0))
-    FNR_G[i]<-length(setdiff(which(true_beta$G!=0),which(estbeta$G!=0)))/length(which(true_beta$G!=0))
+    FDR_I[i,j]<-length(setdiff(which(estbeta$I!=0),which(true_beta$I!=0)))/length(which(estbeta$I!=0))
+    FNR_I[i,j]<-length(setdiff(which(true_beta$I!=0),which(estbeta$I!=0)))/length(which(true_beta$I!=0))
+    FDR_G[i,j]<-length(setdiff(which(estbeta$G!=0),which(true_beta$G!=0)))/length(which(estbeta$G!=0))
+    FNR_G[i,j]<-length(setdiff(which(true_beta$G!=0),which(estbeta$G!=0)))/length(which(true_beta$G!=0))
     
     if(FDR_I[i]!=0){
-      FDR_record_I<-c(FDR_record_I, estbeta$I[setdiff(which(estbeta$I!=0),which(true_beta$I!=0))])
+      FDR_record_I[[j]]<-c(FDR_record_I[[j]], estbeta$I[setdiff(which(estbeta$I!=0),which(true_beta$I!=0))])
     }
     if(FDR_G[i]!=0){
-      FDR_record_G<-c(FDR_record_I, estbeta$I[setdiff(which(estbeta$G!=0),which(true_beta$G!=0))])
+      FDR_record_G[[j]]<-c(FDR_record_I[[j]], estbeta$I[setdiff(which(estbeta$G!=0),which(true_beta$G!=0))])
     }
     if(FNR_I[i]!=0){
-      FNR_record_I<-c(FNR_record_I, true_beta$I[setdiff(which(true_beta$I!=0),which(estbeta$I!=0))])
+      FNR_record_I[[j]]<-c(FNR_record_I[[j]], true_beta$I[setdiff(which(true_beta$I!=0),which(estbeta$I!=0))])
     }
     if(FDR_G[i]!=0){
-      FNR_record_G<-c(FNR_record_G, true_beta$I[setdiff(which(true_beta$G!=0),which(estbeta$G!=0))])
+      FNR_record_G[[j]]<-c(FNR_record_G[[j]], true_beta$G[setdiff(which(true_beta$G!=0),which(estbeta$G!=0))])
+    }
+    if(TP_I[i]!=0){
+      TPR_record_I[[j]]<-c(TPR_record_I[[j]], true_beta$I[intersect(which(true_beta$I!=0),which(estbeta$I!=0))])
+      TDR_record_I[[j]]<-c(TDR_record_I[[j]], estbeta$I[intersect(which(true_beta$I!=0),which(estbeta$I!=0))])
+    }
+    if(TP_G[i]!=0){
+      TPR_record_G[[j]]<-c(TPR_record_G[[j]], true_beta$G[intersect(which(true_beta$G!=0),which(estbeta$G!=0))])
+      TDR_record_G[[j]]<-c(TDR_record_G[[j]], estbeta$G[intersect(which(true_beta$G!=0),which(estbeta$G!=0))])
     }
     
-    MSE_G[i]<-norm(sol$x[-c(1:(m_X+m_W))],'2')^2/m_G
-    MSE_base[i]<-norm(sol$x[c(1:(m_X+m_W))],'2')^2/(m_X+m_W)
+    MSE_G[i,j]<-norm(sol$x[-c(1:(m_X+m_W))],'2')^2/m_G
+    MSE_base[i,j]<-norm(sol$x[c(1:(m_X+m_W))],'2')^2/(m_X+m_W)
     
     
     rst_G<-data.frame("True Inter"=true_beta$I,"Est Inter"=estbeta$I, 
@@ -150,7 +179,8 @@ for(i in 1:t){
     compare_sign_G_total<-sapply(c("0","1","2","3"),function(x) compare_sign_G_total[[x]]=c(compare_sign_G_total[[x]], compare_sign_G[[x]]))
     compare_sign_I_total<-sapply(c("0","1","2","3"),function(x) compare_sign_I_total[[x]]=c(compare_sign_I_total[[x]], compare_sign_I[[x]]))
     
-    
+    main_inter_ratio_temp<-MIratio(rst_G)
+    main_inter_ratio<-rbind(main_inter_ratio,main_inter_ratio_temp)
   }
 }
 
