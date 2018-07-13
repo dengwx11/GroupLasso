@@ -5,7 +5,7 @@ t=100 # iteration times
 n=100
 m_X=2
 m_W=1
-m_G=30
+m_G=100
 m_I=m_G
 p<-m_X+m_W+m_G+m_I
 

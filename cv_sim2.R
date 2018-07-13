@@ -115,8 +115,8 @@ for(i in 1:t){
     #y<-logistic(X,true_beta)
     sol_cv<-opt_lambda2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 500, w = 10, 
                         backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                        eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,from=0.5,to=1.5,by=0.5,restart=TRUE)
-    lamb_candidate<-seq(from=0.5,to=1.5,by=0.5)
+                        eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,from=0.2,to=1.6,by=0.2,restart=TRUE)
+    lamb_candidate<-seq(from=0.2,to=1.6,by=0.2)
     lamb_opt[i,j]<-lamb_candidate[which.min(sol_cv$mean+sol_cv$var)]
     
     
@@ -150,7 +150,7 @@ for(i in 1:t){
       FDR_record_I[[j]]<-c(FDR_record_I[[j]], estbeta$I[setdiff(which(estbeta$I!=0),which(true_beta$I!=0))])
     }
     if(FDR_G[i]!=0){
-      FDR_record_G[[j]]<-c(FDR_record_I[[j]], estbeta$I[setdiff(which(estbeta$G!=0),which(true_beta$G!=0))])
+      FDR_record_G[[j]]<-c(FDR_record_I[[j]], estbeta$G[setdiff(which(estbeta$G!=0),which(true_beta$G!=0))])
     }
     if(FNR_I[i]!=0){
       FNR_record_I[[j]]<-c(FNR_record_I[[j]], true_beta$I[setdiff(which(true_beta$I!=0),which(estbeta$I!=0))])
@@ -184,19 +184,59 @@ for(i in 1:t){
   }
 }
 
-FDR_I<-FDR_I[!is.na(FDR_I)]
-FNR_I<-FNR_I[!is.na(FNR_I)]
-FDR_G<-FDR_I[!is.na(FDR_G)]
-FNR_G<-FNR_I[!is.na(FNR_G)]
+# Save results to files
+write.table(lamb_opt,"./lamb_opt_30", col.names = F, row.names = F,quote = F)
+write.table(FDR_I,"./FDR_I_30", col.names = F, row.names = F,quote = F)
+write.table(FDR_G,"./FDR_G_30", col.names = F, row.names = F,quote = F)
+write.table(FNR_I,"./FNR_I_30", col.names = F, row.names = F,quote = F)
+write.table(FNR_G,"./FNR_G_30", col.names = F, row.names = F,quote = F)
+write.table(TP_I,"./TP_I_30", col.names = F, row.names = F,quote = F)
+write.table(TP_G,"./TP_G_30", col.names = F, row.names = F,quote = F)
+write.table(cnt_I,"./cnt_I_30", col.names = F, row.names = F,quote = F)
+write.table(MSE_G,"./MSE_G_30", col.names = F, row.names = F,quote = F)
+write.table(MSE_base,"./MSE_base_30", col.names = F, row.names = F,quote = F)
+write.table(main_inter_ratio,"./main_inter_ratio_30",row.names = F,quote = F)
 
-rst_X<-data.frame("True Base"=true_beta$X,"Est Base"=estbeta$X)
-rst_W<-data.frame("True Treatment"=true_beta$W,"Est Treatment"=estbeta$W)
-rst_G<-data.frame("True Inter"=true_beta$I,"Est Inter"=estbeta$I, 
-                  "True G1"=true_beta$G, "Est G1"=estbeta$G)
-rst_G
+save(FDR_record_I,"./FDR_record_I_30.RData")
+save(FDR_record_G,"./FDR_record_G_30.RData")
+save(FNR_record_I,"./FNR_record_I_30.RData")
+save(FNR_record_G,"./FNR_record_G_30.RData")
+save(TDR_record_I,"./TDR_record_I_30.RData")
+save(TDR_record_G,"./TDR_record_G_30.RData")
+save(TNR_record_I,"./TNR_record_I_30.RData")
+save(TNR_record_G,"./TNR_record_G_30.RData")
+save(compare_sign_G_total, file="./compare_sign_G_30.RData")
+save(compare_sign_I_total, file="./compare_sign_I_30.RData")
 
-png("C:\\Users\\auz5836\\Desktop\\papers\\simulation\\Wenxuan\\GroupLasso\\G.png", height=600, width=1200)
-p<-tableGrob(rst_G)
-grid.arrange(p)
-dev.off()
+
+
+# Load results from files
+#load("C:\\Users\\auz5836\\Desktop\\papers\\simulation\\Wenxuan\\GroupLasso\\compare_sign_G.RData")
+
+
+
+
+
+
+
+
+
+
+
+
+# FDR_I<-FDR_I[!is.na(FDR_I)]
+# FNR_I<-FNR_I[!is.na(FNR_I)]
+# FDR_G<-FDR_I[!is.na(FDR_G)]
+# FNR_G<-FNR_I[!is.na(FNR_G)]
+# 
+# rst_X<-data.frame("True Base"=true_beta$X,"Est Base"=estbeta$X)
+# rst_W<-data.frame("True Treatment"=true_beta$W,"Est Treatment"=estbeta$W)
+# rst_G<-data.frame("True Inter"=true_beta$I,"Est Inter"=estbeta$I, 
+#                   "True G1"=true_beta$G, "Est G1"=estbeta$G)
+# rst_G
+# 
+# png("C:\\Users\\auz5836\\Desktop\\papers\\simulation\\Wenxuan\\GroupLasso\\G.png", height=600, width=1200)
+# p<-tableGrob(rst_G)
+# grid.arrange(p)
+# dev.off()
 
