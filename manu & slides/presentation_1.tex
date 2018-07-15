@@ -16,6 +16,8 @@
 %----------------------------------------------------------------------------------------
 
 \documentclass{beamer}
+\usepackage{graphicx}
+\graphicspath{ {/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/manu & slides} }
 
 \mode<presentation> {
 
@@ -83,7 +85,7 @@
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title[Patient Subgroup Selection]{Generalized Overlapping Group Lasso for Patient Subgroup Selection} % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[Patient Subgroup Selection]{Generalized Group Lasso for Patient Subgroup Selection} % The short title appears at the bottom of every slide, the full title is only on the title page
 
 \author{Wenxuan Deng} % Your name
 \institute[Takeda] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
@@ -110,30 +112,127 @@ Takeda Pharmaceuticals U.S.A., Inc. \\ % Your institution for the title page
 %----------------------------------------------------------------------------------------
 
 %------------------------------------------------
-\section{First Section} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
+\section{Introduction} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
 %------------------------------------------------
 
-\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+\subsection{Prognostic and Predictive Biomarkers} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
 \begin{frame}
-\frametitle{Paragraphs of Text}
-Sed iaculis dapibus gravida. Morbi sed tortor erat, nec interdum arcu. Sed id lorem lectus. Quisque viverra augue id sem ornare non aliquam nibh tristique. Aenean in ligula nisl. Nulla sed tellus ipsum. Donec vestibulum ligula non lorem vulputate fermentum accumsan neque mollis.\\~\\
+\frametitle{Prognostic Biomarkers}
 
-Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. Aliquam vel dui orci, a porta odio. Nullam id suscipit ipsum. Aenean lobortis commodo sem, ut commodo leo gravida vitae. Pellentesque vehicula ante iaculis arcu pretium rutrum eget sit amet purus. Integer ornare nulla quis neque ultrices lobortis. Vestibulum ultrices tincidunt libero, quis commodo erat ullamcorper id.
+\begin{figure}
+    \includegraphics[width=0.475\textwidth]{prognostic.jpg}
+    \hfill
+    \includegraphics[width=0.475\textwidth]{prognostic2.jpg}
+ \end{figure}
+
 \end{frame}
 
-%------------------------------------------------
 
 \begin{frame}
-\frametitle{Bullet Points}
+\frametitle{Predictive Biomarkers}
+
+\begin{figure}
+    \includegraphics[width=0.475\textwidth]{predictive3.jpg}
+    \hfill
+    \includegraphics[width=0.475\textwidth]{predictive4.jpg}
+ \end{figure}
+
+\end{frame}
+
+
+%------------------------------------------------
+
+
+\subsection{Why not regression trees?}
+
+\begin{frame}
+\frametitle{Tree-based Methods}
+
+Regression trees GUIDE\cite{loh}:
+
 \begin{itemize}
-\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus eu
-\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
-\item Nam cursus est eget velit posuere pellentesque
-\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
+    \item piecewise-linear Model
+    \item examine residual patterns for each treatment level
+\end{itemize}
+
+Cannot repeat even the most naive simulation in GUIDE paper.\\~
+
+Reason: limited sample size. Even two splits will results in small sample size in each branch. The results would be highly unstable. Tree-based method is not appropriate
+to clinical trial dataset and identify prognostic and predictive biomarkers.
+
+\end{frame}
+
+\section{Models}
+
+\begin{frame}
+\frametitle{Ordinary Linear Model}
+
+$$Y=X\beta + W\tau + G\alpha + W\otimes G \gamma+\epsilon$$
+
+\begin{itemize}
+    \item $X$: Baseline variables
+    \item $W$: Treatment variables
+    \item $G$: Main effects of genes, i.e. expression levels, SNP or mutation
+    \item $W\otimes G$: Interaction effects of genes and treatment
+    \item $\epsilon$: Random errors
 \end{itemize}
 \end{frame}
+
+\begin{frame}
+\frametitle{Group lasso}
+
+We choose group lasso for its ability to 
+
+\begin{itemize}
+    \item handle high dimensional data
+    \item allow hierarchical structure
+\end{itemize}
+
+However, the current group lasso based methods
+
+\begin{itemize}
+    \item penalize on all parameters
+    \item have no efficient adaptive penalty weights
+    \item do not specifically target on patients treatment subgroup identification
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Loss Function}
+
+We assume the hierarchical relationship between prognostic biomarkers and predictive biomarkers, 
+that is a predictive biomarker should be a prognostic biomarker.\\~
+The loss function is
+
+$$\min_{\theta} f(\theta|Y,X,W,G) + \lambda \sum_i \eta_i^I |\gamma_i| + \lambda \sum_i \eta_i^M \sqrt{\alpha_i^2 + \gamma_i^2}$$
+
+where $f(\theta|Y,X,W,G)$ is L-2 loss function, i.e. sum of squared errors for ordinary linear model.\\~
+
+$\theta=(\beta, \tau, \alpha, \gamma)$ is parameter vector.
+
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Loss function for ordinary linear model}
+
+$$\min_{\theta} \parallel Y-(X\beta + W\tau + G\alpha + W\otimes G \gamma) \parallel^2 + \lambda \sum_i \eta_i^I |\gamma_i| + \lambda \sum_i \eta_i^M \sqrt{\alpha_i^2 + \gamma_i^2}$$
+
+Denote $X^{(l)}=[G_l,W\otimes G_l]$ is the $l$th group of the main and interaction effects of gene $l$.
+Then we let $$\eta_i^I=\parallel X^{(i)}\parallel_2$$
+\end{frame}
+
+
+\section{Algorithm}
+
+\section{Criteria}
+
+\section{Simulation}
+
+
 
 %------------------------------------------------
 
@@ -216,24 +315,8 @@ $E = mc^2$
 \end{example}
 \end{frame}
 
-%------------------------------------------------
 
-\begin{frame}
-\frametitle{Figure}
-Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-%\begin{figure}
-%\includegraphics[width=0.8\linewidth]{test}
-%\end{figure}
-\end{frame}
 
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Citation}
-An example of the \verb|\cite| command to cite within the presentation:\\~
-
-This statement requires citation \cite{p1}.
-\end{frame}
 
 %------------------------------------------------
 
@@ -241,9 +324,9 @@ This statement requires citation \cite{p1}.
 \frametitle{References}
 \footnotesize{
 \begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
-\bibitem[Smith, 2012]{p1} John Smith (2012)
-\newblock Title of the publication
-\newblock \emph{Journal Name} 12(3), 45 -- 678.
+\bibitem[Loh, 2018]{loh} Loh, Wei‐Yin, Michael Man, and Shuaicheng Wang.  
+\newblock "Subgroups from regression trees with adjustment for prognostic effects and postselection inference."
+\newblock \emph{Statistics in medicine} (2018).
 \end{thebibliography}
 }
 \end{frame}
