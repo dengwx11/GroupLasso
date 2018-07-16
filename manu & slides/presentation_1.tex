@@ -231,7 +231,7 @@ Then we let $$\phi_i^I=\parallel X^{(i)}\parallel_2$$
 
 \section{Algorithm}
 
-\subsection{Algorithm Workflow}
+\subsection{Algorithm Framework}
 
 \begin{frame}
 \frametitle{Optimization Stratgies}
@@ -248,9 +248,9 @@ Then we let $$\phi_i^I=\parallel X^{(i)}\parallel_2$$
 \begin{frame}
 \frametitle{Proximal Operator}
 \begin{block}{Definition}
-Let $$Q_{\tau_i,g}(x,u)=g(x)+\frac{1}{2\tau}\parallel x-u\parallel^2$$
-then the proximal operator is defined as $$\tilde{x}=arg\min Q_{\tau_i,g}(x,u)$$
-For convenience, we denote $P_{\tau_i,g}(u)=\tilde{x}$
+Let $$Q_{\tau_i,g}(t,u)=g(t)+\frac{1}{2\tau}\parallel t-u\parallel^2$$
+then the proximal operator is defined as $$\tilde{t}=arg\min Q_{\tau_i,g}(t,u)$$
+For convenience, we denote $P_{\tau_i,g}(u)=\tilde{t}$
 \end{block}
 Remark: Proximal operator is a point that compromises between minimizing $g$ and being near to $u$. 
 \end{frame}
@@ -258,17 +258,17 @@ Remark: Proximal operator is a point that compromises between minimizing $g$ and
 \begin{frame}
 \frametitle{Algorithm}
 \begin{algorithm}[H]
- initialization $x\theta0=0$ or warm start from previous run, $\tau_0=0.1$, stepsize $\eta=0.5$\;
+ initialization $\theta0=0$ or warm start from previous run, $\tau_0=0.1$, stepsize $\eta=0.5$\;
  \While{$i\le k$}{
  $u_{i}=\theta_{i-1}-\tau_i \bigtriangledown f(\theta_{i-1})$
 Find the smallest nonnegative integers $s_i$ such that with $\tau_{i}=\eta^{s_{i-1}}\tau_{i-1}$, $(f+g)(P_{\tau_i,g}(u_i))\le  Q_{\tau_i,g}(P_{\tau_i,g}(u_i),u_i)$\;
-Then, we compute $x_{i}=P_{\tau_i,g}(u_i)$
+Then, we compute $t_{i}=P_{\tau_i,g}(u_i)$
 And accelarate the computation by setting 
 \eIf{$f(\theta_{i}+g(\theta_i))>f(\theta_{i-1})+g(\theta_{i-1})$}{  $\rho_i=1$
    }{
    $\rho_i=\frac{1+\sqrt{1+4\rho_{i-1}^2}}{2}$
   }
-  $\theta_i=x_i+(\frac{\rho_{i-1}-1}{\rho_i})(x_i-x_{i-1})$ and find $\tau_{i+1}$ that $\tau_{i+1}I$ can mimic the Hessian $ \bigtriangledown^2f(x)$
+  $\theta_i=t_i+(\frac{\rho_{i-1}-1}{\rho_i})(t_i-t_{i-1})$ and find $\tau_{i+1}$ that $\tau_{i+1}I$ can mimic the Hessian $ \bigtriangledown^2f(\theta_i)$
  }
  \caption{Patient Subgroup Identification Group Lasso Algorithm}
 \end{algorithm}
@@ -278,6 +278,15 @@ And accelarate the computation by setting
 
 \subsection{Computation of Proximal Operator}
 
+\begin{frame}
+\frametitle{Computation of Proximal Operator}
+Because $Q_{\tau_i,g}(t,u)$ is separable, so we have $$arg\min Q_{\tau_i,g}(t,u) =[ arg\min \frac{1}{2}\parallel t^{(i)}-u^{(i)}\parallel^2+\lambda\phi_i^I|\gamma_i|+\lambda\phi^M\sqrt{\alpha_i^2+\gamma_i^2}]_{1\le i\le m }$$
+\frametitle{Theorem}
+\begin{theorem}[]
+$E = mc^2$
+\end{theorem}
+\end{frame}
+
 
 \section{Criteria}
 
@@ -285,24 +294,7 @@ And accelarate the computation by setting
 
 
 
-%------------------------------------------------
 
-\begin{frame}
-\frametitle{Blocks of Highlighted Text}
-\begin{block}{Block 1}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-\end{block}
-
-\begin{block}{Block 2}
-Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
-\end{block}
-
-\begin{block}{Block 3}
-Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
-\end{block}
-\end{frame}
-
-%------------------------------------------------
 
 \begin{frame}
 \frametitle{Multiple Columns}
