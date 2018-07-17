@@ -1,7 +1,0 @@
-\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
-\beamer@subsectionintoc {1}{1}{Prognostic and Predictive Biomarkers}{3}{0}{1}
-\beamer@subsectionintoc {1}{2}{Why not regression trees?}{5}{0}{1}
-\beamer@sectionintoc {2}{Methods}{6}{0}{2}
-\beamer@sectionintoc {3}{Algorithm}{10}{0}{3}
-\beamer@sectionintoc {4}{Criteria}{10}{0}{4}
-\beamer@sectionintoc {5}{Simulation}{10}{0}{5}

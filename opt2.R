@@ -57,7 +57,8 @@ FASTA2<-function (X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 100, w = 10,
     
     if(restart){
       y1<-x1
-      check<-t(x1-y1)%*%(y1-y0)
+      #check<-t(x0-y1)%*%(y1-y0)
+      check<-f(x1,X,y)+g2(X,x1,m_X,m_W,m_G,m_I,lambda)-f(x0,X,y)-g2(X,x0,m_X,m_W,m_G,m_I,lambda)
       if(check>0){
         t1=1
       }else{
