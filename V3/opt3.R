@@ -52,6 +52,7 @@ FASTA<-function (X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
                    0.5 * (norm(Dx, "f")^2)/tau0) && (backtrackCount < 
                                                        20)
       }
+      #print(Dx)
       totalBacktracks <- totalBacktracks + backtrackCount
     }
     
