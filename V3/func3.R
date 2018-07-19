@@ -3,6 +3,8 @@
 # gradf <- function(beta,X,y) { -t(X)%*%(y-plogis(X%*%beta)) } # gradient
 
 ### Ordinary
+f0 <- function(beta,X,y){ 0.5*norm(X%*%beta - y, "F")^2}
+gradf0 <- function(beta,X,y){ t(X)%*%(X%*%beta - y)  }
 f <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ 0.5*norm(X%*%beta - y, "F")^2+
     lambda2*norm(rep(0:1,c(m_X+m_W,m_G*2))*beta,'2')}
 gradf <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ t(X)%*%(X%*%beta - y) + 

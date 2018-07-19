@@ -2,7 +2,7 @@
 # Simulation Setup
 t=100 # iteration times
 
-n=100
+n=500
 m_X=10
 m_W=1
 m_G=500
