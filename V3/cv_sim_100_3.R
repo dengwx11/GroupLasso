@@ -101,16 +101,16 @@ for(i in 1:t){
     
     SNR<-signal_to_ratio[j]
     
-    true_beta<-sim_beta2(m_X,m_W,m_G,main_zero,inter_zero,bit=T)
+    true_beta<-sim_beta(m_X,m_W,m_G,main_zero,inter_zero,bit=T)
     
     
-    X<-sim_X2(m_X,m_W,m_G)
+    X<-sim_X(m_X,m_W,m_G)
     y0<-X%*%true_beta
     noise<-rnorm(n,sd=1)
     SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
     y<-y0+SNRmtl*noise                         
     
-    true_beta<-split_beta2(true_beta,m_X,m_W,m_G,m_I)
+    true_beta<-split_beta(true_beta,m_X,m_W,m_G,m_I)
     
     #y<-logistic(X,true_beta)
     # sol_cv<-opt_lambda2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 500, w = 10, 
@@ -120,16 +120,17 @@ for(i in 1:t){
     # lamb_opt[i,j]<-lamb_candidate[which.min(sol_cv$mean+sol_cv$var)]
     
     
-    lamb_opt<-2
-    sol<-FASTA2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 1000, w = 10, 
+    lamb_opt<-0.5
+    lamb_opt2<-1
+    sol<-FASTA(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 1000, w = 10, 
                 backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_opt,restart=TRUE)
+                eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_opt,lamb_opt2,restart=TRUE)
     # sol<-FASTA2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 1000, w = 10, 
     #             backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
     #             eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_opt[i,j],restart=TRUE)
     
     
-    estbeta<-split_beta2(sol$x,m_X,m_W,m_G,m_I)
+    estbeta<-split_beta(sol$x,m_X,m_W,m_G,m_I)
     estbeta$G<-estbeta$G*(abs(estbeta$G)>0.05)
     estbeta$I<-estbeta$I*(abs(estbeta$I)>0.05)
     #estbeta$I<-estbeta$I*(abs(estbeta$I)>0.05)
@@ -276,10 +277,10 @@ ggplot(lamb_opt_long, aes(x=X1 ,y = factor(time))) +geom_density_ridges(quantile
 # FNR_G<-FNR_I[!is.na(FNR_G)]
 # 
 SNR<-10
-true_beta<-sim_beta2(m_X,m_W,m_G,main_zero,inter_zero,bit=T)
+true_beta<-sim_beta(m_X,m_W,m_G,main_zero,inter_zero,bit=T)
 
 
-X<-sim_X2(m_X,m_W,m_G)
+X<-sim_X(m_X,m_W,m_G)
 y0<-X%*%true_beta
 noise<-rnorm(n,sd=1)
 SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))

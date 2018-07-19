@@ -1,6 +1,6 @@
 ### Logistic
-f <- function(beta,X,y) { -t(y)%*%(X%*%beta) + sum(log(1+exp(X%*%beta))) } # objective function
-gradf <- function(beta,X,y) { -t(X)%*%(y-plogis(X%*%beta)) } # gradient
+# f <- function(beta,X,y) { -t(y)%*%(X%*%beta) + sum(log(1+exp(X%*%beta))) } # objective function
+# gradf <- function(beta,X,y) { -t(X)%*%(y-plogis(X%*%beta)) } # gradient
 
 ### Ordinary
 f <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ 0.5*norm(X%*%beta - y, "F")^2+
