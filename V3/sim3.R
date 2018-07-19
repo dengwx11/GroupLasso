@@ -10,7 +10,7 @@ m_I=m_G
 p<-m_X+m_W+m_G+m_I
 
 main_zero=floor(m_G*0.8)
-inter_zero=floor(m_G*0.7)
+inter_zero=floor(m_G*0.9)
 
 
 # Design matrix
