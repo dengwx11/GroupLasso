@@ -11,8 +11,8 @@ y<-y0+SNRmtl*noise
 
 true_beta<-split_beta(true_beta,m_X,m_W,m_G,m_I)
 
-lamb_opt<-10
-lamb_opt2<-5
+lamb_opt<-5
+lamb_opt2<-2
 sol<-FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
             backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
             eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_opt,lamb_opt2,restart=TRUE)
@@ -31,3 +31,7 @@ rst_W<-data.frame("True Treatment"=true_beta$W,"Est Treatment"=estbeta$W)
 rst_G<-data.frame("True Inter"=true_beta$I,"Est Inter"=estbeta$I,
                   "True G1"=true_beta$G, "Est G1"=estbeta$G)
 rst_G
+
+cor<-cor(X[,-c(1:(m_X+m_W))])
+pair<-data.frame("row"=which(cor(X[,-c(1:(m_X+m_W))])>0.2)%%dim(cor)[2],"col"=ceiling(which(cor(X[,-c(1:(m_X+m_W))])>0.2)/dim(cor)[2]))
+
