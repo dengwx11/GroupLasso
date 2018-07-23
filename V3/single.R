@@ -11,7 +11,7 @@ y<-y0+SNRmtl*noise
 
 true_beta<-split_beta(true_beta,m_X,m_W,m_G,m_I)
 
-lamb_opt<-5
+lamb_opt<-6
 lamb_opt2<-2
 sol<-FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
             backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
