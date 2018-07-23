@@ -29,7 +29,7 @@ estbeta$I<-estbeta$I*(abs(estbeta$I)>0.1)
 rst_X<-data.frame("True Base"=true_beta$X,"Est Base"=estbeta$X)
 rst_W<-data.frame("True Treatment"=true_beta$W,"Est Treatment"=estbeta$W)
 rst_G<-data.frame("True Inter"=true_beta$I,"Est Inter"=estbeta$I,
-                  "True G1"=true_beta$G, "Est G1"=estbeta$G)
+                  "True G"=true_beta$G, "Est G"=estbeta$G)
 rst_G
 
 cor<-cor(X[,-c(1:(m_X+m_W))])
