@@ -12,9 +12,9 @@ y<-logistic(X,true_beta)
 
 true_beta<-split_beta(true_beta,m_X,m_W,m_G,m_I)
 
-lamb_opt<-.2
-lamb_opt2<-.1
-sol<-FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 1500, w = 10, 
+lamb_opt<-.7
+lamb_opt2<-.2
+sol<-FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 800, w = 10, 
             backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
             eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_opt,lamb_opt2,restart=TRUE)
 estbeta<-split_beta(sol$x,m_X,m_W,m_G,m_I)
@@ -42,3 +42,14 @@ length(intersect(which(rst_G$True.G1!=0),which(rst_G$Est.G1!=0)))
 sum(1*(rst_G$True.Inter!=0))
 sum(1*(rst_G$Est.Inter!=0))
 length(intersect(which(rst_G$True.Inter!=0),which(rst_G$Est.Inter!=0)))
+
+# Testing
+prob<-exp(X_test%*%sol$x)/(1+exp(X_test%*%sol$x))
+y_predicted<-1*(prob>0.5)
+cbind(y_test,y_predicted)
+sum(1*(y_test==y_predicted))
+
+prob<-exp(X_train%*%sol$x)/(1+exp(X_train%*%sol$x))
+y_predicted<-1*(prob>0.5)
+cbind(y_train,y_predicted)
+sum(1*(y_train==y_predicted))

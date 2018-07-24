@@ -2,18 +2,18 @@
 # Simulation Setup
 t=100 # iteration times
 
-n=200
+n=400
 m_X=5
 m_W=1
-m_G=300
+m_G=400
 m_I=m_G
 p<-m_X+m_W+m_G+m_I
 
 main_zero=floor(m_G*0.25)
 inter_zero=floor(m_G*0.15)
 
-main_nonzero=floor(m_G*0.35)
-inter_nonzero=floor(m_G*0.3)
+main_nonzero=floor(m_G*0.2)
+inter_nonzero=floor(m_G*0.1)
 
 
 # Design matrix
