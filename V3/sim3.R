@@ -2,15 +2,18 @@
 # Simulation Setup
 t=100 # iteration times
 
-n=100
-m_X=10
+n=200
+m_X=5
 m_W=1
-m_G=100
+m_G=300
 m_I=m_G
 p<-m_X+m_W+m_G+m_I
 
-main_zero=floor(m_G*0.5)
-inter_zero=floor(m_G*0.3)
+main_zero=floor(m_G*0.25)
+inter_zero=floor(m_G*0.15)
+
+main_nonzero=floor(m_G*0.35)
+inter_nonzero=floor(m_G*0.3)
 
 
 # Design matrix
@@ -46,16 +49,20 @@ sim_beta<-function(m_X,m_W,m_G,main_zero,inter_zero,bit=TRUE){
   return(beta)
 }
 
-sim_beta_const<-function(m_X,m_W,m_G,main_zero,inter_zero,const=c(2,5,10)){
-  beta_X<-matrix(rnorm(m_X),m_X,1)
-  beta_W<-matrix(rnorm(m_W),m_W,1)
-  beta_G<-sample(const,m_G,replace = T)
-  beta_I<-sample(const,m_I,replace = T)
+sim_beta_const<-function(m_X,m_W,m_G,main_nonzero,inter_nonzero,const=c(3)){
+  const<-c(const,-const)
+  
+  beta_X<-matrix(rnorm(m_X),m_X,1)+as.matrix(sample(const,m_X,replace = T))
+  beta_W<-matrix(rnorm(m_W),m_W,1)+as.matrix(sample(const,m_W,replace = T))
+  
+  
+  beta_G<-as.matrix(sample(const,m_G,replace = T))
+  beta_I<-as.matrix(sample(const,m_G,replace = T))
   
   
   
-  beta_G[-c(1:main_zero)]<-0   # Only two are nonzero
-  beta_I[-c(1:inter_zero)]<-0   # Onl three are nonzero
+  beta_G[-c(1:main_nonzero)]<-0   # Only two are nonzero
+  beta_I[-c(1:inter_nonzero)]<-0   # Onl three are nonzero
   
   beta<-rbind(beta_X,beta_W,beta_G,beta_I)
   return(beta)

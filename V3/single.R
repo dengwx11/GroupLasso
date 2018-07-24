@@ -1,19 +1,20 @@
 
-SNR<-100
-true_beta<-sim_beta(m_X,m_W,m_G,main_zero,inter_zero,bit=T)
+#SNR<-10
+true_beta<-sim_beta_const(m_X,m_W,m_G,main_nonzero,inter_nonzero,c(10))
 
 
 X<-sim_X(m_X,m_W,m_G)
-y0<-X%*%true_beta
-noise<-rnorm(n,sd=1)
-SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
-y<-y0+SNRmtl*noise                         
+y<-logistic(X,true_beta)
+#y0<-X%*%true_beta
+#noise<-rnorm(n,sd=1)
+#SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
+#y<-y0+SNRmtl*noise                         
 
 true_beta<-split_beta(true_beta,m_X,m_W,m_G,m_I)
 
-lamb_opt<-3
-lamb_opt2<-2
-sol<-FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
+lamb_opt<-.2
+lamb_opt2<-.1
+sol<-FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 1500, w = 10, 
             backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
             eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_opt,lamb_opt2,restart=TRUE)
 estbeta<-split_beta(sol$x,m_X,m_W,m_G,m_I)
@@ -21,10 +22,10 @@ estbeta<-split_beta(sol$x,m_X,m_W,m_G,m_I)
 f0(unlist(true_beta),X,y)
 f0(unlist(estbeta),X,y)
 
-estbeta$G<-(1+lamb_opt2)*estbeta$G
-estbeta$I<-(1+lamb_opt2)*estbeta$I
-estbeta$G<-estbeta$G*(abs(estbeta$G)>0.1)
-estbeta$I<-estbeta$I*(abs(estbeta$I)>0.1)
+estbeta$G<-10*estbeta$G
+estbeta$I<-10*estbeta$I
+#estbeta$G<-estbeta$G*(abs(estbeta$G)>1)
+#estbeta$I<-estbeta$I*(abs(estbeta$I)>1)
 
 rst_X<-data.frame("True Base"=true_beta$X,"Est Base"=estbeta$X)
 rst_W<-data.frame("True Treatment"=true_beta$W,"Est Treatment"=estbeta$W)

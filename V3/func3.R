@@ -1,14 +1,20 @@
 ### Logistic
-# f <- function(beta,X,y) { -t(y)%*%(X%*%beta) + sum(log(1+exp(X%*%beta))) } # objective function
-# gradf <- function(beta,X,y) { -t(X)%*%(y-plogis(X%*%beta)) } # gradient
+f0 <- function(beta,X,y) { -t(y)%*%(X%*%beta) + sum(log(1+exp(X%*%beta))) } # objective function
+gradf0 <- function(beta,X,y) { -t(X)%*%(y-plogis(X%*%beta)) } # gradient
+f <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){
+  f0(beta,X,y)+lambda2*norm(rep(0:1,c(m_X+m_W,m_G*2))*beta,'2')
+}
+gradf<-function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){
+  gradf0(beta,X,y)+as.matrix(rep(0:1,c(m_X+m_W,m_G*2))*beta,nrow=m_X+m_W+m_G+m_I) 
+}
 
-### Ordinary
-f0 <- function(beta,X,y){ 0.5*norm(X%*%beta - y, "F")^2}
-gradf0 <- function(beta,X,y){ t(X)%*%(X%*%beta - y)  }
-f <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ 0.5*norm(X%*%beta - y, "F")^2+
-    lambda2*norm(rep(0:1,c(m_X+m_W,m_G*2))*beta,'2')}
-gradf <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ t(X)%*%(X%*%beta - y) + 
-    as.matrix(rep(0:1,c(m_X+m_W,m_G*2))*beta,nrow=m_X+m_W+m_G+m_I) }
+# ### Ordinary
+# f0 <- function(beta,X,y){ 0.5*norm(X%*%beta - y, "F")^2}
+# gradf0 <- function(beta,X,y){ t(X)%*%(X%*%beta - y)  }
+# f <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ 0.5*norm(X%*%beta - y, "F")^2+
+#     lambda2*norm(rep(0:1,c(m_X+m_W,m_G*2))*beta,'2')}
+# gradf <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ t(X)%*%(X%*%beta - y) + 
+#     as.matrix(rep(0:1,c(m_X+m_W,m_G*2))*beta,nrow=m_X+m_W+m_G+m_I) }
 
 
 ### Penalty
