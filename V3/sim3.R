@@ -5,12 +5,12 @@ t=100 # iteration times
 n=100
 m_X=10
 m_W=1
-m_G=200
+m_G=100
 m_I=m_G
 p<-m_X+m_W+m_G+m_I
 
-main_zero=floor(m_G*0.8)
-inter_zero=floor(m_G*0.9)
+main_zero=floor(m_G*0.5)
+inter_zero=floor(m_G*0.3)
 
 
 # Design matrix
@@ -41,6 +41,21 @@ sim_beta<-function(m_X,m_W,m_G,main_zero,inter_zero,bit=TRUE){
   
   beta_G[intersect(zero_main,zero)]<-0   # Only two are nonzero
   beta_I[zero]<-0   # Onl three are nonzero
+  
+  beta<-rbind(beta_X,beta_W,beta_G,beta_I)
+  return(beta)
+}
+
+sim_beta_const<-function(m_X,m_W,m_G,main_zero,inter_zero,const=c(2,5,10)){
+  beta_X<-matrix(rnorm(m_X),m_X,1)
+  beta_W<-matrix(rnorm(m_W),m_W,1)
+  beta_G<-sample(const,m_G,replace = T)
+  beta_I<-sample(const,m_I,replace = T)
+  
+  
+  
+  beta_G[-c(1:main_zero)]<-0   # Only two are nonzero
+  beta_I[-c(1:inter_zero)]<-0   # Onl three are nonzero
   
   beta<-rbind(beta_X,beta_W,beta_G,beta_I)
   return(beta)

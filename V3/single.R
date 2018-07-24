@@ -11,7 +11,7 @@ y<-y0+SNRmtl*noise
 
 true_beta<-split_beta(true_beta,m_X,m_W,m_G,m_I)
 
-lamb_opt<-6
+lamb_opt<-3
 lamb_opt2<-2
 sol<-FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
             backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
@@ -35,3 +35,9 @@ rst_G
 cor<-cor(X[,-c(1:(m_X+m_W))])
 pair<-data.frame("row"=which(cor(X[,-c(1:(m_X+m_W))])>0.2)%%dim(cor)[2],"col"=ceiling(which(cor(X[,-c(1:(m_X+m_W))])>0.2)/dim(cor)[2]))
 
+sum(1*(rst_G$True.G!=0))
+sum(1*(rst_G$Est.G!=0))
+length(intersect(which(rst_G$True.G1!=0),which(rst_G$Est.G1!=0)))
+sum(1*(rst_G$True.Inter!=0))
+sum(1*(rst_G$Est.Inter!=0))
+length(intersect(which(rst_G$True.Inter!=0),which(rst_G$Est.Inter!=0)))
