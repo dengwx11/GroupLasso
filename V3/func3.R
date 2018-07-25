@@ -1,27 +1,42 @@
 ### Logistic
-f0 <- function(beta,X,y) { -t(y)%*%(X%*%beta) + sum(log(1+exp(X%*%beta))) } # objective function
-gradf0 <- function(beta,X,y) { -t(X)%*%(y-plogis(X%*%beta)) } # gradient
-f <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){
-  f0(beta,X,y)+lambda2*norm(rep(0:1,c(m_X+m_W,m_G*2))*beta,'2')
-}
-gradf<-function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){
-  gradf0(beta,X,y)+as.matrix(rep(0:1,c(m_X+m_W,m_G*2))*beta,nrow=m_X+m_W+m_G+m_I) 
-}
+#f0 <- function(beta,X,y) { -t(y)%*%(X%*%beta) + sum(log(1+exp(X%*%beta))) } # objective function
+#gradf0 <- function(beta,X,y) { -t(X)%*%(y-plogis(X%*%beta)) } # gradient
+#f <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){
+#  f0(beta,X,y)+lambda2*norm(rep(0:1,c(m_X+m_W,m_G*2))*beta,'2')
+#}
+#gradf<-function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){
+#  gradf0(beta,X,y)+as.matrix(rep(0:1,c(m_X+m_W,m_G*2))*beta,nrow=m_X+m_W+m_G+m_I) 
+#}
 
 # ### Ordinary
-# f0 <- function(beta,X,y){ 0.5*norm(X%*%beta - y, "F")^2}
-# gradf0 <- function(beta,X,y){ t(X)%*%(X%*%beta - y)  }
-# f <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ 0.5*norm(X%*%beta - y, "F")^2+
-#     lambda2*norm(rep(0:1,c(m_X+m_W,m_G*2))*beta,'2')}
-# gradf <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ t(X)%*%(X%*%beta - y) + 
-#     as.matrix(rep(0:1,c(m_X+m_W,m_G*2))*beta,nrow=m_X+m_W+m_G+m_I) }
+f0 <- function(beta,X,y){ 0.5*norm(X%*%beta - y, "F")^2}
+gradf0 <- function(beta,X,y){ t(X)%*%(X%*%beta - y)  }
+f <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ 0.5*norm(X%*%beta - y, "F")^2+
+    lambda2*norm(rep(0:1,c(m_X+m_W,m_G*2))*beta,'2')}
+gradf <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ t(X)%*%(X%*%beta - y) + 
+    as.matrix(rep(0:1,c(m_X+m_W,m_G*2))*beta,nrow=m_X+m_W+m_G+m_I) }
 
 
 ### Penalty
 split_beta<-function(beta,m_X,m_W,m_G,m_I){
-  ma<-rep(1:4,c(m_X,m_W,m_G,m_I))
-  beta<-split(beta,ma)
-  names(beta)=c("X","W","G","I")
+  if(m_X!=0 && m_W!=0){
+    ma<-rep(1:4,c(m_X,m_W,m_G,m_I))
+    beta<-split(beta,ma)
+    names(beta)=c("X","W","G","I")
+  } else if(m_X==0 && m_W==0){
+    ma<-rep(1:2,c(m_G,m_I))
+    beta<-split(beta,ma)
+    names(beta)=c("G","I")
+  } else if(m_X==0){
+    ma<-rep(1:3,c(m_W,m_G,m_I))
+    beta<-split(beta,ma)
+    names(beta)=c("W","G","I")
+  } else{
+    ma<-rep(1:3,c(m_X,m_G,m_I))
+    beta<-split(beta,ma)
+    names(beta)=c("X","G","I")
+  }
+  
   return(beta)
 }
 split_X<-function(X,m_X,m_W,m_G,m_I){
@@ -34,8 +49,17 @@ split_X<-function(X,m_X,m_W,m_G,m_I){
 # Penalty parameters
 group_penalty<-function(X,m_X,m_W,m_G,m_I){
   X_split<-split_X(X,m_X,m_W,m_G,m_I)
+  if(m_X!=0 && m_W!=0){
   para_I<-sapply(X_split[-1:-2], function(x) norm(as.matrix(x[,2]),'2'))
   para_mI<-sapply(X_split[-1:-2], function(x) norm(cbind(x[,1],sqrt(1.4*(1-sqrt(2/pi)))*x[,2]),'F'))
+  } else if(m_X==0 && m_W==0){
+    para_I<-sapply(X_split, function(x) norm(as.matrix(x[,2]),'2'))
+    para_mI<-sapply(X_split, function(x) norm(cbind(x[,1],sqrt(1.4*(1-sqrt(2/pi)))*x[,2]),'F'))
+  } else {
+    para_I<-sapply(X_split[-1], function(x) norm(as.matrix(x[,2]),'2'))
+    para_mI<-sapply(X_split[-1], function(x) norm(cbind(x[,1],sqrt(1.4*(1-sqrt(2/pi)))*x[,2]),'F'))
+  }
+  
   para<-list("I"=para_I,"MI"=para_mI)
   return(para)
 }
