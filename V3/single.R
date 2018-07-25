@@ -1,18 +1,18 @@
 
-#SNR<-10
-true_beta<-sim_beta_const(m_X,m_W,m_G,main_nonzero,inter_nonzero,c(10))
+SNR<-10
+true_beta<-sim_beta_const(m_X,m_W,m_G,main_nonzero,inter_nonzero,c(1))
 
 
 X<-sim_X(m_X,m_W,m_G)
-y<-logistic(X,true_beta)
-#y0<-X%*%true_beta
-#noise<-rnorm(n,sd=1)
-#SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
-#y<-y0+SNRmtl*noise                         
+#y<-logistic(X,true_beta)
+y0<-X%*%true_beta
+noise<-rnorm(n,sd=1)
+SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
+y<-y0+SNRmtl*noise                         
 
 true_beta<-split_beta(true_beta,m_X,m_W,m_G,m_I)
 
-lamb_opt<-.7
+lamb_opt<-.5
 lamb_opt2<-.2
 sol<-FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 800, w = 10, 
             backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
@@ -49,6 +49,8 @@ y_predicted<-1*(prob>0.5)
 cbind(y_test,y_predicted)
 sum(1*(y_test==y_predicted))
 
+X_train<-X
+y_train<-y
 prob<-exp(X_train%*%sol$x)/(1+exp(X_train%*%sol$x))
 y_predicted<-1*(prob>0.5)
 cbind(y_train,y_predicted)
