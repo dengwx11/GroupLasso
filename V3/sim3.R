@@ -3,9 +3,9 @@
 t=100 # iteration times
 
 n=100
-m_X=0
+m_X=5
 m_W=1
-m_G=100
+m_G=80
 m_I=m_G
 p<-m_X+m_W+m_G+m_I
 
@@ -13,7 +13,7 @@ main_zero=floor(m_G*0.25)
 inter_zero=floor(m_G*0.15)
 
 main_nonzero=floor(m_G*0.1)
-inter_nonzero=floor(m_G*0.05)
+inter_nonzero=floor(m_G*0.08)
 both_nonzero=floor(m_G*0.1)
 
 

@@ -63,13 +63,15 @@ group_penalty<-function(X,m_X,m_W,m_G,m_I){
   para<-list("I"=para_I,"MI"=para_mI)
   return(para)
 }
-g <- function(X,beta,m_X,m_W,m_G,m_I,lambda,gamma) {
+g <- function(X,beta,m_X,m_W,m_G,m_I,lambda) {
+
   beta<-split_beta(beta,m_X,m_W,m_G,m_I)
   para<-group_penalty(X,m_X,m_W,m_G,m_I)
-  penalty<-lambda*norm(as.matrix(para$I*beta$I),'1')+lambda*sum(para$mI*sqrt(beta$G^2+gamma*beta$I^2))
+  penalty<-lambda*norm(as.matrix(para$I*beta$I),'1')+lambda*sum(para$mI*sqrt(beta$G^2+beta$I^2))
   return(penalty)
 }
-proxg <- function(X,beta,m_X,m_W,m_G,m_I,tau,lambda,gamma) { 
+proxg <- function(X,beta,m_X,m_W,m_G,m_I,tau,lambda) { 
+
   beta<-split_beta(beta,m_X,m_W,m_G,m_I)
   para<-group_penalty(X,m_X,m_W,m_G,m_I)
   
@@ -77,7 +79,7 @@ proxg <- function(X,beta,m_X,m_W,m_G,m_I,tau,lambda,gamma) {
   beta_temp<-split(beta_temp,rep(1:m_G,rep(1,m_G)))
   #beta_temp<-apply(beta_temp,1,FUN=function(x) { max(0,1-lambda2*tau/(sum(x^2))^0.5) *x})
   beta_temp<-mapply(FUN=function(x,y,z) 
-  { max(0,1-lambda*tau*z/(gamma*x[1]^2+(sign(x[2])*max(abs(x[2])-lambda*tau*y,0))^2)^0.5) * c(x[1],sign(x[2])*max(abs(x[2])-lambda*tau*y,0))},beta_temp,para$I,para$MI)
+  { max(0,1-lambda*tau*z/(x[1]^2+(sign(x[2])*max(abs(x[2])-lambda*tau*y,0))^2)^0.5) * c(x[1],sign(x[2])*max(abs(x[2])-lambda*tau*y,0))},beta_temp,para$I,para$MI)
   beta$G<-beta_temp[1,]
   beta$I<-beta_temp[2,]
   

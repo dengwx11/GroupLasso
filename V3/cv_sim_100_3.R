@@ -94,6 +94,10 @@ MIratio<-function(rst){
 }
 
 
+# Lambda Candidate
+lamb_candidate<-c(1,3,5,10)
+lamb_candidate2<-c(0.5,1,2)
+
 for(i in 1:t){
   
   for(j in seq_along(signal_to_ratio)){
@@ -101,10 +105,10 @@ for(i in 1:t){
     
     SNR<-signal_to_ratio[j]
     
-    true_beta<-sim_beta(m_X,m_W,m_G,main_zero,inter_zero,bit=T)
+    true_beta<-sim_beta_const(m_X,m_W,m_G,main_nonzero,inter_nonzero,both_nonzero,c(1,3),heir = F)
     
     
-    X<-sim_X(m_X,m_W,m_G)
+    X<-sim_X(m_X,m_W,m_G,n)
     y0<-X%*%true_beta
     noise<-rnorm(n,sd=1)
     SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
@@ -113,11 +117,11 @@ for(i in 1:t){
     true_beta<-split_beta(true_beta,m_X,m_W,m_G,m_I)
     
     #y<-logistic(X,true_beta)
-    # sol_cv<-opt_lambda2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 500, w = 10, 
-    #                     backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-    #                     eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,from=0.1,to=1.5,by=0.2,restart=TRUE)
-    # lamb_candidate<-seq(from=0.1,to=1.5,by=0.2)
-    # lamb_opt[i,j]<-lamb_candidate[which.min(sol_cv$mean+sol_cv$var)]
+    sol_cv<-opt_lambda(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10, 
+                        backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
+                        eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100, lamb_candidate, lamb_candidate2,restart=TRUE)
+    lamb_candidate<-seq(from=0.1,to=1.5,by=0.2)
+    lamb_opt[i,j]<-lamb_candidate[which.min(sol_cv$mean+sol_cv$var)]
     
     
     lamb_opt<-0.5
