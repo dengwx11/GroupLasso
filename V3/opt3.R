@@ -22,7 +22,7 @@ FASTA<-function (X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
   }
   maxResidual <- -Inf
   minObjectiveValue <- Inf
-  objective[1] <- f1 + g(X,x0,m_X,m_W,m_G,m_I,lambda)
+  objective[1] <- f1 + g(X,x0,m_X,m_W,m_G,m_I,lambda,gamma)
   t0=1
   y0<-x0
   for (i in 1:max_iters) {
@@ -30,7 +30,7 @@ FASTA<-function (X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
     gradf0 <- matrix(gradf1)
     tau0 <- tau1
     x1hat <- x0 - tau0 * c(gradf0)
-    x1 <- proxg(X,x1hat,m_X,m_W,m_G,m_I, tau0, lambda)
+    x1 <- proxg(X,x1hat,m_X,m_W,m_G,m_I, tau0, lambda, gamma)
     Dx <- matrix(x1 - x0)
     d1 <- x1
     f1 <- f(d1,X,y,m_X,m_W,m_G,m_I,lambda2)
@@ -43,7 +43,7 @@ FASTA<-function (X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
       while (prop) {
         tau0 <- tau0 * stepsizeShrink
         x1hat <- x0 - tau0 * c(gradf0)
-        x1 <- proxg(X,x1hat,m_X,m_W,m_G,m_I, tau0, lambda)
+        x1 <- proxg(X,x1hat,m_X,m_W,m_G,m_I, tau0, lambda, gamma)
         d1 <- x1
         f1 <- f(d1,X,y,m_X,m_W,m_G,m_I,lambda2)
         Dx <- matrix(x1 - x0)
@@ -59,8 +59,8 @@ FASTA<-function (X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
     if(restart){
       y1<-x1
       #check<-t(x0-y1)%*%(y1-y0)
-      check<-f(x1,X,y,m_X,m_W,m_G,m_I,lambda2)+g(X,x1,m_X,m_W,m_G,m_I,lambda)-f(x0,X,y,m_X,m_W,m_G,m_I,lambda2)-g(X,x0,m_X,m_W,m_G,m_I,lambda)
-      print(c(f(x1,X,y,m_X,m_W,m_G,m_I,lambda2),g(X,x1,m_X,m_W,m_G,m_I,lambda),f(x0,X,y,m_X,m_W,m_G,m_I,lambda2),g(X,x0,m_X,m_W,m_G,m_I,lambda)))
+      check<-f(x1,X,y,m_X,m_W,m_G,m_I,lambda2)+g(X,x1,m_X,m_W,m_G,m_I,lambda, gamma)-f(x0,X,y,m_X,m_W,m_G,m_I,lambda2)-g(X,x0,m_X,m_W,m_G,m_I,lambda, gamma)
+      print(c(f(x0,X,y,m_X,m_W,m_G,m_I,lambda2),g(X,x0,m_X,m_W,m_G,m_I,lambda, gamma)))
       if(check>0){
         t1=1
       }else{
@@ -77,7 +77,7 @@ FASTA<-function (X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
                                                           x1hat), "f")/tau0) + eps_n
     normalizedResid[i] <- residual[i]/normalizer
     fVals[i] <- f1
-    objective[i + 1] <- f1 + g(X,x1,m_X,m_W,m_G,m_I,lambda)
+    objective[i + 1] <- f1 + g(X,x1,m_X,m_W,m_G,m_I,lambda, gamma)
     newObjectiveValue <- objective[i + 1]
     if (recordIterates) {
       iterates[, i + 1] <- x1
