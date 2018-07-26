@@ -80,7 +80,8 @@ split_rst<-function(rst,bk,type='G'){
 }
 
 # Record best lambda
-lamb_opt<-matrix(0,nrow=t,ncol = length(signal_to_ratio))
+lamb_opt1<-matrix(0,nrow=t,ncol = length(signal_to_ratio))
+lamb_opt2<-matrix(0,nrow=t,ncol = length(signal_to_ratio))
 
 # Main/Interaction Ratio
 main_inter_ratio<-data.frame("ratio"=NULL,"I"=NULL,"G"=NULL)
@@ -95,8 +96,8 @@ MIratio<-function(rst){
 
 
 # Lambda Candidate
-lamb_candidate<-c(1,3,5,10)
-lamb_candidate2<-c(0.5,1,2)
+lamb_candidate<-c(1,2,3,4,5,7,10,13,17)
+lamb_candidate2<-c(0.5,1,1.5,2,3)
 
 for(i in 1:t){
   
@@ -120,13 +121,14 @@ for(i in 1:t){
     sol_cv<-opt_lambda(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10, 
                         backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                         eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100, lamb_candidate, lamb_candidate2,restart=TRUE)
-    lamb_candidate<-seq(from=0.1,to=1.5,by=0.2)
-    lamb_opt[i,j]<-lamb_candidate[which.min(sol_cv$mean+sol_cv$var)]
+    lamb_loc<-which(sol_cv$mean+sol_cv$var == min(sol_cv$mean+sol_cv$var), arr.ind = TRUE)
+    lamb_opt1[i,j]<-lamb_candidate[lamb_loc[1]]
+    lamb_opt2[i,j]<-lamb_candidate2[lamb_loc[2]]
     
     
-    lamb_opt<-0.5
-    lamb_opt2<-1
-    sol<-FASTA(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 1000, w = 10, 
+    lamb_opt<-lamb_candidate[lamb_loc[1]]
+    lamb_opt2<-lamb_candidate2[lamb_loc[2]]
+    sol<-FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 1000, w = 10, 
                 backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                 eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_opt,lamb_opt2,restart=TRUE)
     # sol<-FASTA2(X,y,f, gradf, g2, proxg2, x0, tau1, max_iters = 1000, w = 10, 
