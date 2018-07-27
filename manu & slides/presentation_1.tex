@@ -209,7 +209,7 @@ The loss function is
 
 $$\min_{\theta} f(\theta|Y,X,W,G)+ g(\theta)$$
 
- where $$ g(\theta)=\lambda \sum_i \phi_i^I |\gamma_i| + \lambda \sum_i \phi_i^M \sqrt{\alpha_i^2 + \gamma_i^2}$$
+ where $$ g(\theta)=\lambda \sum_i \phi_i^I |\gamma_i| + \lambda \sum_i \phi_i^M \sqrt{\alpha_i^2 + \gamma_i^2}+\lambda_2$$
 
 where $f(\theta|Y,X,W,G)$ is L-2 loss function, i.e. sum of squared errors for ordinary linear model.\\~
 
