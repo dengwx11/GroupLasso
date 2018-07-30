@@ -13,6 +13,13 @@ cov_block<-function(p,rho,block_num){
   return(corrmat)
 }
 
+sim_X<-function(m_W,m_G,sigma,n){
+  X<-mvrnorm(n,rep(0,m_G),sigma)
+  W<-(sample(c(0,1),n,replace = T)*2-1)
+  X<-cbind(W,X,W*X)
+  return(X)
+  
+}
 
 
 sim_beta<-function(m_X,m_W,m_G,main_zero,inter_zero,bit=TRUE,hier=TRUE){
@@ -49,6 +56,3 @@ sim_beta<-function(m_X,m_W,m_G,main_zero,inter_zero,bit=TRUE,hier=TRUE){
   return(beta)
 }
 
-
-sigma<-cov_block(100,.5,10)
-X<-mvrnorm(n=100,rep(0,100),sigma)
