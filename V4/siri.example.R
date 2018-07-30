@@ -1,10 +1,10 @@
 #working directory, need to be changed
-dir<-"/UsersDocuments/R" 
+dir<-"C:\\Users\\auz5836\\Documents\\GitHub\\GroupLasso\\V4" 
 
 #need to import library(dr) and library(MASS)
-source(sprintf("%s/siri.R",dir))
-source(sprintf("%s/simu.R",dir))
-source(sprintf("%s/siri.fit.R",dir))
+source(sprintf("%s\\siri.R",dir))
+source(sprintf("%s\\simu.R",dir))
+source(sprintf("%s\\siri.fit.R",dir))
 
 ############
 #SIRI setup#
