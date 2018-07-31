@@ -25,7 +25,7 @@ n<-dim(x)[1]
 d<-dim(x)[2] 
 
 #grid of thresholds on chi-square quantiles
-alpha.list<-c(1-1/d,1-0.5/d,1-0.1/d,1-0.05/d,1-0.01/d) 
+alpha.list<-c(1-50/d,1-25/d,1-10/d,1-2/d,1-1/d) 
 
 #sis selection bound
 range.sis<-min(d,floor(n/log(n))) 
@@ -55,6 +55,7 @@ for(i in 1:(length(alpha.list)*(Q+1)))
 {
     if(length(results[[i]]$cv$ssr)>0)
     {
+      
         if(results[[i]]$cv$ssr<error)
         {
             error<-results[[i]]$cv$ssr

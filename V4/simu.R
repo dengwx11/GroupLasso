@@ -3,7 +3,7 @@ n<-200 #sample size
 d<-1000 #number of predictors
 x<-mvrnorm(n,rep(0,d),diag(1,d))
 sigma<-0.2
-truth<-sample(1:d,3)#relevant predictors
+truth<-sample(1:d,10)#relevant predictors
 
 #scenario 2.1
 #truth<-truth[c(1,2)]
@@ -13,7 +13,7 @@ truth<-sample(1:d,3)#relevant predictors
 #y<-(1+x[,truth[1]]+x[,truth[2]])*x[,truth[3]]+rnorm(n)*sigma
 
 #scenario 2.3
-y<-(x[,truth[1]]+x[,truth[2]])*x[,truth[3]]+rnorm(n)*sigma
+y<-(x[,truth[1]]+x[,truth[2]])*x[,truth[3]]+rnorm(n)*sigma+apply(x[,truth],1,sum)
 
 #senario 2.4
 #y<-x[,truth[1]]*x[,truth[2]]*x[,truth[3]]+rnorm(n)*sigma
