@@ -13,5 +13,9 @@ SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
 y<-y0+SNRmtl*noise  
 colnames(x)<-c(1:dim(x)[2])
 truth<-which(beta!=0)
+
+
+
+library(leaps)
 a<-regsubsets(x=x,y=y,method="forward")
 summary(a)
