@@ -1,5 +1,6 @@
 library(partitions)
 library(MASS)
+library(copula)
 
 cov_block<-function(p,rho,block_num){
   block<-rmultinom(n = 1, size = p, prob = rep(1/block_num, block_num))
@@ -8,6 +9,7 @@ cov_block<-function(p,rho,block_num){
 
   fun<-function(i,j){ (max(which(i>=blockstart))==max(which(j>=blockstart)))*rho/max(abs(i-j),0) } 
   corrmat<-outer(1:p, 1:p , Vectorize(fun) )
+  #corrmat[upper.tri(corrmat)] <- t(corrmat)[upper.tri(corrmat)]
   diag(corrmat)<-1
   
   return(corrmat)
@@ -21,8 +23,28 @@ sim_X<-function(m_W,m_G,sigma,n){
   
 }
 
+sim_X_cate<-function(m_W,m_G,sigma,n,binprob){
+  W<-(sample(c(0,1),n,replace = T)*2-1)
+  para<-P2p(sigma)
+  tmp<-normalCopula(para,dim=m_G,dispstr = "un")
+  X<-rCopula(n,tmp)
+# X0<-mapply(function(x,y) qbinom(x, 2, y),X,binprob)
+# X0<-matrix(X0,ncol=m_G)
+  Y<-X
+  for(i in 1:dim(X)[2]){
+    Y[,i]<-qbinom(X[,i],2,binprob[i])
+  }
+  X<-cbind(W,Y,W*Y)
+  return(X)
+}
 
-sim_beta<-function(m_X,m_W,m_G,main_zero,inter_zero,bit=TRUE,hier=TRUE){
+
+sim_beta<-function(m_X,m_W,m_G,main_nonzero,inter_nonzero,both_nonzero,bit=TRUE,heir=TRUE){
+  main_nonzero<-floor(main_nonzero*m_G)
+  inter_nonzero<-floor(inter_nonzero*m_G)
+  both_nonzero<-floor(both_nonzero*m_G)
+  
+  
   if(m_X!=0){
     beta_X<-matrix(rnorm(m_X),m_X,1)
   } else{ beta_X<-NULL}
@@ -30,8 +52,6 @@ sim_beta<-function(m_X,m_W,m_G,main_zero,inter_zero,bit=TRUE,hier=TRUE){
     beta_W<-matrix(rnorm(m_W),m_W,1)
   } else{ beta_W<-NULL }
   beta_G<-matrix(rnorm(m_G),m_G,1)
-  zero_main<-sample(1:m_G,main_zero,replace = F)
-  zero<-sample(1:m_G,inter_zero,replace = F)
   beta_I<-matrix(rnorm(m_G),m_G,1)
   
   if(bit){
@@ -45,12 +65,13 @@ sim_beta<-function(m_X,m_W,m_G,main_zero,inter_zero,bit=TRUE,hier=TRUE){
     beta_I<-beta_I+sign(beta_I)*0.4
   }
   
-  if(hier){
-    beta_G[intersect(zero_main,zero)]<-0   
+  if(heir){
+    beta_G[-c(1:main_nonzero)]<-0   # Only two are nonzero
+    beta_I[-c(1:inter_nonzero)]<-0   # Onl three are nonzero
   } else{
-    beta_G[zero_main]<-0
+    beta_G[-c(1:(both_nonzero+main_nonzero)),]<-0
+    beta_I[-c(1:both_nonzero,(both_nonzero+main_nonzero+1):(both_nonzero+main_nonzero+inter_nonzero)),]<-0
   }
-  beta_I[zero]<-0   # Onl three are nonzero
   
   beta<-rbind(beta_X,beta_W,beta_G,beta_I)
   return(beta)
