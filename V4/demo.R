@@ -1,9 +1,11 @@
+library(spcov)
 
-n=100
-m_G<-100
 
-#sigma<-cov_block(m_G,.5,12)
-sigma<-GenerateCliquesCovariance(10,10,0.8)
+n=200
+m_G<-200
+
+sigma<-cov_block(m_G,.5,5)
+#sigma<-GenerateCliquesCovariance(10,10,0.8)
 binprob<-runif(m_G)
 x<-sim_X_cate(1,m_G,sigma,n,binprob)
 beta<-sim_beta(m_X=0,m_W=1,m_G,main_nonzero=0.1,inter_nonzero=0.1,both_nonzero=0.1,bit=T,heir=F)
@@ -18,6 +20,6 @@ truth<-which(beta!=0)
 
 
 library(leaps)
-a<-regsubsets(x=x,y=y,method="forward",nvmax = 35,force.in = 1)
+a<-regsubsets(x=x,y=y,method="forward",nvmax = 60,force.in = 1)
 summary(a)
 

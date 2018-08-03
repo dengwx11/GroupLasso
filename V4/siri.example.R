@@ -25,7 +25,8 @@ n<-dim(x)[1]
 d<-dim(x)[2] 
 
 #grid of thresholds on chi-square quantiles
-alpha.list<-c(1-50/d,1-25/d,1-10/d,1-2/d,1-1/d) 
+#alpha.list<-c(1-1/d,1-.5/d,1-.25/d,1-.05/d,1-.01/d) 
+alpha.list<-c(0.9,0.95,0.97,0.99,0.995,0.999)
 
 #sis selection bound
 range.sis<-min(d,floor(n/log(n))) 
@@ -77,9 +78,14 @@ if(i>0)
 }
 print("Variables selected by SIRI: ")
 print(setA) #selected set of variables
+truth<-which(beta!=0)
 print("True relevant variables: ")
 print(truth) #variables used in simulation
 
+for(i in seq_along(results)){
+  setA<-c(results[[i]]$result$linear.set,results[[i]]$result$interact.set)
+  print(setA)
+}
 #####################
 #Use SIRI to predict#
 #####################
