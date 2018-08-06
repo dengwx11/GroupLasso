@@ -1,14 +1,6 @@
 library(dr)
 library(MASS)
 
-#To fit SIRI model given data x, y and 
-#obtain predictions on a new set of predictor xnew,
-#run the following commands:
-#result = siri.iter(x,y,H,K,alpha,niter,range.linear,range.interact,range.sis)
-#model = siri.fit(x,y,result)
-#pred = siri.pred(xnew,result,model)
-#Prediction results are stored in pred$pred.value and pred$pred.label
-
 addToLinear<-function(x,y,H,K,linear.set,slices,nslices)
 {
   n=nrow(x)
@@ -242,7 +234,7 @@ siri.iter<-function(x,y,H,K,alpha,niter,range.linear,range.interact,range.sis){
   return(result)
 }
 
-siri.fit<-function(x,y,result)
+siri.estimate<-function(x,y,result)
 {
   H<-result$H
   K<-result$K
@@ -288,36 +280,35 @@ siri.fit<-function(x,y,result)
       sigma2[[h]]<-t(x.h)%*%(diag(n.h)-z.h%*%solve(t(z.h)%*%z.h)%*%t(z.h))%*%x.h/n.h
     }
   }
-  medians <- rep(0,nslices) 
-  for(h in 1:nslices) {
-    medians[h] <- median(y[slices==h])
-  }
-  model<-list(size=size,beta.hat=beta.hat,beta1=beta1,sigma1=sigma1,beta2=beta2,sigma2=sigma2,medians=medians)
+  model<-list(size=size,beta.hat=beta.hat,beta1=beta1,sigma1=sigma1,beta2=beta2,sigma2=sigma2)
   return(model)	
 }
 
-siri.pred<-function(x,result,model)
+siri.predict<-function(x,y,result,model,test,train)
 {
   H<-result$H
   nslices<-result$nslices
-  n<-dim(x)[1]
-  if(is.null(n)){
-    n <- 1
-  }
+  n<-length(test)
   p1<-length(result$linear.set)
   p2<-length(result$interact.set)
   if(n>1) {
-    x1<-as.matrix(x[,result$linear.set])
-    x2<-as.matrix(x[,result$interact.set])
+    x1<-as.matrix(x[test,result$linear.set])
+    x2<-as.matrix(x[test,result$interact.set])
   } else {
-    x1<-x[result$linear.set]
-    x2<-x[result$interact.set]
+    x1<-x[test,result$linear.set]
+    x2<-x[test,result$interact.set]
   }
-  slices<-result$slices
+  y.train<-y[train]
+  y.test<-y[test]
+  slices.train<-result$slices
+  slices.test<-rep(H,n)
   label<-rep(1,n)
-  y.value<-model$medians
-  pred<-  rep(median(y.value),n)
   posterior<-rep(nslices/2.0,n)
+  y.value<-rep(0,nslices)
+  for(h in 1:nslices)
+  {
+    y.value[h]<-median(y.train[slices.train==h])
+  }
   for(i in 1:n)
   {
     if(n>1) {
@@ -345,8 +336,90 @@ siri.pred<-function(x,result,model)
     }
     label[i]<-which.max(lik)
     prob<-exp(lik-min(lik))/sum(exp(lik-min(lik)))
-    posterior[i]<-sum(seq(1:nslices)*prob)
-    pred[i]<-sum(y.value*prob)		
+    #posterior[i]<-sum(seq(1:nslices)*prob)
+    posterior[i]<-sum(y.value*prob)
+    for(h in 1:nslices)
+    {
+      if(y.test[i] <= max(y.train[slices.train==h]))
+      {
+        slices.test[i]=h
+        break
+      }
+    }
+    
   }
-  return(list(x=x,pred.label=label,pred.value=pred,posterior=posterior))
+  #ssr<-sum(abs(posterior-slices.test))
+  ssr<-sum(abs(posterior-y.test))
+  error<-sum(label!=slices.test)
+  #print(label)
+  #print(slices.test)
+  return(list(label=label,ssr=ssr,error=error))
+}
+
+siri.cv<-function(x,y,div,H,K,alpha,niter,range.linear,range.interact,range.sis,result.full)
+{
+  ssr<-NULL
+  error<-NULL
+  label<-NULL
+  n=nrow(x)
+  id<-c(1:n)
+  result<-result.full
+  for(k in 1:length(unique(div))){
+    train<-id[div!=k]
+    test<-id[div==k]
+    #result<-siri.iter(x[train,],y[train],H,K,alpha,niter,range.linear,range.interact,range.sis)
+    #print(result)
+    y.slices<-dr.slices(y[train],nslices=H)
+    result$slices<-y.slices[[1]]
+    result$nslices<-y.slices[[2]]
+    result$sizes<-y.slices[[3]]
+    if(length(result$linear.set)+length(result$interact.set)>0)
+    {
+      model<-siri.estimate(x[train,],y[train],result)
+      cv<-siri.predict(x,y,result,model,id[div==k],id[div!=k])
+      label<-c(label,cv$label)
+      ssr<-c(ssr,cv$ssr)
+      error<-c(error,cv$error)
+    } else {
+      print("Empty Set!")
+      nn<-length(test)
+      label<-c(label,sample(1:nslices,nn,replace=T))
+      ssr<-c(ssr,(nn-1)*var(y[test]))
+      error<-c(error,nn)
+    }	
+  }
+  ssr<-sum(ssr)/n
+  error<-sum(error)/n
+  return(list(label=label,ssr=ssr,error=error))
+}
+
+siri<-function(x,y,H,Q,K.fold,alpha.list,niter,range.linear,range.interact,range.sis)
+{
+  n<-nrow(x)
+  div<-rep(K.fold,n)
+  pid<-sample(c(1:n), n, replace = FALSE)
+  for(k in 1:(K.fold-1))
+  {
+    div[pid[((k-1)*floor(n/K.fold)+1):(k*floor(n/K.fold))]]<-k
+  }
+  results<-NULL
+  t<-1
+  K<-0
+  for(K in 0:Q)
+  {
+    for(i in 1:length(alpha.list))
+    {
+      result.full<-siri.iter(x,y,H,K,alpha.list[i],niter,range.linear,range.interact,range.sis)
+      #print(result.full)
+      cv<-NULL
+      if(!is.null(result.full))
+      {
+        cv<-siri.cv(x,y,div,H,K,alpha.list[i],niter,range.linear,range.interact,range.sis,result.full)
+      }
+      results[[t]]<-list(result=result.full,div=div,cv=cv,K=K,alpha=alpha.list[i],range.linear=range.linear,range.interact=range.interact,range.sis=range.sis)
+      print(results[[t]])
+      t<-t+1
+    }
+  }
+  return(results)
 }

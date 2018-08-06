@@ -1,8 +1,8 @@
 library(spcov)
 
 
-n=200
-m_G<-200
+n=100
+m_G<-20
 
 sigma<-cov_block(m_G,.5,5)
 #sigma<-GenerateCliquesCovariance(10,10,0.8)
@@ -20,6 +20,6 @@ truth<-which(beta!=0)
 
 
 library(leaps)
-a<-regsubsets(x=x,y=y,method="forward",nvmax = 60,force.in = 1)
+a<-regsubsets(x=x,y=y,method="forward",nvmax = 9,force.in = 1)
 summary(a)
 
