@@ -66,7 +66,34 @@ sim_beta<-function(m_X,m_W,m_G,main_nonzero,inter_nonzero,both_nonzero,bit=TRUE,
   }
   
   if(heir){
-    beta_G[-c(1:main_nonzero)]<-0   # Only two are nonzero
+    beta_G[-c(1:(main_nonzero+inter_nonzero))]<-0   # Only two are nonzero
+    beta_I[-c(1:inter_nonzero)]<-0   # Onl three are nonzero
+  } else{
+    beta_G[-c(1:(both_nonzero+main_nonzero)),]<-0
+    beta_I[-c(1:both_nonzero,(both_nonzero+main_nonzero+1):(both_nonzero+main_nonzero+inter_nonzero)),]<-0
+  }
+  
+  beta<-rbind(beta_X,beta_W,beta_G,beta_I)
+  return(beta)
+}
+
+sim_beta_const<-function(m_X,m_W,m_G,main_nonzero,inter_nonzero,both_nonzero,const=c(3),heir=TRUE){
+  main_nonzero<-floor(main_nonzero*m_G)
+  inter_nonzero<-floor(inter_nonzero*m_G)
+  both_nonzero<-floor(both_nonzero*m_G)
+  
+  const<-c(const,-const)
+  
+  beta_X<-matrix(rnorm(m_X),m_X,1)+as.matrix(sample(const,m_X,replace = T))
+  beta_W<-matrix(rnorm(m_W),m_W,1)+as.matrix(sample(const,m_W,replace = T))
+  
+  
+  beta_G<-as.matrix(sample(const,m_G,replace = T))
+  beta_I<-as.matrix(sample(const,m_G,replace = T))
+  
+  
+  if(heir){
+    beta_G[-c(1:(main_nonzero+inter_nonzero))]<-0   # Only two are nonzero
     beta_I[-c(1:inter_nonzero)]<-0   # Onl three are nonzero
   } else{
     beta_G[-c(1:(both_nonzero+main_nonzero)),]<-0
