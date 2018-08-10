@@ -5,14 +5,14 @@ library(leaps)
 library(BoomSpikeSlab)
 
 n=100
-m_G<-100
+m_G<-30
 
-sigma<-cov_block(m_G,.3,10)
+sigma<-cov_block(m_G,.3,2)
 #sigma<-GenerateCliquesCovariance(10,10,0.8)
 binprob<-runif(m_G)
-x<-sim_X_cate(1,m_G,sigma,n,binprob)
+x<-sim_X_cate(2,1,5,sigma,10,binprob)
 #beta<-sim_beta(m_X=0,m_W=1,m_G,main_nonzero=0.05,inter_nonzero=0.05,both_nonzero=0.1,bit=T,heir=T)
-beta<-sim_beta_const(m_X=0,m_W=1,m_G,main_nonzero=0.05,inter_nonzero=0.05,both_nonzero=0.01,const=c(3,5),heir=TRUE)
+beta<-sim_beta_const(m_X=0,m_W=1,m_G,main_nonzero=0.1,inter_nonzero=0.1,both_nonzero=0.01,const=c(3,5),heir=TRUE)
 y0<-x%*%beta
 
 SNR<-10
@@ -120,3 +120,9 @@ niter<-2
 ##########
 #Run SIRI and save the result into "results"
 results<-siri(x,y,H,Q,K.fold,alpha.list,niter,range.linear,range.interact,range.sis)
+
+
+
+### SIS
+model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
+model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")
