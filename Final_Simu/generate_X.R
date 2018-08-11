@@ -40,7 +40,7 @@ n=100
 m_G<-1000
 
 for(i in 1:100){
-  sigma<-cov_block(m_G,.5,10)
+  sigma<-cov_block(m_G,.5,150)
   #sigma<-GenerateCliquesCovariance(10,10,0.8)
   binprob<-runif(m_G)
   x<-sim_X_cate(5,1,m_G,sigma,n,binprob)

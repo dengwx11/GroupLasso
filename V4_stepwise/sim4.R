@@ -15,15 +15,20 @@ cov_block<-function(p,rho,block_num){
   return(corrmat)
 }
 
-sim_X<-function(m_W,m_G,sigma,n){
+sim_X<-function(m_X,m_W,m_G,sigma,n){
+  if(m_X!=0){
+    X0<-matrix(rnorm(n*m_X),n,m_X)
+  }
   X<-mvrnorm(n,rep(0,m_G),sigma)
   W<-(sample(c(0,1),n,replace = T)*2-1)
-  X<-cbind(W,X,W*X)
+  X<-cbind(X0,W,X,W*X)
   return(X)
-  
 }
 
-sim_X_cate<-function(m_W,m_G,sigma,n,binprob){
+sim_X_cate<-function(m_X,m_W,m_G,sigma,n,binprob){
+  if(m_X!=0){
+    X0<-matrix(rnorm(n*m_X),n,m_X)
+  } else{ X0<-NULL }
   W<-(sample(c(0,1),n,replace = T)*2-1)
   para<-P2p(sigma)
   tmp<-normalCopula(para,dim=m_G,dispstr = "un")
@@ -34,7 +39,7 @@ sim_X_cate<-function(m_W,m_G,sigma,n,binprob){
   for(i in 1:dim(X)[2]){
     Y[,i]<-qbinom(X[,i],2,binprob[i])
   }
-  X<-cbind(W,Y,W*Y)
+  X<-cbind(X0,W,Y,W*Y)
   return(X)
 }
 

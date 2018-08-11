@@ -10,7 +10,7 @@ divide<-function(K,n){
 }
 
 
-cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
+cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10, 
                    backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                    eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda,lambda2,K=10,n=100,restart){
   
@@ -20,6 +20,7 @@ cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10,
   TestErr<-rep(0,K)
   
   for(k in 1:K){
+    print(c(k,k,k,k,k,k,k))
     
     # Generating training and test datasets for cross validation
     test_X<-X[folds[[k]],]
@@ -28,10 +29,12 @@ cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10,
     train_y<-y[setdiff(c(1:n),folds[[k]])]
     
     # Training model on training dataset
-    sol_cv[[k]]<-FASTA(train_X,train_y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
+    
+    sol_cv[[k]]<-FASTA(train_X,train_y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10, 
                         backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                         eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda,lambda2,restart)
     x0<-sol_cv[[k]]$x
+    print("a")
     
     # Test on the validation group
     TestErr[k]<-f0(sol_cv[[k]]$x,test_X,test_y)/length(test_y)
@@ -42,7 +45,7 @@ cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10,
 }
 
 
-opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
+opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10, 
                       backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                       eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,lamb_candidate,lamb_candidate2,restart){
 
@@ -55,7 +58,8 @@ opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10,
   
   for(i in seq_along(lamb_candidate)){
     for(j in seq_along(lamb_candidate2)){
-    rst<-cv.FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 500, w = 10, 
+      print(c(i,j))
+    rst<-cv.FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = max_iters, w = 10, 
                    backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                    eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_candidate[i],lamb_candidate2[j],K,n,restart=TRUE)
     cv.Err<-rst$Err
