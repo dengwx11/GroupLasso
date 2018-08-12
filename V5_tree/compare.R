@@ -59,7 +59,7 @@ for(i in 1:100){
   beta<-sim_beta_const(m_X,m_W=1,m_G,main_nonzero=0.1,inter_nonzero=0.1,both_nonzero=0.01,const=c(3,5),heir=TRUE)
   y0<-x%*%beta
   
-
+  
   noise<-rnorm(n,sd=1)
   SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
   y<-y0+SNRmtl*noise  
@@ -90,7 +90,7 @@ for(i in 1:100){
   steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
   
   ### Group Lasso
-
+  
   solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10, 
               backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
               eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
@@ -219,12 +219,12 @@ m_I<-m_G
 SNR<-10
 tau1<-1
 
-x0<-rep(0,dim(x)[2])
+
 #Set Seed
 set.seed(1000)
 
 # Generate X and Y
-sigma<-cov_block(m_G,.3,5)
+sigma<-cov_block(m_G,.3,20)
 #sigma<-GenerateCliquesCovariance(10,10,0.8)
 #binprob<-runif(m_G)
 x<-sim_X(m_X,m_W,m_G,sigma,n)
@@ -238,6 +238,8 @@ SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
 y<-y0+SNRmtl*noise  
 colnames(x)<-c(1:dim(x)[2])
 truth<-which(beta!=0)
+
+x0<-rep(0,dim(x)[2])
 #### Cross Validation finding best lambda for Group Lasso
 lamb_candidate<-c(1,1.5,2,2.5,3,4)
 lamb_candidate2<-c(0.5,1,1.5,2)
@@ -261,6 +263,10 @@ lamb_opt2_lasso<-lamb_candidate2[lamb_loc[2]]
 save(sol_cv,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//sol_cv_lasso.RData")
 
 
+lamb_opt_glasso<-4
+lamb_opt2_glasso<-.5
+lamb_opt_lasso<-35
+lamb_opt2_lasso<-1
 #### Iteration
 treerst<-list()
 bicrst<-list()
@@ -269,77 +275,79 @@ glassorst<-list()
 lassorst<-list()
 sisrst<-list()
 
-for(i in 1:100){
-  print(i)
-  #Set Seed
-  set.seed(i+1000)
+for(portion in c(0.05,0.1,0.15,0.2)){
+  for(i in 1:100){
+    print(i)
+    #Set Seed
+    set.seed(i+1000)
+    
+    # Generate X and Y
+    sigma<-cov_block(m_G,.3,20)
+    #sigma<-GenerateCliquesCovariance(10,10,0.8)
+    #binprob<-runif(m_G)
+    x<-sim_X(m_X,m_W,m_G,sigma,n)
+    #beta<-sim_beta(m_X=0,m_W=1,m_G,main_nonzero=0.05,inter_nonzero=0.05,both_nonzero=0.1,bit=T,heir=T)
+    beta<-sim_beta_const(m_X,m_W=1,m_G,main_nonzero=portion,inter_nonzero=portion,both_nonzero=0.01,const=c(3,5),heir=TRUE)
+    y0<-x%*%beta
+    
+    
+    noise<-rnorm(n,sd=1)
+    SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
+    y<-y0+SNRmtl*noise  
+    colnames(x)<-c(1:dim(x)[2])
+    truth<-which(beta!=0)
+    
+    simu<-data.frame(X=x,Y=y)
+    L<-lm(y~x[,c(1:(m_X+m_W))])
+    y.res<-L$residuals
+    simu$Y<-y.res
+    simu<-simu[,-c(1:(m_X+m_W))]
+    
+    ### Trees
+    model <- randomForest(Y~.,   data=simu)
+    #print(model) # view results 
+    #importance(model)
+    treerst[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
+    
+    ### BMA
+    bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
+    bicrst[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
+    bicrst[[i]]<-sapply(bicrst[[i]],function(x) strsplit(x,"X")[[1]][2])
+    bicrst[[i]]<-as.integer(bicrst[[i]])
+    
+    ### Stepwise
+    a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
+    steprst[[i]]<-a$vorder[1:(length(truth))]
+    steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
+    
+    ### Group Lasso
+    
+    solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10, 
+                backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
+                eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
+    glassorst[[i]]<-which(solg$x!=0)
+    
+    ### Regular Lasso
+    sol<-FASTA(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 300, w = 10, 
+               backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
+               eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
+    lassorst[[i]]<-which(sol$x!=0)
+    
+    ### SIS
+    #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
+    model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")
+    sisrst[[i]]<-model2$ix
+  }
   
-  # Generate X and Y
-  sigma<-cov_block(m_G,.3,5)
-  #sigma<-GenerateCliquesCovariance(10,10,0.8)
-  #binprob<-runif(m_G)
-  x<-sim_X(m_X,m_W,m_G,sigma,n)
-  #beta<-sim_beta(m_X=0,m_W=1,m_G,main_nonzero=0.05,inter_nonzero=0.05,both_nonzero=0.1,bit=T,heir=T)
-  beta<-sim_beta_const(m_X,m_W=1,m_G,main_nonzero=0.1,inter_nonzero=0.1,both_nonzero=0.01,const=c(3,5),heir=TRUE)
-  y0<-x%*%beta
   
+  #save(truth,"C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//30//truth.RData")
+  save(bicrst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//bicrst",portion,".RData"))
+  save(steprst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//steprst",portion,".RData"))
+  save(glassorst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//glassorst",portion,".RData"))
+  save(lassorst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//lassorst",portion,".RData"))
+  save(sisrst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//sisrst",portion,".RData"))
   
-  noise<-rnorm(n,sd=1)
-  SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
-  y<-y0+SNRmtl*noise  
-  colnames(x)<-c(1:dim(x)[2])
-  truth<-which(beta!=0)
-  
-  simu<-data.frame(X=x,Y=y)
-  L<-lm(y~x[,c(1:(m_X+m_W))])
-  y.res<-L$residuals
-  simu$Y<-y.res
-  simu<-simu[,-c(1:(m_X+m_W))]
-  
-  ### Trees
-  model <- randomForest(Y~.,   data=simu)
-  #print(model) # view results 
-  #importance(model)
-  treerst[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
-  
-  ### BMA
-  bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
-  bicrst[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
-  bicrst[[i]]<-sapply(bicrst[[i]],function(x) strsplit(x,"X")[[1]][2])
-  bicrst[[i]]<-as.integer(bicrst[[i]])
-  
-  ### Stepwise
-  a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
-  steprst[[i]]<-a$vorder[1:(length(truth))]
-  steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
-  
-  ### Group Lasso
-  
-  solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10, 
-              backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-              eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
-  glassorst[[i]]<-which(solg$x!=0)
-  
-  ### Regular Lasso
-  sol<-FASTA(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 300, w = 10, 
-             backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-             eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
-  lassorst[[i]]<-which(sol$x!=0)
-  
-  ### SIS
-  #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
-  model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")
-  sisrst[[i]]<-model2$ix
 }
-
-
-#save(truth,"C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//30//truth.RData")
-save(bicrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//bicrst.RData")
-save(steprst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//steprst.RData")
-save(glassorst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//glassorst.RData")
-save(lassorst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//lassorst.RData")
-save(sisrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//sisrst.RData")
-
 
 ########################################################
 
@@ -351,12 +359,12 @@ m_I<-m_G
 SNR<-10
 tau1<-1
 
-x0<-rep(0,dim(x)[2])
+
 #Set Seed
 set.seed(1000)
 
 # Generate X and Y
-sigma<-cov_block(m_G,.3,5)
+sigma<-cov_block(m_G,.3,40)
 #sigma<-GenerateCliquesCovariance(10,10,0.8)
 #binprob<-runif(m_G)
 x<-sim_X(m_X,m_W,m_G,sigma,n)
@@ -370,6 +378,8 @@ SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
 y<-y0+SNRmtl*noise  
 colnames(x)<-c(1:dim(x)[2])
 truth<-which(beta!=0)
+
+x0<-rep(0,dim(x)[2])
 #### Cross Validation finding best lambda for Group Lasso
 lamb_candidate<-c(1,1.5,2,2.5,3,4)
 lamb_candidate2<-c(0.5,1,1.5,2)
@@ -407,7 +417,7 @@ for(i in 1:100){
   set.seed(i+1000)
   
   # Generate X and Y
-  sigma<-cov_block(m_G,.3,5)
+  sigma<-cov_block(m_G,.3,40)
   #sigma<-GenerateCliquesCovariance(10,10,0.8)
   #binprob<-runif(m_G)
   x<-sim_X(m_X,m_W,m_G,sigma,n)
