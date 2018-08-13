@@ -26,7 +26,7 @@ p <- arg_parser("Simulation on Group lasso compared with multiple other methods"
   add_argument(
     arg = "--treatment_dim",
     help = "Number of treatment covariates",
-    default = 111,
+    default = 1,
     type = "integer",
     short = "-m_W"
   ) %>%
@@ -117,6 +117,8 @@ inter_nonzero=argv$interaction_nonzero
 both_nonzero=argv$both_nonzero
 tau1<-1
 
+print(m_X+m_W+m_G+m_I)
+
 print(c(main_nonzero,inter_nonzero))
 
 #Set Seed
@@ -140,8 +142,11 @@ truth<-which(beta!=0)
 
 x0<-rep(0,dim(x)[2])
 #### Cross Validation finding best lambda for Group Lasso
-lamb_candidate<-c(1,1.5,2,2.5,3,4)
-lamb_candidate2<-c(0.5,1,1.5,2)
+#lamb_candidate<-c(1,1.5,2,2.5,3,4)
+#lamb_candidate2<-c(0.5,1,1.5,2)
+
+lamb_candidate<-c(1,1.5)
+lamb_candidate2<-c(0.5,1)
 sol_cv<-opt_lambda(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10, 
                    backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                    eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100, lamb_candidate, lamb_candidate2,restart=TRUE)
@@ -153,6 +158,7 @@ save(sol_cv,file=paste0("/home/fas/zhao/wd262/project/predictive/sol_cv_glasso_"
 #### Cross Validation finding best lambda for General Lasso
 lamb_candidate<-c(15,25,30,35,40,45,50)
 lamb_candidate2<-c(1,3,5,7)
+
 sol_cv<-opt_lambda(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 100, w = 10, 
                    backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                    eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100, lamb_candidate, lamb_candidate2,restart=TRUE)
@@ -171,7 +177,7 @@ lassorst<-list()
 sisrst<-list()
 
 
-  for(i in 1:100){
+  for(i in 1:2){
     print(i)
     #Set Seed
     set.seed(i+1000)

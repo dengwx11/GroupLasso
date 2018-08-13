@@ -12,7 +12,7 @@ divide<-function(K,n){
 
 cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10, 
                    backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                   eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda,lambda2,K=10,n=100,restart){
+                   eps_n = 1e-15,m_X,m_W,m_G,m_I,lambda,lambda2,K=10,n=100,restart,truth){
   
   folds<-divide(K,n)
   
@@ -37,7 +37,8 @@ cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
     print("a")
     
     # Test on the validation group
-    TestErr[k]<-f0(sol_cv[[k]]$x,test_X,test_y)/length(test_y)
+    #TestErr[k]<-f0(sol_cv[[k]]$x,test_X,test_y)/length(test_y)
+    TestErr[k]<-norm(sol_cv[[k]]$x-truth,"2")
     
     
   }
@@ -47,7 +48,7 @@ cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
 
 opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10, 
                       backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                      eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,lamb_candidate,lamb_candidate2,restart){
+                      eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100,lamb_candidate,lamb_candidate2,restart,truth){
 
   lamb_candidate<-lamb_candidate[order(lamb_candidate,decreasing = T)]
   lamb_candidate2<-lamb_candidate2[order(lamb_candidate2,decreasing = T)]
@@ -61,7 +62,7 @@ opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
       print(c(i,j))
     rst<-cv.FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = max_iters, w = 10, 
                    backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
-                   eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_candidate[i],lamb_candidate2[j],K,n,restart=TRUE)
+                   eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_candidate[i],lamb_candidate2[j],K,n,restart=TRUE,truth)
     cv.Err<-rst$Err
     x0<-rst$start
     TestErr[i,j]<-mean(cv.Err)
