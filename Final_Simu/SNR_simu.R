@@ -7,7 +7,7 @@ SNR<-10
 tau1<-1
 
 
-SNRlist<-c(20,100)
+SNRlist<-c(5)
 
 
 for(SNR in SNRlist){
@@ -91,8 +91,8 @@ for(SNR in SNRlist){
   #save(truth,"C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//30//truth.RData")
 #   save(bicrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//bicrst_",SNR,".RData")
 #   save(steprst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//steprst_",SNR,".RData")
-  save(glassorst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//glassorst_",SNR,".RData")
-  save(lassorst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//lassorst_",SNR,".RData")
+  save(glassorst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//glassorst_",SNR,".RData"))
+  save(lassorst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//lassorst_",SNR,".RData"))
 #   save(sisrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//sisrst_",SNR,".RData")
   
 }
