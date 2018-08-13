@@ -482,4 +482,39 @@ save(glassorst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Si
 save(lassorst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//lassorst.RData")
 save(sisrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//sisrst.RData")
 
+for(i in 1:100){
+  print(i)
+  #Set Seed
+  set.seed(i+1000)
+  
+  # Generate X and Y
+  sigma<-cov_block(m_G,.3,40)
+  #sigma<-GenerateCliquesCovariance(10,10,0.8)
+  #binprob<-runif(m_G)
+  x<-sim_X(m_X,m_W,m_G,sigma,n)
+  #beta<-sim_beta(m_X=0,m_W=1,m_G,main_nonzero=0.05,inter_nonzero=0.05,both_nonzero=0.1,bit=T,heir=T)
+  beta<-sim_beta_const(m_X,m_W=1,m_G,main_nonzero=0.1,inter_nonzero=0.1,both_nonzero=0.01,const=c(3,5),heir=TRUE)
+  y0<-x%*%beta
+  
+  
+  noise<-rnorm(n,sd=1)
+  SNRmtl <- as.numeric(sqrt(var(y0)/(SNR*var(noise))))
+  y<-y0+SNRmtl*noise  
+  colnames(x)<-c(1:dim(x)[2])
+  truth<-which(beta!=0)
+  
+  simu<-data.frame(X=x,Y=y)
+  L<-lm(y~x[,c(1:(m_X+m_W))])
+  y.res<-L$residuals
+  simu$Y<-y.res
+  simu<-simu[,-c(1:(m_X+m_W))]
+  
 
+  
+  ### Stepwise
+  a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
+  steprst[[i]]<-a$vorder[1:(length(truth))]
+  #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
+  
+
+}
