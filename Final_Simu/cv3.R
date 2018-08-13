@@ -17,7 +17,8 @@ cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
   folds<-divide(K,n)
   
   sol_cv<-list()
-  TestErr<-rep(0,K)
+  TestErr_pred<-rep(0,K)
+  TestErr_beta<-rep(0,K)
   
   for(k in 1:K){
     print(c(k,k,k,k,k,k,k))
@@ -37,12 +38,12 @@ cv.FASTA<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
     print("a")
     
     # Test on the validation group
-    #TestErr[k]<-f0(sol_cv[[k]]$x,test_X,test_y)/length(test_y)
-    TestErr[k]<-norm(sol_cv[[k]]$x-truth,"2")
+    TestErr_pred[k]<-f0(sol_cv[[k]]$x,test_X,test_y)/length(test_y)
+    TestErr_beta[k]<-norm(sol_cv[[k]]$x-truth,"2")
     
     
   }
-  return(list(Err=TestErr,start=x0))
+  return(list(Err_pred=TestErr_pred,Err_beta=TestErr_beta,start=x0))
 }
 
 
@@ -63,21 +64,25 @@ opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
     rst<-cv.FASTA(X,y,f, gradf, g, proxg, x0, tau1, max_iters = max_iters, w = 10, 
                    backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                    eps_n = 1e-15,m_X,m_W,m_G,m_I,lamb_candidate[i],lamb_candidate2[j],K,n,restart=TRUE,truth)
-    cv.Err<-rst$Err
+    cv.Err_pred<-rst$Err_pred
+    cv.Err_beta<-rst$Err_beta
     x0<-rst$start
-    TestErr[i,j]<-mean(cv.Err)
+    TestErr_pred[i,j]<-mean(cv.Err_pred)
+    TestErr_beta[i,j]<-mean(cv.Err_beta)
     VarErr[i,j]<-var(cv.Err)
     print(c(paste("lambda 1=",lamb_candidate[i]),paste("lambda 2=",lamb_candidate2[j])))
     print(cv.Err)
     }
-    TestErr[i,]<-rev(TestErr[i,])
+    TestErr_pred[i,]<-rev(TestErr_pred[i,])
+    TestErr_beta[i,]<-rev(TestErr_beta[i,])
     VarErr[i,]<-rev(VarErr[i,])
   }
   
-  TestErr<-apply(TestErr,2,rev)
+  TestErr_pred<-apply(TestErr_pred,2,rev)
+  TestErr_beta<-apply(TestErr_beta,2,rev)
   VarErr<-apply(VarErr,2,rev)
   
-  return(list(mean=TestErr,var=VarErr))
+  return(list(mean_pred=TestErr_pred,mean_beta=TestErr_beta,var=VarErr))
 }
 
 
