@@ -14,7 +14,7 @@ gradf0 <- function(beta,X,y){ t(X)%*%(X%*%beta - y)  }
 f <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ 0.5*norm(X%*%beta - y, "F")^2+
     lambda2*norm(rep(0:1,c(m_X+m_W,m_G*2))*beta,'2')}
 gradf <- function(beta,X,y,m_X,m_W,m_G,m_I,lambda2){ t(X)%*%(X%*%beta - y) + 
-    as.matrix(rep(0:1,c(m_X+m_W,m_G*2))*beta,nrow=m_X+m_W+m_G+m_I) }
+    lambda2*as.matrix(rep(0:1,c(m_X+m_W,m_G*2))*beta,nrow=m_X+m_W+m_G+m_I) }
 
 
 ### Penalty
