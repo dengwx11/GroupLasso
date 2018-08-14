@@ -460,29 +460,29 @@ for(i in 1:100){
   colnames(x)<-c(1:dim(x)[2])
   truth<-which(beta!=0)
  
-  simu<-data.frame(X=x,Y=y)
-  L<-lm(y~x[,c(1:(m_X+m_W))])
-  y.res<-L$residuals
-  simu$Y<-y.res
-  simu<-simu[,-c(1:(m_X+m_W))]
-
-  ### Trees
-  model <- randomForest(Y~.,   data=simu)
-  #print(model) # view results
-  #importance(model)
-  treerst[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
-
-  ### BMA
-  bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
-  bicrst[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
-  bicrst[[i]]<-sapply(bicrst[[i]],function(x) strsplit(x,"X")[[1]][2])
-  bicrst[[i]]<-as.integer(bicrst[[i]])
-
-  ### Stepwise
-  a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
-  steprst[[i]]<-a$vorder[1:(length(truth))]
-  steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
- 
+  # simu<-data.frame(X=x,Y=y)
+  # L<-lm(y~x[,c(1:(m_X+m_W))])
+  # y.res<-L$residuals
+  # simu$Y<-y.res
+  # simu<-simu[,-c(1:(m_X+m_W))]
+  # 
+  # ### Trees
+  # model <- randomForest(Y~.,   data=simu)
+  # #print(model) # view results
+  # #importance(model)
+  # treerst[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
+  # 
+  # ### BMA
+  # bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
+  # bicrst[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
+  # bicrst[[i]]<-sapply(bicrst[[i]],function(x) strsplit(x,"X")[[1]][2])
+  # bicrst[[i]]<-as.integer(bicrst[[i]])
+  # 
+  # ### Stepwise
+  # a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
+  # steprst[[i]]<-a$vorder[1:(length(truth))]
+  # steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
+  # 
   x0<-rep(0,dim(x)[2])
   ### Group Lasso
   lamb_opt_glasso<-21
@@ -500,10 +500,10 @@ for(i in 1:100){
              eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
   lassorst[[i]]<-order(abs(sol$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
    
-  ### SIS
-  #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
-  model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")
-  sisrst[[i]]<-model2$ix
+  # ### SIS
+  # #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
+  # model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")
+  # sisrst[[i]]<-model2$ix
 }
  
  
@@ -516,7 +516,4 @@ for(i in 1:100){
 
 save(glassorst,file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/200/glassorst",".RData"))
 save(lassorst,file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/200/lassorst",".RData"))
-save(glassorst,file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/200/bicrst",".RData"))
-save(lassorst,file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/200/steprst",".RData"))
-save(glassorst,file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/200/sisrst",".RData"))
 
