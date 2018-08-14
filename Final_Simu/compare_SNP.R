@@ -207,28 +207,28 @@ for(i in 1:100){
   colnames(x)<-c(1:dim(x)[2])
   truth<-which(beta!=0)
   
-  simu<-data.frame(X=x,Y=y)
-  L<-lm(y~x[,c(1:(m_X+m_W))])
-  y.res<-L$residuals
-  simu$Y<-y.res
-  simu<-simu[,-c(1:(m_X+m_W))]
+  # simu<-data.frame(X=x,Y=y)
+  # L<-lm(y~x[,c(1:(m_X+m_W))])
+  # y.res<-L$residuals
+  # simu$Y<-y.res
+  # simu<-simu[,-c(1:(m_X+m_W))]
   
-  ### Trees
-  model <- randomForest(Y~.,   data=simu)
-  #print(model) # view results 
-  #importance(model)
-  treerst_SNP[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
+  # ### Trees
+  # model <- randomForest(Y~.,   data=simu)
+  # #print(model) # view results 
+  # #importance(model)
+  # treerst_SNP[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
   
-  ### BMA
-  bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
-  bicrst_SNP[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
-  bicrst_SNP[[i]]<-sapply(bicrst_SNP[[i]],function(x) strsplit(x,"X")[[1]][2])
-  bicrst_SNP[[i]]<-as.integer(bicrst_SNP[[i]])
+  # ### BMA
+  # bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
+  # bicrst_SNP[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
+  # bicrst_SNP[[i]]<-sapply(bicrst_SNP[[i]],function(x) strsplit(x,"X")[[1]][2])
+  # bicrst_SNP[[i]]<-as.integer(bicrst_SNP[[i]])
   
-  ### Stepwise
-  a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
-  steprst_SNP[[i]]<-a$vorder[1:(3*length(truth))]
-  #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
+  # ### Stepwise
+  # a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
+  # steprst_SNP[[i]]<-a$vorder[1:(3*length(truth))]
+  # #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
   
   x0<-rep(0,dim(x)[2])
   ### Group Lasso
@@ -250,7 +250,7 @@ for(i in 1:100){
    
   ### SIS
   #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
-  try({model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr");sisrst_SNP[[i]]<-model2$ix},silent=T)
+  #try({model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr");sisrst_SNP[[i]]<-model2$ix},silent=T)
   
 }
 
