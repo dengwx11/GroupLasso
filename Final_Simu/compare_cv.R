@@ -6,14 +6,14 @@ m_I<-m_G
 SNR<-10
 tau1<-1
 
-dir<-"C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu"
-source(sprintf("%s//cv3.R",dir))
-source(sprintf("%s//func3.R",dir))
-source(sprintf("%s//opt3.R",dir))
-source(sprintf("%s//sim4.R",dir))
+dir<-"/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu"
+source(sprintf("%s/cv3.R",dir))
+source(sprintf("%s/func3.R",dir))
+source(sprintf("%s/opt3.R",dir))
+source(sprintf("%s/sim4.R",dir))
 
 
-for(i in 81:100){
+for(i in 5:20){
   print(i)
 set.seed(i+1000)
 
@@ -40,5 +40,5 @@ lamb_candidate2<-seq(1,5,1)
 sol_cv<-opt_lambda(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10, 
                    backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                    eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100, lamb_candidate, lamb_candidate2,restart=TRUE,beta)
-saveRDS(sol_cv,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//sol_cv_glasso_",i,".RData"))
+saveRDS(sol_cv,file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/50/sol_cv_glasso_",i,".RData"))
 }
