@@ -13,7 +13,8 @@ source(sprintf("%s//opt3.R",dir))
 source(sprintf("%s//sim4.R",dir))
 
 
-for(i in 21:40){
+for(i in 81:100){
+  print(i)
 set.seed(i+1000)
 
 # Generate X and Y
@@ -36,8 +37,6 @@ x0<-rep(0,dim(x)[2])
 #### Cross Validation finding best lambda for Group Lasso
 lamb_candidate<-seq(1,20,2)
 lamb_candidate2<-seq(1,5,1)
-lamb_candidate<-10
-lamb_candidate2<-1
 sol_cv<-opt_lambda(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10, 
                    backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                    eps_n = 1e-15,m_X,m_W,m_G,m_I,K=10,n=100, lamb_candidate, lamb_candidate2,restart=TRUE,beta)

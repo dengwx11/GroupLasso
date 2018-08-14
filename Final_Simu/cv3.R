@@ -55,8 +55,10 @@ opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
   lamb_candidate2<-lamb_candidate2[order(lamb_candidate2,decreasing = T)]
   
   
-  TestErr<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
-  VarErr<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
+  TestErr_pred<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
+  TestErr_beta<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
+  VarErr_pred<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
+  VarErr_beta<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
   
   for(i in seq_along(lamb_candidate)){
     for(j in seq_along(lamb_candidate2)){
@@ -69,20 +71,24 @@ opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
     x0<-rst$start
     TestErr_pred[i,j]<-mean(cv.Err_pred)
     TestErr_beta[i,j]<-mean(cv.Err_beta)
-    VarErr[i,j]<-var(cv.Err)
+    VarErr_pred[i,j]<-var(cv.Err_pred)
+    VarErr_beta[i,j]<-var(cv.Err_beta)
     print(c(paste("lambda 1=",lamb_candidate[i]),paste("lambda 2=",lamb_candidate2[j])))
-    print(cv.Err)
+    print(cv.Err_pred)
+    print(cv.Err_beta)
     }
     TestErr_pred[i,]<-rev(TestErr_pred[i,])
     TestErr_beta[i,]<-rev(TestErr_beta[i,])
-    VarErr[i,]<-rev(VarErr[i,])
+    VarErr_pred[i,]<-rev(VarErr_pred[i,])
+    VarErr_beta[i,]<-rev(VarErr_beta[i,])
   }
   
   TestErr_pred<-apply(TestErr_pred,2,rev)
   TestErr_beta<-apply(TestErr_beta,2,rev)
-  VarErr<-apply(VarErr,2,rev)
+  VarErr_pred<-apply(VarErr_pred,2,rev)
+  VarErr_beta<-apply(VarErr_beta,2,rev)
   
-  return(list(mean_pred=TestErr_pred,mean_beta=TestErr_beta,var=VarErr))
+  return(list(mean_pred=TestErr_pred,mean_beta=TestErr_beta,var_pred=VarErr_pred,var_beta=VarErr_beta))
 }
 
 
