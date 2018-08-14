@@ -7,7 +7,7 @@ SNR<-10
 tau1<-1
 
 
-SNRlist<-c(5)
+SNRlist<-c(1,100)
 
 
 for(SNR in SNRlist){
@@ -66,21 +66,22 @@ for(SNR in SNRlist){
     
     x0<-rep(0,dim(x)[2])
     ### Group Lasso
-    lamb_opt_glasso<-27
+    lamb_opt_glasso<-20
     lamb_opt2_glasso<-1
     solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10, 
                 backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                 eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
-    glassorst[[i]]<-which(solg$x!=0)
+    glassorst[[i]]<-order(abs(solg$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
+   
     
     ### Regular Lasso
-    lamb_opt_lasso<-300
+    lamb_opt_lasso<-250
     lamb_opt2_lasso<-5
     sol<-FASTA(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 300, w = 10, 
                backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
-    lassorst[[i]]<-which(sol$x!=0)
-    
+    lassorst[[i]]<-order(abs(sol$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
+   
 #     ### SIS
 #     #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
 #     model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")
@@ -91,8 +92,8 @@ for(SNR in SNRlist){
   #save(truth,"C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//30//truth.RData")
 #   save(bicrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//bicrst_",SNR,".RData")
 #   save(steprst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//steprst_",SNR,".RData")
-  save(glassorst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//glassorst_",SNR,".RData"))
-  save(lassorst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//lassorst_",SNR,".RData"))
+  save(glassorst,file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/glassorst_",SNR,".RData"))
+  save(lassorst,file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/lassorst_",SNR,".RData"))
 #   save(sisrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//sisrst_",SNR,".RData")
   
 }
