@@ -345,12 +345,12 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     
     x0<-rep(0,dim(x)[2])
     ### Group Lasso
-    lamb_opt_glasso<-21
+    lamb_opt_glasso<-20
     lamb_opt2_glasso<-2
     solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10, 
                 backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
                 eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
-    glassorst[[i]]<-which(solg$x!=0)
+    glassorst[[i]]<-order(abs(solg$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
     
     ### Regular Lasso
     lamb_opt_lasso<-180
