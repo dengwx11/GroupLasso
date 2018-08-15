@@ -1,5 +1,6 @@
 # Data Analysis
-
+library(ggplot2)
+library(reshape2)
 ##### p=100, nonzero proportion
 
 
@@ -853,3 +854,67 @@ for(k in 1){
   grid.arrange(p)
   dev.off()
 }
+
+##### Cross Validation
+
+dir<-"C:\\Users\\auz5836\\Documents\\GitHub\\GroupLasso\\Final_Simu\\50\\"
+sol_cv_glasso<-list()
+for(i in 1:100){
+  sol_cv_glasso[[i]]<-readRDS(paste0(dir,"sol_cv_glasso_",i,".RData"))
+}
+sol_cv_mean_pred<-matrix(0,nrow=10,ncol=5)
+sol_cv_mean_beta<-matrix(0,nrow=10,ncol=5)
+sol_cv_var_pred<-matrix(0,nrow=10,ncol=5)
+sol_cv_var_beta<-matrix(0,nrow=10,ncol=5)
+for(i in 1:100){
+  sol_cv_mean_pred<-sol_cv_mean_pred+sol_cv_glasso[[i]]$mean_pred
+  sol_cv_mean_beta<-sol_cv_mean_beta+sol_cv_glasso[[i]]$mean_beta
+  sol_cv_var_pred<-sol_cv_var_pred+sol_cv_glasso[[i]]$var_pred
+  sol_cv_var_beta<-sol_cv_var_beta+sol_cv_glasso[[i]]$var_beta
+}
+
+sol_cv_mean_beta<- sol_cv_mean_beta/100
+sol_cv_mean_pred<- sol_cv_mean_pred/100
+sol_cv_var_beta<- sol_cv_var_beta/100
+sol_cv_var_pred<- sol_cv_var_pred/100
+sol_cv_MSE_pred<-sol_cv_mean_pred+sol_cv_var_pred
+sol_cv_MSE_beta<-sol_cv_mean_beta+sol_cv_var_beta
+
+heatmap(sol_cv_mean_pred+sol_cv_var_pred,Rowv = NA, Colv= NA)
+heatmap(sol_cv_mean_beta+sol_cv_var_beta,Rowv = NA, Colv= NA)
+
+sol_cv_mean_pred.m<-data.frame("lamb1"=seq(1,19,2),sol_cv_mean_pred)
+colnames(sol_cv_mean_pred.m)<-c("lamb1",c(1:5))
+sol_cv_mean_pred.m<-melt(sol_cv_mean_pred.m,id.vars = "lamb1",measure.vars = c(2:6),variable.name = "lamb2")
+p <- ggplot(sol_cv_mean_pred.m, aes(lamb1, lamb2)) + geom_tile(aes(fill = value),
+colour = "white") + scale_fill_gradient(low = "white",high = "steelblue")+ ggtitle("Heatmap for Mean Values of ")
+
+sol_cv_mean_beta.m<-data.frame("lamb1"=seq(1,19,2),sol_cv_mean_beta)
+colnames(sol_cv_mean_beta.m)<-c("lamb1",c(1:5))
+sol_cv_mean_beta.m<-melt(sol_cv_mean_beta.m,id.vars = "lamb1",measure.vars = c(2:6),variable.name = "lamb2")
+p <- ggplot(sol_cv_mean_beta.m, aes(lamb1, lamb2)) + geom_tile(aes(fill = value),
+                                                               colour = "white") + scale_fill_gradient(low = "white",high = "steelblue")
+
+sol_cv_var_pred.m<-data.frame("lamb1"=seq(1,19,2),sol_cv_var_pred)
+colnames(sol_cv_var_pred.m)<-c("lamb1",c(1:5))
+sol_cv_var_pred.m<-melt(sol_cv_var_pred.m,id.vars = "lamb1",measure.vars = c(2:6),variable.name = "lamb2")
+p <- ggplot(sol_cv_var_pred.m, aes(lamb1, lamb2)) + geom_tile(aes(fill = value),
+                                                               colour = "white") + scale_fill_gradient(low = "white",high = "steelblue")
+
+sol_cv_var_beta.m<-data.frame("lamb1"=seq(1,19,2),sol_cv_var_beta)
+colnames(sol_cv_var_beta.m)<-c("lamb1",c(1:5))
+sol_cv_var_beta.m<-melt(sol_cv_var_beta.m,id.vars = "lamb1",measure.vars = c(2:6),variable.name = "lamb2")
+p <- ggplot(sol_cv_var_beta.m, aes(lamb1, lamb2)) + geom_tile(aes(fill = value),
+                                                               colour = "white") + scale_fill_gradient(low = "white",high = "steelblue")
+
+sol_cv_MSE_pred.m<-data.frame("lamb1"=seq(1,19,2),sol_cv_MSE_pred)
+colnames(sol_cv_MSE_pred.m)<-c("lamb1",c(1:5))
+sol_cv_MSE_pred.m<-melt(sol_cv_MSE_pred.m,id.vars = "lamb1",measure.vars = c(2:6),variable.name = "lamb2")
+p <- ggplot(sol_cv_MSE_pred.m, aes(lamb1, lamb2)) + geom_tile(aes(fill = value),
+                                                               colour = "white") + scale_fill_gradient(low = "white",high = "steelblue")
+
+sol_cv_MSE_beta.m<-data.frame("lamb1"=seq(1,19,2),sol_cv_MSE_beta)
+colnames(sol_cv_MSE_beta.m)<-c("lamb1",c(1:5))
+sol_cv_MSE_beta.m<-melt(sol_cv_MSE_beta.m,id.vars = "lamb1",measure.vars = c(2:6),variable.name = "lamb2")
+p <- ggplot(sol_cv_MSE_beta.m, aes(lamb1, lamb2)) + geom_tile(aes(fill = value),
+                                                               colour = "white") + scale_fill_gradient(low = "white",high = "steelblue")

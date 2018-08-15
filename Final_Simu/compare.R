@@ -89,11 +89,11 @@ for(i in 1:100){
 #   simu$Y<-y.res
 #   simu<-simu[,-c(1:(m_X+m_W))]
 #  
-#   ### Trees
-#   model <- randomForest(Y~.,   data=simu)
-#   #print(model) # view results
-#   #importance(model)
-#   treerst[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
+  ### Trees
+  model <- randomForest(Y~.,   data=simu)
+  #print(model) # view results
+  #importance(model)
+  treerst[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
 #  
 #   ### BMA
 #   bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
@@ -109,21 +109,21 @@ for(i in 1:100){
   
   x0<-rep(0,dim(x)[2])
   ### Group Lasso
-  lamb_opt_glasso<-21
+  lamb_opt_glasso<-15
   lamb_opt2_glasso<-2
   solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10,
               backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
               eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
-  glassorst[[i]]<-which(solg$x!=0)
- 
+  glassorst[[i]]<-order(abs(solg$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
+  
   ### Regular Lasso
-  lamb_opt_lasso<-200
+  lamb_opt_lasso<-150
   lamb_opt2_lasso<-5
   sol<-FASTA(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 300, w = 10,
              backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
              eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
-  lassorst[[i]]<-which(sol$x!=0)
- 
+  lassorst[[i]]<-order(abs(sol$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
+  
 #   ### SIS
 #   #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
 #   model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")
@@ -134,6 +134,7 @@ for(i in 1:100){
 #save(truth,"C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//30//truth.RData")
 # save(bicrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//bicrst.RData")
 # save(steprst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//steprst.RData")
+save(treerst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//treerst.RData")
 save(glassorst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//glassorst.RData")
 save(lassorst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//lassorst.RData")
 # save(sisrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//50//sisrst.RData")
