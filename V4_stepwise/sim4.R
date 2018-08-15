@@ -33,6 +33,11 @@ sim_X_cate<-function(m_X,m_W,m_G,sigma,n,binprob){
   para<-P2p(sigma)
   tmp<-normalCopula(para,dim=m_G,dispstr = "un")
   X<-rCopula(n,tmp)
+  for(i in 1:m_G){
+    if(length(unique(X[,i]))==1){
+      X[1,i]=X[1,i]+1
+    }
+  }
 # X0<-mapply(function(x,y) qbinom(x, 2, y),X,binprob)
 # X0<-matrix(X0,ncol=m_G)
   Y<-X
