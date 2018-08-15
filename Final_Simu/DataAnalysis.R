@@ -605,14 +605,14 @@ for(k in 1){
 n=100
 m_X<-5
 m_W<-1
-m_G<-100
+m_G<-200
 m_I<-m_G
 SNR<-10
 tau1<-1
 
 k=1
 # size<-list()
-aic<-list()
+SSE<-list()
 L1<-list()
 L2<-list()
 TP.all<-list()
@@ -622,15 +622,17 @@ TP.pred<-list()
 TN.prog<-list()
 TN.pred<-list()
 
+n.method=5
 
 for(j in 1){
   
   
-  load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/200/glassorst.RData"))
-  load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/200/lassorst.RData"))
-  load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/200/bicrst.RData"))
-  load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/200/steprst.RData"))
-  load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/200/sisrst.RData"))
+  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//glassorst.RData"))
+  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//lassorst.RData"))
+  #load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//bicrst.RData"))
+  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//steprst.RData"))
+  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//sisrst.RData"))
+  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//treerst.RData"))
   
   # size[[k]]<-list()
   #  size[[k]][[1]]<-sapply(glassorst,length)+m_X+m_W
@@ -638,15 +640,15 @@ for(j in 1){
   
   
   
-  aic[[k]]<-matrix(0,ncol=5,nrow=100)
-  L1[[k]]<-matrix(0,ncol=5,nrow=100)
-  L2[[k]]<-matrix(0,ncol=5,nrow=100)
-  TP.all[[k]]<-matrix(0,ncol=5,nrow=100)
-  TN.all[[k]]<-matrix(0,ncol=5,nrow=100)
-  TP.prog[[k]]<-matrix(0,ncol=5,nrow=100)
-  TP.pred[[k]]<-matrix(0,ncol=5,nrow=100)
-  TN.prog[[k]]<-matrix(0,ncol=5,nrow=100)
-  TN.pred[[k]]<-matrix(0,ncol=5,nrow=100)
+  SSE[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  L1[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  L2[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  TP.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  TN.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  TP.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  TP.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  TN.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  TN.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
   
   for(i in 1:100){
     print(i)
@@ -659,7 +661,7 @@ for(j in 1){
     #binprob<-runif(m_G)
     x<-sim_X(m_X,m_W,m_G,sigma,n)
     #beta<-sim_beta(m_X=0,m_W=1,m_G,main_nonzero=0.05,inter_nonzero=0.05,both_nonzero=0.1,bit=T,heir=T)
-    beta<-sim_beta_const(m_X,m_W=1,m_G,main_nonzero=portion,inter_nonzero=portion,both_nonzero=0.01,const=c(3,5),heir=TRUE)
+    beta<-sim_beta_const(m_X,m_W=1,m_G,main_nonzero=.1,inter_nonzero=.1,both_nonzero=0.01,const=c(3,5),heir=TRUE)
     y0<-x%*%beta
     beta0<-split_beta(beta,m_X,m_W,m_G,m_I)
     
@@ -674,7 +676,7 @@ for(j in 1){
     instance.glasso<-c(c(1:(m_X+m_W)),glassorst[[i]])
     instance.glasso<-instance.glasso[order(instance.glasso, decreasing = FALSE)]
     
-    AIC.glasso<-AIC(lm(y~-1+x[,instance.glasso]))
+    SSE.glasso<- -logLik(lm(y~-1+x[,instance.glasso]))
     
     beta.glasso<-lm(y~-1+x[,instance.glasso])$coef
     temp<-rep(0,length(beta))
@@ -683,15 +685,16 @@ for(j in 1){
     L1.glasso<-norm(as.matrix(beta.glasso-beta),"1")
     L2.glasso<-norm(as.matrix(beta.glasso-beta),"2")
     
-    TP.all.glasso<-length(which(beta.glasso*beta!=0))/length(instance.glasso)
-    TN.all.glasso<-length(which(beta.glasso+beta==0))/length(which(beta.glasso==0))
+    
+    TP.all.glasso<-(length(which(beta.glasso*beta!=0))-m_X-m_W)/(length(instance.glasso)-m_X-m_W)
+    TN.all.glasso<-(length(which(beta.glasso+beta==0))-m_X-m_W)/(length(which(beta.glasso==0))-m_X-m_W)
     beta.glasso0<-split_beta(beta.glasso,m_X,m_W,m_G,m_I)
     TP.prog.glasso<-length(which(beta.glasso0$G*beta0$G!=0))/length(which(beta.glasso0$G!=0))
     TP.pred.glasso<-length(which(beta.glasso0$I*beta0$I!=0))/length(which(beta.glasso0$I!=0))
     TN.prog.glasso<-length(which(beta.glasso0$G+beta0$G==0))/length(which(beta.glasso0$G==0))
     TN.pred.glasso<-length(which(beta.glasso0$I+beta0$I==0))/length(which(beta.glasso0$I==0))
     
-    aic[[k]][i,1]<-AIC.glasso
+    SSE[[k]][i,1]<-SSE.glasso
     L1[[k]][i,1]<-L1.glasso
     L2[[k]][i,1]<-L2.glasso
     TP.all[[k]][i,1]<-TP.all.glasso
@@ -706,7 +709,7 @@ for(j in 1){
     instance.lasso<-c(c(1:(m_X+m_W)),lassorst[[i]])
     instance.lasso<-instance.lasso[order(instance.lasso, decreasing = FALSE)]
     
-    AIC.lasso<-AIC(lm(y~-1+x[,instance.lasso]))
+    SSE.lasso<- -logLik(lm(y~-1+x[,instance.lasso]))
     
     beta.lasso<-lm(y~-1+x[,instance.lasso])$coef
     temp<-rep(0,length(beta))
@@ -715,8 +718,8 @@ for(j in 1){
     L1.lasso<-norm(as.matrix(beta.lasso-beta),"1")
     L2.lasso<-norm(as.matrix(beta.lasso-beta),"2")
     
-    TP.all.lasso<-length(which(beta.lasso*beta!=0))/length(instance.lasso)
-    TN.all.lasso<-length(which(beta.lasso+beta==0))/length(which(beta.lasso==0))
+    TP.all.lasso<-(length(which(beta.lasso*beta!=0))-m_X-m_W)/(length(instance.lasso)-m_X-m_W)
+    TN.all.lasso<-(length(which(beta.lasso+beta==0))-m_X-m_W)/(length(which(beta.lasso==0))-m_X-m_W)
     beta.lasso0<-split_beta(beta.lasso,m_X,m_W,m_G,m_I)
     TP.prog.lasso<-length(which(beta.lasso0$G*beta0$G!=0))/length(which(beta.lasso0$G!=0))
     TP.pred.lasso<-length(which(beta.lasso0$I*beta0$I!=0))/length(which(beta.lasso0$I!=0))
@@ -724,7 +727,7 @@ for(j in 1){
     TN.pred.lasso<-length(which(beta.lasso0$I+beta0$I==0))/length(which(beta.lasso0$I==0))
     
     
-    aic[[k]][i,2]<-AIC.lasso
+    SSE[[k]][i,2]<-SSE.lasso
     L1[[k]][i,2]<-L1.lasso
     L2[[k]][i,2]<-L2.lasso
     TP.all[[k]][i,2]<-TP.all.lasso
@@ -734,43 +737,43 @@ for(j in 1){
     TP.pred[[k]][i,2]<-TP.pred.lasso
     TN.pred[[k]][i,2]<-TN.pred.lasso
     
-    ## BMA
-    instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
-    instance.bic<-c(c(1:(m_X+m_W)),instance.bic)
-    
-    AIC.bic<-AIC(lm(y~-1+x[,instance.bic]))
-    
-    beta.bic<-lm(y~-1+x[,instance.bic])$coef
-    temp<-rep(0,length(beta))
-    temp[instance.bic]<-beta.bic
-    beta.bic<-temp
-    L1.bic<-norm(as.matrix(beta.bic-beta),"1")
-    L2.bic<-norm(as.matrix(beta.bic-beta),"2")
-    
-    TP.all.bic<-length(which(beta.bic*beta!=0))/length(instance.bic)
-    TN.all.bic<-length(which(beta.bic+beta==0))/length(which(beta.bic==0))
-    beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
-    TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
-    TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
-    TN.prog.bic<-length(which(beta.bic0$G+beta0$G==0))/length(which(beta.bic0$G==0))
-    TN.pred.bic<-length(which(beta.bic0$I+beta0$I==0))/length(which(beta.bic0$I==0))
-    
-    aic[[k]][i,3]<-AIC.bic
-    L1[[k]][i,3]<-L1.bic
-    L2[[k]][i,3]<-L2.bic
-    TP.all[[k]][i,3]<-TP.all.bic
-    TN.all[[k]][i,3]<-TN.all.bic
-    TP.prog[[k]][i,3]<-TP.prog.bic
-    TN.prog[[k]][i,3]<-TN.prog.bic
-    TP.pred[[k]][i,3]<-TP.pred.bic
-    TN.pred[[k]][i,3]<-TN.pred.bic
-    
+#     ## BMA
+#     instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
+#     instance.bic<-c(c(1:(m_X+m_W)),instance.bic)
+#     
+#     SSE.bic<- -logLik(lm(y~-1+x[,instance.bic]))
+#     
+#     beta.bic<-lm(y~-1+x[,instance.bic])$coef
+#     temp<-rep(0,length(beta))
+#     temp[instance.bic]<-beta.bic
+#     beta.bic<-temp
+#     L1.bic<-norm(as.matrix(beta.bic-beta),"1")
+#     L2.bic<-norm(as.matrix(beta.bic-beta),"2")
+#     
+#     TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
+#     TN.all.bic<-(length(which(beta.bic+beta==0))-m_X-m_W)/(length(which(beta.bic==0))-m_X-m_W)
+#     beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
+#     TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
+#     TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
+#     TN.prog.bic<-length(which(beta.bic0$G+beta0$G==0))/length(which(beta.bic0$G==0))
+#     TN.pred.bic<-length(which(beta.bic0$I+beta0$I==0))/length(which(beta.bic0$I==0))
+#     
+#     SSE[[k]][i,3]<-SSE.bic
+#     L1[[k]][i,3]<-L1.bic
+#     L2[[k]][i,3]<-L2.bic
+#     TP.all[[k]][i,3]<-TP.all.bic
+#     TN.all[[k]][i,3]<-TN.all.bic
+#     TP.prog[[k]][i,3]<-TP.prog.bic
+#     TN.prog[[k]][i,3]<-TN.prog.bic
+#     TP.pred[[k]][i,3]<-TP.pred.bic
+#     TN.pred[[k]][i,3]<-TN.pred.bic
+#     
     
     
     ## Stepwise
     instance.step<-steprst[[i]]
     
-    AIC.step<-AIC(lm(y~-1+x[,instance.step]))
+    SSE.step<- -logLik(lm(y~-1+x[,instance.step]))
     
     beta.step<-lm(y~-1+x[,instance.step])$coef
     temp<-rep(0,length(beta))
@@ -779,28 +782,28 @@ for(j in 1){
     L1.step<-norm(as.matrix(beta.step-beta),"1")
     L2.step<-norm(as.matrix(beta.step-beta),"2")
     
-    TP.all.step<-length(which(beta.step*beta!=0))/length(instance.step)
-    TN.all.step<-length(which(beta.step+beta==0))/length(which(beta.step==0))
+    TP.all.step<-(length(which(beta.step*beta!=0))-m_X-m_W)/(length(instance.step)-m_X-m_W)
+    TN.all.step<-(length(which(beta.step+beta==0))-m_X-m_W)/(length(which(beta.step==0))-m_X-m_W)
     beta.step0<-split_beta(beta.step,m_X,m_W,m_G,m_I)
     TP.prog.step<-length(which(beta.step0$G*beta0$G!=0))/length(which(beta.step0$G!=0))
     TP.pred.step<-length(which(beta.step0$I*beta0$I!=0))/length(which(beta.step0$I!=0))
     TN.prog.step<-length(which(beta.step0$G+beta0$G==0))/length(which(beta.step0$G==0))
     TN.pred.step<-length(which(beta.step0$I+beta0$I==0))/length(which(beta.step0$I==0))
     
-    aic[[k]][i,4]<-AIC.step
-    L1[[k]][i,4]<-L1.step
-    L2[[k]][i,4]<-L2.step
-    TP.all[[k]][i,4]<-TP.all.step
-    TN.all[[k]][i,4]<-TN.all.step
-    TP.prog[[k]][i,4]<-TP.prog.step
-    TN.prog[[k]][i,4]<-TN.prog.step
-    TP.pred[[k]][i,4]<-TP.pred.step
-    TN.pred[[k]][i,4]<-TN.pred.step
+    SSE[[k]][i,3]<-SSE.step
+    L1[[k]][i,3]<-L1.step
+    L2[[k]][i,3]<-L2.step
+    TP.all[[k]][i,3]<-TP.all.step
+    TN.all[[k]][i,3]<-TN.all.step
+    TP.prog[[k]][i,3]<-TP.prog.step
+    TN.prog[[k]][i,3]<-TN.prog.step
+    TP.pred[[k]][i,3]<-TP.pred.step
+    TN.pred[[k]][i,3]<-TN.pred.step
     
     ## SIS
     instance.sis<-union(c(1:(m_X+m_W)),sisrst[[i]])
     
-    AIC.sis<-AIC(lm(y~-1+x[,instance.sis]))
+    SSE.sis<- -logLik(lm(y~-1+x[,instance.sis]))
     
     beta.sis<-lm(y~-1+x[,instance.sis])$coef
     temp<-rep(0,length(beta))
@@ -809,49 +812,83 @@ for(j in 1){
     L1.sis<-norm(as.matrix(beta.sis-beta),"1")
     L2.sis<-norm(as.matrix(beta.sis-beta),"2")
     
-    TP.all.sis<-length(which(beta.sis*beta!=0))/length(instance.sis)
-    TN.all.sis<-length(which(beta.sis+beta==0))/length(which(beta.sis==0))
+    TP.all.sis<-(length(which(beta.sis*beta!=0))-m_X-m_W)/(length(instance.sis)-m_X-m_W)
+    TN.all.sis<-(length(which(beta.sis+beta==0))-m_X-m_W)/(length(which(beta.sis==0))-m_X-m_W)
     beta.sis0<-split_beta(beta.sis,m_X,m_W,m_G,m_I)
     TP.prog.sis<-length(which(beta.sis0$G*beta0$G!=0))/length(which(beta.sis0$G!=0))
     TP.pred.sis<-length(which(beta.sis0$I*beta0$I!=0))/length(which(beta.sis0$I!=0))
     TN.prog.sis<-length(which(beta.sis0$G+beta0$G==0))/length(which(beta.sis0$G==0))
     TN.pred.sis<-length(which(beta.sis0$I+beta0$I==0))/length(which(beta.sis0$I==0))
     
-    aic[[k]][i,5]<-AIC.sis
-    L1[[k]][i,5]<-L1.sis
-    L2[[k]][i,5]<-L2.sis
-    TP.all[[k]][i,5]<-TP.all.sis
-    TN.all[[k]][i,5]<-TN.all.sis
-    TP.prog[[k]][i,5]<-TP.prog.sis
-    TN.prog[[k]][i,5]<-TN.prog.sis
-    TP.pred[[k]][i,5]<-TP.pred.sis
-    TN.pred[[k]][i,5]<-TN.pred.sis
+    SSE[[k]][i,4]<-SSE.sis
+    L1[[k]][i,4]<-L1.sis
+    L2[[k]][i,4]<-L2.sis
+    TP.all[[k]][i,4]<-TP.all.sis
+    TN.all[[k]][i,4]<-TN.all.sis
+    TP.prog[[k]][i,4]<-TP.prog.sis
+    TN.prog[[k]][i,4]<-TN.prog.sis
+    TP.pred[[k]][i,4]<-TP.pred.sis
+    TN.pred[[k]][i,4]<-TN.pred.sis
+    
+    
+    ## Random Forest
+    instance.tree<-union(c(1:(m_X+m_W)),treerst[[i]])
+    instance.tree<-instance.tree[order(instance.tree, decreasing = FALSE)]
+    
+    SSE.tree<- -logLik(lm(y~-1+x[,instance.tree]))
+    
+    beta.tree<-lm(y~-1+x[,instance.tree])$coef
+    temp<-rep(0,length(beta))
+    temp[instance.tree]<-beta.tree
+    beta.tree<-temp
+    L1.tree<-norm(as.matrix(beta.tree-beta),"1")
+    L2.tree<-norm(as.matrix(beta.tree-beta),"2")
+    
+    TP.all.tree<-(length(which(beta.tree*beta!=0))-m_X-m_W)/(length(instance.tree)-m_X-m_W)
+    TN.all.tree<-(length(which(beta.tree+beta==0))-m_X-m_W)/(length(which(beta.tree==0))-m_X-m_W)
+    beta.tree0<-split_beta(beta.tree,m_X,m_W,m_G,m_I)
+    TP.prog.tree<-length(which(beta.tree0$G*beta0$G!=0))/length(which(beta.tree0$G!=0))
+    TP.pred.tree<-length(which(beta.tree0$I*beta0$I!=0))/length(which(beta.tree0$I!=0))
+    TN.prog.tree<-length(which(beta.tree0$G+beta0$G==0))/length(which(beta.tree0$G==0))
+    TN.pred.tree<-length(which(beta.tree0$I+beta0$I==0))/length(which(beta.tree0$I==0))
+    
+    SSE[[k]][i,5]<-SSE.tree
+    L1[[k]][i,5]<-L1.tree
+    L2[[k]][i,5]<-L2.tree
+    TP.all[[k]][i,5]<-TP.all.tree
+    TN.all[[k]][i,5]<-TN.all.tree
+    TP.prog[[k]][i,5]<-TP.prog.tree
+    TN.prog[[k]][i,5]<-TN.prog.tree
+    TP.pred[[k]][i,5]<-TP.pred.tree
+    TN.pred[[k]][i,5]<-TN.pred.tree
     
   }
   
   k=k+1
 }
 
+options(digits = 5)
+
 rst.summary<-list()
 for(k in 1){
-  rst.summary[[k]]<-data.frame(L2=apply(L2[[k]], 2, mean))
-  rst.summary[[k]]$L2<-apply(L2[[k]], 2, mean)
-  rst.summary[[k]]$L1<-apply(L1[[k]], 2, mean)
-  rst.summary[[k]]$aic<-apply(aic[[k]], 2, mean)
-  rst.summary[[k]]$TP.all<-apply(TP.all[[k]], 2, mean)
-  rst.summary[[k]]$TN.all<-apply(TN.all[[k]], 2, mean)
-  rst.summary[[k]]$TP.prog<-apply(TP.prog[[k]], 2, mean)
-  rst.summary[[k]]$TP.pred<-apply(TP.pred[[k]], 2, mean)
-  rst.summary[[k]]$TN.prog<-apply(TN.prog[[k]], 2, mean)
-  rst.summary[[k]]$TN.pred<-apply(TN.pred[[k]], 2, mean)
-  rownames(rst.summary[[k]])<-c("glasso","lasso")
+  rst.summary[[k]]<-data.frame(L2=apply(L2[[k]], 2, function(x) mean(x,na.rm=T)))
+  rst.summary[[k]]$L2<-apply(L2[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$L1<-apply(L1[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$SSE<-apply(SSE[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TP.all<-apply(TP.all[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TN.all<-apply(TN.all[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TP.prog<-apply(TP.prog[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TP.pred<-apply(TP.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TN.prog<-apply(TN.prog[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TN.pred<-apply(TN.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest")
 }
 
 
 
 for(k in 1){
-  png(paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/summary/SNP/SNP_100.png"), height=200, width=1200)
-  p<-tableGrob(rst.summary[[k]])
+  png(paste0("C:\\Users\\auz5836\\Documents\\GitHub\\GroupLasso\\Final_Simu\\summary\\n\\200.png"), height=200, width=600)
+  p<-tableGrob(round(rst.summary[[k]],digits = 3))
   grid.arrange(p)
   dev.off()
 }
@@ -975,8 +1012,8 @@ for(j in 1){
     L1.lasso<-norm(as.matrix(beta.lasso-beta),"1")
     L2.lasso<-norm(as.matrix(beta.lasso-beta),"2")
     
-    TP.all.lasso<-length(which(beta.lasso*beta!=0))/length(instance.lasso)
-    TN.all.lasso<-length(which(beta.lasso+beta==0))/length(which(beta.lasso==0))
+    TP.all.lasso<-(length(which(beta.lasso*beta!=0))-m_X-m_W)/(length(instance.lasso)-m_X-m_W)
+    TN.all.lasso<-(length(which(beta.lasso+beta==0))-m_X-m_W)/(length(which(beta.lasso==0))-m_X-m_W)
     beta.lasso0<-split_beta(beta.lasso,m_X,m_W,m_G,m_I)
     TP.prog.lasso<-length(which(beta.lasso0$G*beta0$G!=0))/length(which(beta.lasso0$G!=0))
     TP.pred.lasso<-length(which(beta.lasso0$I*beta0$I!=0))/length(which(beta.lasso0$I!=0))
@@ -1007,8 +1044,8 @@ for(j in 1){
     L1.bic<-norm(as.matrix(beta.bic-beta),"1")
     L2.bic<-norm(as.matrix(beta.bic-beta),"2")
     
-    TP.all.bic<-length(which(beta.bic*beta!=0))/length(instance.bic)
-    TN.all.bic<-length(which(beta.bic+beta==0))/length(which(beta.bic==0))
+    TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
+    TN.all.bic<-(length(which(beta.bic+beta==0))-m_X-m_W)/(length(which(beta.bic==0))-m_X-m_W)
     beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
     TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
     TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
@@ -1039,8 +1076,8 @@ for(j in 1){
     L1.step<-norm(as.matrix(beta.step-beta),"1")
     L2.step<-norm(as.matrix(beta.step-beta),"2")
     
-    TP.all.step<-length(which(beta.step*beta!=0))/length(instance.step)
-    TN.all.step<-length(which(beta.step+beta==0))/length(which(beta.step==0))
+    TP.all.step<-(length(which(beta.step*beta!=0))-m_X-m_W)/(length(instance.step)-m_X-m_W)
+    TN.all.step<-(length(which(beta.step+beta==0))-m_X-m_W)/(length(which(beta.step==0))-m_X-m_W)
     beta.step0<-split_beta(beta.step,m_X,m_W,m_G,m_I)
     TP.prog.step<-length(which(beta.step0$G*beta0$G!=0))/length(which(beta.step0$G!=0))
     TP.pred.step<-length(which(beta.step0$I*beta0$I!=0))/length(which(beta.step0$I!=0))
@@ -1069,8 +1106,8 @@ for(j in 1){
     L1.sis<-norm(as.matrix(beta.sis-beta),"1")
     L2.sis<-norm(as.matrix(beta.sis-beta),"2")
     
-    TP.all.sis<-length(which(beta.sis*beta!=0))/length(instance.sis)
-    TN.all.sis<-length(which(beta.sis+beta==0))/length(which(beta.sis==0))
+    TP.all.sis<-(length(which(beta.sis*beta!=0))-m_X-m_W)/(length(instance.sis)-m_X-m_W)
+    TN.all.sis<-(length(which(beta.sis+beta==0))-m_X-m_W)/(length(which(beta.sis==0))-m_X-m_W)
     beta.sis0<-split_beta(beta.sis,m_X,m_W,m_G,m_I)
     TP.prog.sis<-length(which(beta.sis0$G*beta0$G!=0))/length(which(beta.sis0$G!=0))
     TP.pred.sis<-length(which(beta.sis0$I*beta0$I!=0))/length(which(beta.sis0$I!=0))
@@ -1101,8 +1138,8 @@ for(j in 1){
     L1.tree<-norm(as.matrix(beta.tree-beta),"1")
     L2.tree<-norm(as.matrix(beta.tree-beta),"2")
     
-    TP.all.tree<-length(which(beta.tree*beta!=0))/length(instance.tree)
-    TN.all.tree<-length(which(beta.tree+beta==0))/length(which(beta.tree==0))
+    TP.all.tree<-(length(which(beta.tree*beta!=0))-m_X-m_W)/(length(instance.tree)-m_X-m_W)
+    TN.all.tree<-(length(which(beta.tree+beta==0))-m_X-m_W)/(length(which(beta.tree==0))-m_X-m_W)
     beta.tree0<-split_beta(beta.tree,m_X,m_W,m_G,m_I)
     TP.prog.tree<-length(which(beta.tree0$G*beta0$G!=0))/length(which(beta.tree0$G!=0))
     TP.pred.tree<-length(which(beta.tree0$I*beta0$I!=0))/length(which(beta.tree0$I!=0))
@@ -1144,7 +1181,7 @@ for(k in 1){
 
 
 for(k in 1){
-  png(paste0("C:\\Users\\auz5836\\Documents\\GitHub\\GroupLasso\\Final_Simu\\summary\\n\\50.png"), height=200, width=800)
+  png(paste0("C:\\Users\\auz5836\\Documents\\GitHub\\GroupLasso\\Final_Simu\\summary\\n\\50.png"), height=200, width=600)
   p<-tableGrob(round(rst.summary[[k]],digits = 3))
   grid.arrange(p)
   dev.off()
