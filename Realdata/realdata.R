@@ -40,9 +40,11 @@ m_I<-m_G
 x<-cbind(x0,w,x,w*x)
 
 ## Run
+n<-dim(x)[1]
+tau1=1
 x0<-rep(0,dim(x)[2])
-lamb_opt_glasso<-3
-lamb_opt2_glasso<-2
+lamb_opt_glasso<-1.5
+lamb_opt2_glasso<-1
 solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10, 
             backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5, 
             eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)

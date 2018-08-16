@@ -66,22 +66,22 @@ for(i in 1:100){
   #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
  
   
-#   x0<-rep(0,dim(x)[2])
-#   ### Group Lasso
-#   lamb_opt_glasso<-15
-#   lamb_opt2_glasso<-2
-#   solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10,
-#               backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
-#               eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
-#   glassorst[[i]]<-order(abs(solg$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
-#   
-#   ### Regular Lasso
-#   lamb_opt_lasso<-150
-#   lamb_opt2_lasso<-5
-#   sol<-FASTA(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 300, w = 10,
-#              backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
-#              eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
-#   lassorst[[i]]<-order(abs(sol$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
+  x0<-rep(0,dim(x)[2])
+  ### Group Lasso
+  lamb_opt_glasso<-15
+  lamb_opt2_glasso<-1
+  solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10,
+              backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
+              eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
+  glassorst[[i]]<-order(abs(solg$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
+  
+  ### Regular Lasso
+  lamb_opt_lasso<-150
+  lamb_opt2_lasso<-5
+  sol<-FASTA(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 300, w = 10,
+             backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
+             eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
+  lassorst[[i]]<-order(abs(sol$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
   
 #   ### SIS
 #   #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
@@ -257,22 +257,24 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
 #  
     
-#     x0<-rep(0,dim(x)[2])
-#     ### Group Lasso
-#     lamb_opt_glasso<-20
-#     lamb_opt2_glasso<-2
-#     solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10,
-#                 backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
-#                 eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
-#     glassorst[[i]]<-order(abs(solg$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
-#    
-#     ### Regular Lasso
-#     lamb_opt_lasso<-180
-#     lamb_opt2_lasso<-5
-#     sol<-FASTA(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 300, w = 10,
-#                backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
-#                eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
-#     lassorst[[i]]<-order(abs(sol$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
+    x0<-rep(0,dim(x)[2])
+    ### Group Lasso
+    lamb_opt_glasso<-15
+    lamb_opt2_glasso<-1
+    solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10,
+                backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
+                eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
+    glassorst[[i]]<-order(abs(solg$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
+   
+    ### Regular Lasso
+    L<-glmnet(x,y,family="gaussian",penalty.factor=rep(0:1,c(m_X+m_W,2*m_G)))
+    
+    lamb_opt_lasso<-180
+    lamb_opt2_lasso<-5
+    sol<-FASTA(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 300, w = 10,
+               backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
+               eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
+    lassorst[[i]]<-order(abs(sol$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
    
 #     ### SIS
 #     #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
