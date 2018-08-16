@@ -209,9 +209,9 @@ The loss function is
 
 $$\min_{\theta} f(\theta|Y,X,W,G)+ g(\theta)$$
 
- where $$ g(\theta)=\lambda \sum_i \phi_i^I |\gamma_i| + \lambda \sum_i \phi_i^M \sqrt{\alpha_i^2 + \gamma_i^2}+\lambda_2$$
+ where $$ g(\theta)=\lambda \sum_i \phi_i |\gamma_i| + \lambda \sum_i \theta_i \sqrt{\alpha_i^2 + \gamma_i^2}+\rho(||\alpha||^2+||\gamma||^2)$$
 
-where $f(\theta|Y,X,W,G)$ is L-2 loss function, i.e. sum of squared errors for ordinary linear model.\\~
+where $f(\theta|Y,X,W,G)=\parallel Y- & (X\beta + W\tau + G\alpha + W\otimes G \gamma) \parallel^2$ is L-2 loss function, i.e. sum of squared errors for ordinary linear model.\\~
 
 $\theta=(\beta, \tau, \alpha, \gamma)$ is parameter vector.
 
@@ -222,11 +222,34 @@ $\theta=(\beta, \tau, \alpha, \gamma)$ is parameter vector.
 \begin{frame}
 \frametitle{Loss function for ordinary linear model}
 
-$$\min_{\theta} \parallel Y-(X\beta + W\tau + G\alpha + W\otimes G \gamma) \parallel^2 + \lambda \sum_i \phi_i^I |\gamma_i| + \lambda \sum_i \phi_i^M \sqrt{\alpha_i^2 + \gamma_i^2}$$
+\begin{equation}
+\begin{split}
+\min_{\theta} \parallel Y- & (X\beta + W\tau + G\alpha + W\otimes G \gamma) \parallel^2 \\
+& + \lambda \sum_i \phi_i |\gamma_i| + \lambda \sum_i \theta_i \sqrt{\alpha_i^2 + \gamma_i^2} \\
+& +\rho(||\alpha||^2+||\gamma||^2)
+\end{split}
+\end{equation}
 
 Denote $X^{(i)}=[G_i,W\otimes G_i]$ is the $l$th group of the main and interaction effects of gene $l$.
-Then, based on KKT conditions,  we let $$\phi_i^I=\parallel X^{(i)}\parallel_2$$ 
-$$\phi_i^M=\sqrt{\parallel G_i\parallel_2^2+2(1-\sqrt{\frac{2}{\pi}}) \parallel W\otimes G_i\parallel_2^2}$$
+Then, based on KKT conditions,  we let $$\phi_i= \parallel X^{(i)}\parallel_2$$ 
+$$\theta_i=\sqrt{\parallel G_i\parallel_2^2+1.4(1-\sqrt{\frac{2}{\pi}}) \parallel W\otimes G_i\parallel_2^2}$$
+\end{frame}
+
+\begin{frame}
+
+\begin{equation}
+\begin{split}
+\min_{\theta} \parallel Y- & (X\beta + W\tau + G\alpha + W\otimes G \gamma) \parallel^2 \\
+& + \lambda \sum_i \phi_i |\gamma_i| + \lambda \sum_i \theta_i \sqrt{\alpha_i^2 + \gamma_i^2} 
+\end{split}
+\end{equation}
+
+        \begin{theorem}
+ Let $p_0$ be the dimension of baseline and treatment covariates, and $p_1$ be the dimension of main effect covariates.
+The total dimension is $p=p_0+2p_1$. Then only $\min\{p_1,n-p_0\}$ genes have nonzero main effects in equation (1).
+        \end{theorem} 
+        Remark: When $p>2n$, the number of selected genes is bounded by sample size.
+
 \end{frame}
 
 
