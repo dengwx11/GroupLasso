@@ -97,5 +97,11 @@ opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
   return(list(mean_pred=TestErr_pred,MSE_beta=MSE_beta,SD_pred=SDErr_pred,Var_num=Var_num,mean_num=Mean_num))
 }
 
-
+get_lambda<-function(sol_cv_glasso,k_mean,k_var=2,lamb_candidate,lamb_candidate2){
+  rst<-sol_cv_glasso$mean_pred+k_mean*sol_cv_glasso$mean_num+k_var*sol_cv_glasso$Var_num
+  lamb_loc <- which(rst==min(rst),arr.ind = T)
+  lamb_opt1<-lamb_candidate[lamb_loc[1]]
+  lamb_opt2<-lamb_candidate2[lamb_loc[2]]
+  return(list(lamb_opt1=lamb_opt1,lamb_opt2=lamb_opt2))
+}
 
