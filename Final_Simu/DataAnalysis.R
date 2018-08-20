@@ -20,11 +20,11 @@ SSE<-list()
 L1<-list()
 L2<-list()
 TP.all<-list()
-TN.all<-list()
+FN.all<-list()
 TP.prog<-list()
 TP.pred<-list()
-TN.prog<-list()
-TN.pred<-list()
+FN.prog<-list()
+FN.pred<-list()
 num.pred<-list()
 
 n.method<-5
@@ -46,11 +46,11 @@ for(portion in c(0.05,0.1,0.15,0.2)){
   L1[[k]]<-matrix(0,ncol=5,nrow=100)
   L2[[k]]<-matrix(0,ncol=5,nrow=100)
   TP.all[[k]]<-matrix(0,ncol=5,nrow=100)
-  TN.all[[k]]<-matrix(0,ncol=5,nrow=100)
+  FN.all[[k]]<-matrix(0,ncol=5,nrow=100)
   TP.prog[[k]]<-matrix(0,ncol=5,nrow=100)
   TP.pred[[k]]<-matrix(0,ncol=5,nrow=100)
-  TN.prog[[k]]<-matrix(0,ncol=5,nrow=100)
-  TN.pred[[k]]<-matrix(0,ncol=5,nrow=100)
+  FN.prog[[k]]<-matrix(0,ncol=5,nrow=100)
+  FN.pred[[k]]<-matrix(0,ncol=5,nrow=100)
   num.pred[[k]]<-matrix(0,ncol=5,nrow=100)
   
   for(i in 1:100){
@@ -90,23 +90,23 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     
     
     TP.all.glasso<-(length(which(beta.glasso*beta!=0))-m_X-m_W)/(length(instance.glasso)-m_X-m_W)
-    TN.all.glasso<-(length(which(beta.glasso+beta==0))-m_X-m_W)/(length(which(beta.glasso==0))-m_X-m_W)
+    FN.all.glasso<-(length(intersect(which(beta.glasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.glasso0<-split_beta(beta.glasso,m_X,m_W,m_G,m_I)
     TP.prog.glasso<-length(which(beta.glasso0$G*beta0$G!=0))/length(which(beta.glasso0$G!=0))
     TP.pred.glasso<-length(which(beta.glasso0$I*beta0$I!=0))/length(which(beta.glasso0$I!=0))
-    TN.prog.glasso<-length(which(beta.glasso0$G+beta0$G==0))/length(which(beta.glasso0$G==0))
-    TN.pred.glasso<-length(which(beta.glasso0$I+beta0$I==0))/length(which(beta.glasso0$I==0))
+    FN.prog.glasso<-(length(intersect(which(beta.glasso0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.glasso<-(length(intersect(which(beta.glasso0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     num.glasso<-length(which(beta.glasso0$I!=0))
     
     SSE[[k]][i,1]<-SSE.glasso
     L1[[k]][i,1]<-L1.glasso
     L2[[k]][i,1]<-L2.glasso
     TP.all[[k]][i,1]<-TP.all.glasso
-    TN.all[[k]][i,1]<-TN.all.glasso
+    FN.all[[k]][i,1]<-FN.all.glasso
     TP.prog[[k]][i,1]<-TP.prog.glasso
-    TN.prog[[k]][i,1]<-TN.prog.glasso
+    FN.prog[[k]][i,1]<-FN.prog.glasso
     TP.pred[[k]][i,1]<-TP.pred.glasso
-    TN.pred[[k]][i,1]<-TN.pred.glasso
+    FN.pred[[k]][i,1]<-FN.pred.glasso
     num.pred[[k]][i,1]<-num.glasso
     
     ## Lasso
@@ -124,23 +124,23 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     L2.lasso<-norm(as.matrix(beta.lasso-beta),"2")
     
     TP.all.lasso<-(length(which(beta.lasso*beta!=0))-m_X-m_W)/(length(instance.lasso)-m_X-m_W)
-    TN.all.lasso<-(length(which(beta.lasso+beta==0))-m_X-m_W)/(length(which(beta.lasso==0))-m_X-m_W)
+    FN.all.lasso<-(length(intersect(which(beta.lasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.lasso0<-split_beta(beta.lasso,m_X,m_W,m_G,m_I)
     TP.prog.lasso<-length(which(beta.lasso0$G*beta0$G!=0))/length(which(beta.lasso0$G!=0))
     TP.pred.lasso<-length(which(beta.lasso0$I*beta0$I!=0))/length(which(beta.lasso0$I!=0))
-    TN.prog.lasso<-length(which(beta.lasso0$G+beta0$G==0))/length(which(beta.lasso0$G==0))
-    TN.pred.lasso<-length(which(beta.lasso0$I+beta0$I==0))/length(which(beta.lasso0$I==0))
+    FN.prog.lasso<-(length(intersect(which(beta.lasso0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.lasso<-(length(intersect(which(beta.lasso0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     
     SSE[[k]][i,2]<-SSE.lasso
     L1[[k]][i,2]<-L1.lasso
     L2[[k]][i,2]<-L2.lasso
     TP.all[[k]][i,2]<-TP.all.lasso
-    TN.all[[k]][i,2]<-TN.all.lasso
+    FN.all[[k]][i,2]<-FN.all.lasso
     TP.prog[[k]][i,2]<-TP.prog.lasso
-    TN.prog[[k]][i,2]<-TN.prog.lasso
+    FN.prog[[k]][i,2]<-FN.prog.lasso
     TP.pred[[k]][i,2]<-TP.pred.lasso
-    TN.pred[[k]][i,2]<-TN.pred.lasso
+    FN.pred[[k]][i,2]<-FN.pred.lasso
     
     num.lasso<-length(which(beta.lasso0$I!=0))
     num.pred[[k]][i,2]<-num.lasso
@@ -192,23 +192,23 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     L2.step<-norm(as.matrix(beta.step-beta),"2")
     
     TP.all.step<-(length(which(beta.step*beta!=0))-m_X-m_W)/(length(instance.step)-m_X-m_W)
-    TN.all.step<-(length(which(beta.step+beta==0))-m_X-m_W)/(length(which(beta.step==0))-m_X-m_W)
+    FN.all.step<-(length(intersect(which(beta.step==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.step0<-split_beta(beta.step,m_X,m_W,m_G,m_I)
     TP.prog.step<-length(which(beta.step0$G*beta0$G!=0))/length(which(beta.step0$G!=0))
     TP.pred.step<-length(which(beta.step0$I*beta0$I!=0))/length(which(beta.step0$I!=0))
-    TN.prog.step<-length(which(beta.step0$G+beta0$G==0))/length(which(beta.step0$G==0))
-    TN.pred.step<-length(which(beta.step0$I+beta0$I==0))/length(which(beta.step0$I==0))
+    FN.prog.step<-(length(intersect(which(beta.step0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.step<-(length(intersect(which(beta.step0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     num.step<-length(which(beta.step0$I!=0))
     
     SSE[[k]][i,3]<-SSE.step
     L1[[k]][i,3]<-L1.step
     L2[[k]][i,3]<-L2.step
     TP.all[[k]][i,3]<-TP.all.step
-    TN.all[[k]][i,3]<-TN.all.step
+    FN.all[[k]][i,3]<-FN.all.step
     TP.prog[[k]][i,3]<-TP.prog.step
-    TN.prog[[k]][i,3]<-TN.prog.step
+    FN.prog[[k]][i,3]<-FN.prog.step
     TP.pred[[k]][i,3]<-TP.pred.step
-    TN.pred[[k]][i,3]<-TN.pred.step
+    FN.pred[[k]][i,3]<-FN.pred.step
     num.pred[[k]][i,3]<-num.step
     
     ## SIS
@@ -225,23 +225,23 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     L2.sis<-norm(as.matrix(beta.sis-beta),"2")
     
     TP.all.sis<-(length(which(beta.sis*beta!=0))-m_X-m_W)/(length(instance.sis)-m_X-m_W)
-    TN.all.sis<-(length(which(beta.sis+beta==0))-m_X-m_W)/(length(which(beta.sis==0))-m_X-m_W)
+    FN.all.sis<-(length(intersect(which(beta.sis==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.sis0<-split_beta(beta.sis,m_X,m_W,m_G,m_I)
     TP.prog.sis<-length(which(beta.sis0$G*beta0$G!=0))/length(which(beta.sis0$G!=0))
     TP.pred.sis<-length(which(beta.sis0$I*beta0$I!=0))/length(which(beta.sis0$I!=0))
-    TN.prog.sis<-length(which(beta.sis0$G+beta0$G==0))/length(which(beta.sis0$G==0))
-    TN.pred.sis<-length(which(beta.sis0$I+beta0$I==0))/length(which(beta.sis0$I==0))
+    FN.prog.sis<-(length(intersect(which(beta.sis0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.sis<-(length(intersect(which(beta.sis0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     num.sis<-length(which(beta.sis0$I!=0))
     
     SSE[[k]][i,4]<-SSE.sis
     L1[[k]][i,4]<-L1.sis
     L2[[k]][i,4]<-L2.sis
     TP.all[[k]][i,4]<-TP.all.sis
-    TN.all[[k]][i,4]<-TN.all.sis
+    FN.all[[k]][i,4]<-FN.all.sis
     TP.prog[[k]][i,4]<-TP.prog.sis
-    TN.prog[[k]][i,4]<-TN.prog.sis
+    FN.prog[[k]][i,4]<-FN.prog.sis
     TP.pred[[k]][i,4]<-TP.pred.sis
-    TN.pred[[k]][i,4]<-TN.pred.sis
+    FN.pred[[k]][i,4]<-FN.pred.sis
     num.pred[[k]][i,4]<-num.sis
     
     
@@ -260,23 +260,23 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     L2.tree<-norm(as.matrix(beta.tree-beta),"2")
     
     TP.all.tree<-(length(which(beta.tree*beta!=0))-m_X-m_W)/(length(instance.tree)-m_X-m_W)
-    TN.all.tree<-(length(which(beta.tree+beta==0))-m_X-m_W)/(length(which(beta.tree==0))-m_X-m_W)
+    FN.all.tree<-(length(intersect(which(beta.tree==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.tree0<-split_beta(beta.tree,m_X,m_W,m_G,m_I)
     TP.prog.tree<-length(which(beta.tree0$G*beta0$G!=0))/length(which(beta.tree0$G!=0))
     TP.pred.tree<-length(which(beta.tree0$I*beta0$I!=0))/length(which(beta.tree0$I!=0))
-    TN.prog.tree<-length(which(beta.tree0$G+beta0$G==0))/length(which(beta.tree0$G==0))
-    TN.pred.tree<-length(which(beta.tree0$I+beta0$I==0))/length(which(beta.tree0$I==0))
+    FN.prog.tree<-(length(intersect(which(beta.tree0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.tree<-(length(intersect(which(beta.tree0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     num.tree<-length(which(beta.tree0$I!=0))
     
     SSE[[k]][i,5]<-SSE.tree
     L1[[k]][i,5]<-L1.tree
     L2[[k]][i,5]<-L2.tree
     TP.all[[k]][i,5]<-TP.all.tree
-    TN.all[[k]][i,5]<-TN.all.tree
+    FN.all[[k]][i,5]<-FN.all.tree
     TP.prog[[k]][i,5]<-TP.prog.tree
-    TN.prog[[k]][i,5]<-TN.prog.tree
+    FN.prog[[k]][i,5]<-FN.prog.tree
     TP.pred[[k]][i,5]<-TP.pred.tree
-    TN.pred[[k]][i,5]<-TN.pred.tree
+    FN.pred[[k]][i,5]<-FN.pred.tree
     num.pred[[k]][i,5]<-num.tree
   }
   
@@ -291,11 +291,11 @@ for(k in 1:4){
   rst.summary[[k]]$L1<-apply(L1[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$SSE<-apply(SSE[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.all<-apply(TP.all[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.all<-apply(TN.all[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.all<-apply(FN.all[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.prog<-apply(TP.prog[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.pred<-apply(TP.pred[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.prog<-apply(TN.prog[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.pred<-apply(TN.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.prog<-apply(FN.prog[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.pred<-apply(FN.pred[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$num.pred<-apply(num.pred[[k]], 2, function(x) mean(x,na.rm=T))
   rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest")
 }
@@ -325,7 +325,15 @@ TP.pred.bar<-data.frame(portion,t(TP.pred.bar))
 colnames(TP.pred.bar)<-c("proportion",c("glasso","lasso","Stepwise","SIS","Random Forest"))
 TP.pred.bar.m<-melt(TP.pred.bar,id.vars = "proportion",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
 colnames(TP.pred.bar.m)[3]<-"TPR"
-ggplot(data = TP.pred.bar.m, mapping = aes(x = factor(proportion), y = TPR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge')+xlab("Nonzero Interaction Proportion")+ggtitle("TPR vs Nonzero Interaction Proportion")
+ggplot(data = TP.pred.bar.m, mapping = aes(x = factor(proportion), y = TPR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("Nonzero Interaction Proportion")+ggtitle("TPR vs Nonzero Interaction Proportion")
+
+FN.pred.bar<-sapply(rst.summary,function(x) x$FN.pred)
+FN.pred.bar<-data.frame(portion,t(FN.pred.bar))
+colnames(FN.pred.bar)<-c("proportion",c("glasso","lasso","Stepwise","SIS","Random Forest"))
+FN.pred.bar.m<-melt(FN.pred.bar,id.vars = "proportion",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
+colnames(FN.pred.bar.m)[3]<-"FNR"
+ggplot(data = FN.pred.bar.m, mapping = aes(x = factor(proportion), y = FNR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("Nonzero Interaction Proportion")+ggtitle("TPR vs Nonzero Interaction Proportion")
+
 
 num.pred.bar<-sapply(rst.summary,function(x) x$num.pred)
 num.pred.bar<-data.frame(portion,t(num.pred.bar))
@@ -350,11 +358,11 @@ SSE<-list()
 L1<-list()
 L2<-list()
 TP.all<-list()
-TN.all<-list()
+FN.all<-list()
 TP.prog<-list()
 TP.pred<-list()
-TN.prog<-list()
-TN.pred<-list()
+FN.prog<-list()
+FN.pred<-list()
 num.pred<-list()
 
 
@@ -384,11 +392,11 @@ for(SNR in SNRlist){
   L1[[k]]<-matrix(0,ncol=n.method,nrow=100)
   L2[[k]]<-matrix(0,ncol=n.method,nrow=100)
   TP.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
-  TN.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
   TP.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
   TP.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
-  TN.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
-  TN.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
   num.pred[[k]]<-matrix(0,ncol=5,nrow=100)
 
   
@@ -431,22 +439,22 @@ for(SNR in SNRlist){
     
     
     TP.all.glasso<-(length(which(beta.glasso*beta!=0))-m_X-m_W)/(length(instance.glasso)-m_X-m_W)
-    TN.all.glasso<-(length(which(beta.glasso+beta==0))-m_X-m_W)/(length(which(beta.glasso==0))-m_X-m_W)
+    FN.all.glasso<-(length(intersect(which(beta.glasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.glasso0<-split_beta(beta.glasso,m_X,m_W,m_G,m_I)
     TP.prog.glasso<-length(which(beta.glasso0$G*beta0$G!=0))/length(which(beta.glasso0$G!=0))
     TP.pred.glasso<-length(which(beta.glasso0$I*beta0$I!=0))/length(which(beta.glasso0$I!=0))
-    TN.prog.glasso<-length(which(beta.glasso0$G+beta0$G==0))/length(which(beta.glasso0$G==0))
-    TN.pred.glasso<-length(which(beta.glasso0$I+beta0$I==0))/length(which(beta.glasso0$I==0))
-    
+    FN.prog.glasso<-(length(intersect(which(beta.glasso0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.glasso<-(length(intersect(which(beta.glasso0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
+   
     SSE[[k]][i,1]<-SSE.glasso
     L1[[k]][i,1]<-L1.glasso
     L2[[k]][i,1]<-L2.glasso
     TP.all[[k]][i,1]<-TP.all.glasso
-    TN.all[[k]][i,1]<-TN.all.glasso
+    FN.all[[k]][i,1]<-FN.all.glasso
     TP.prog[[k]][i,1]<-TP.prog.glasso
-    TN.prog[[k]][i,1]<-TN.prog.glasso
+    FN.prog[[k]][i,1]<-FN.prog.glasso
     TP.pred[[k]][i,1]<-TP.pred.glasso
-    TN.pred[[k]][i,1]<-TN.pred.glasso
+    FN.pred[[k]][i,1]<-FN.pred.glasso
     
     num.glasso<-length(which(beta.glasso0$I!=0))
     num.pred[[k]][i,1]<-num.glasso
@@ -467,23 +475,23 @@ for(SNR in SNRlist){
     L2.lasso<-norm(as.matrix(beta.lasso-beta),"2")
     
     TP.all.lasso<-(length(which(beta.lasso*beta!=0))-m_X-m_W)/(length(instance.lasso)-m_X-m_W)
-    TN.all.lasso<-(length(which(beta.lasso+beta==0))-m_X-m_W)/(length(which(beta.lasso==0))-m_X-m_W)
+    FN.all.lasso<-(length(intersect(which(beta.lasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.lasso0<-split_beta(beta.lasso,m_X,m_W,m_G,m_I)
     TP.prog.lasso<-length(which(beta.lasso0$G*beta0$G!=0))/length(which(beta.lasso0$G!=0))
     TP.pred.lasso<-length(which(beta.lasso0$I*beta0$I!=0))/length(which(beta.lasso0$I!=0))
-    TN.prog.lasso<-length(which(beta.lasso0$G+beta0$G==0))/length(which(beta.lasso0$G==0))
-    TN.pred.lasso<-length(which(beta.lasso0$I+beta0$I==0))/length(which(beta.lasso0$I==0))
+    FN.prog.lasso<-(length(intersect(which(beta.lasso0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.lasso<-(length(intersect(which(beta.lasso0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     
     SSE[[k]][i,2]<-SSE.lasso
     L1[[k]][i,2]<-L1.lasso
     L2[[k]][i,2]<-L2.lasso
     TP.all[[k]][i,2]<-TP.all.lasso
-    TN.all[[k]][i,2]<-TN.all.lasso
+    FN.all[[k]][i,2]<-FN.all.lasso
     TP.prog[[k]][i,2]<-TP.prog.lasso
-    TN.prog[[k]][i,2]<-TN.prog.lasso
+    FN.prog[[k]][i,2]<-FN.prog.lasso
     TP.pred[[k]][i,2]<-TP.pred.lasso
-    TN.pred[[k]][i,2]<-TN.pred.lasso
+    FN.pred[[k]][i,2]<-FN.pred.lasso
     
     num.lasso<-length(which(beta.lasso0$I!=0))
     num.pred[[k]][i,2]<-num.lasso
@@ -535,22 +543,22 @@ for(SNR in SNRlist){
     L2.step<-norm(as.matrix(beta.step-beta),"2")
     
     TP.all.step<-(length(which(beta.step*beta!=0))-m_X-m_W)/(length(instance.step)-m_X-m_W)
-    TN.all.step<-(length(which(beta.step+beta==0))-m_X-m_W)/(length(which(beta.step==0))-m_X-m_W)
+    FN.all.step<-(length(intersect(which(beta.step==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.step0<-split_beta(beta.step,m_X,m_W,m_G,m_I)
     TP.prog.step<-length(which(beta.step0$G*beta0$G!=0))/length(which(beta.step0$G!=0))
     TP.pred.step<-length(which(beta.step0$I*beta0$I!=0))/length(which(beta.step0$I!=0))
-    TN.prog.step<-length(which(beta.step0$G+beta0$G==0))/length(which(beta.step0$G==0))
-    TN.pred.step<-length(which(beta.step0$I+beta0$I==0))/length(which(beta.step0$I==0))
+    FN.prog.step<-(length(intersect(which(beta.step0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.step<-(length(intersect(which(beta.step0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,3]<-SSE.step
     L1[[k]][i,3]<-L1.step
     L2[[k]][i,3]<-L2.step
     TP.all[[k]][i,3]<-TP.all.step
-    TN.all[[k]][i,3]<-TN.all.step
+    FN.all[[k]][i,3]<-FN.all.step
     TP.prog[[k]][i,3]<-TP.prog.step
-    TN.prog[[k]][i,3]<-TN.prog.step
+    FN.prog[[k]][i,3]<-FN.prog.step
     TP.pred[[k]][i,3]<-TP.pred.step
-    TN.pred[[k]][i,3]<-TN.pred.step
+    FN.pred[[k]][i,3]<-FN.pred.step
     
     num.step<-length(which(beta.step0$I!=0))
     num.pred[[k]][i,3]<-num.step
@@ -569,22 +577,22 @@ for(SNR in SNRlist){
     L2.sis<-norm(as.matrix(beta.sis-beta),"2")
     
     TP.all.sis<-(length(which(beta.sis*beta!=0))-m_X-m_W)/(length(instance.sis)-m_X-m_W)
-    TN.all.sis<-(length(which(beta.sis+beta==0))-m_X-m_W)/(length(which(beta.sis==0))-m_X-m_W)
+    FN.all.sis<-(length(intersect(which(beta.sis==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.sis0<-split_beta(beta.sis,m_X,m_W,m_G,m_I)
     TP.prog.sis<-length(which(beta.sis0$G*beta0$G!=0))/length(which(beta.sis0$G!=0))
     TP.pred.sis<-length(which(beta.sis0$I*beta0$I!=0))/length(which(beta.sis0$I!=0))
-    TN.prog.sis<-length(which(beta.sis0$G+beta0$G==0))/length(which(beta.sis0$G==0))
-    TN.pred.sis<-length(which(beta.sis0$I+beta0$I==0))/length(which(beta.sis0$I==0))
+    FN.prog.sis<-(length(intersect(which(beta.sis0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.sis<-(length(intersect(which(beta.sis0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,4]<-SSE.sis
     L1[[k]][i,4]<-L1.sis
     L2[[k]][i,4]<-L2.sis
     TP.all[[k]][i,4]<-TP.all.sis
-    TN.all[[k]][i,4]<-TN.all.sis
+    FN.all[[k]][i,4]<-FN.all.sis
     TP.prog[[k]][i,4]<-TP.prog.sis
-    TN.prog[[k]][i,4]<-TN.prog.sis
+    FN.prog[[k]][i,4]<-FN.prog.sis
     TP.pred[[k]][i,4]<-TP.pred.sis
-    TN.pred[[k]][i,4]<-TN.pred.sis
+    FN.pred[[k]][i,4]<-FN.pred.sis
     
     num.sis<-length(which(beta.sis0$I!=0))
     num.pred[[k]][i,4]<-num.sis
@@ -605,22 +613,22 @@ for(SNR in SNRlist){
     L2.tree<-norm(as.matrix(beta.tree-beta),"2")
     
     TP.all.tree<-(length(which(beta.tree*beta!=0))-m_X-m_W)/(length(instance.tree)-m_X-m_W)
-    TN.all.tree<-(length(which(beta.tree+beta==0))-m_X-m_W)/(length(which(beta.tree==0))-m_X-m_W)
+    FN.all.tree<-(length(intersect(which(beta.tree==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.tree0<-split_beta(beta.tree,m_X,m_W,m_G,m_I)
     TP.prog.tree<-length(which(beta.tree0$G*beta0$G!=0))/length(which(beta.tree0$G!=0))
     TP.pred.tree<-length(which(beta.tree0$I*beta0$I!=0))/length(which(beta.tree0$I!=0))
-    TN.prog.tree<-length(which(beta.tree0$G+beta0$G==0))/length(which(beta.tree0$G==0))
-    TN.pred.tree<-length(which(beta.tree0$I+beta0$I==0))/length(which(beta.tree0$I==0))
+    FN.prog.tree<-(length(intersect(which(beta.tree0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.tree<-(length(intersect(which(beta.tree0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,5]<-SSE.tree
     L1[[k]][i,5]<-L1.tree
     L2[[k]][i,5]<-L2.tree
     TP.all[[k]][i,5]<-TP.all.tree
-    TN.all[[k]][i,5]<-TN.all.tree
+    FN.all[[k]][i,5]<-FN.all.tree
     TP.prog[[k]][i,5]<-TP.prog.tree
-    TN.prog[[k]][i,5]<-TN.prog.tree
+    FN.prog[[k]][i,5]<-FN.prog.tree
     TP.pred[[k]][i,5]<-TP.pred.tree
-    TN.pred[[k]][i,5]<-TN.pred.tree
+    FN.pred[[k]][i,5]<-FN.pred.tree
     
     num.tree<-length(which(beta.tree0$I!=0))
     num.pred[[k]][i,5]<-num.tree
@@ -637,11 +645,11 @@ for(k in 1:5){
   rst.summary[[k]]$L1<-apply(L1[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$SSE<-apply(SSE[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.all<-apply(TP.all[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.all<-apply(TN.all[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.all<-apply(FN.all[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.prog<-apply(TP.prog[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.pred<-apply(TP.pred[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.prog<-apply(TN.prog[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.pred<-apply(TN.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.prog<-apply(FN.prog[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.pred<-apply(FN.pred[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$num.pred<-apply(num.pred[[k]], 2, function(x) mean(x,na.rm=T))
   rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest")
 }
@@ -674,6 +682,14 @@ TP.pred.bar.m<-melt(TP.pred.bar,id.vars = "SNR",measure.vars = c(2:6),variable.n
 colnames(TP.pred.bar.m)[3]<-"TPR"
 ggplot(data = TP.pred.bar.m, mapping = aes(x = factor(SNR), y = TPR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge')+xlab("SNR")+ggtitle("TPR vs SNR")
 
+FN.pred.bar<-sapply(rst.summary,function(x) x$FN.pred)
+FN.pred.bar<-data.frame(SNRlist,t(FN.pred.bar))
+colnames(FN.pred.bar)<-c("SNR",c("glasso","lasso","Stepwise","SIS","Random Forest"))
+FN.pred.bar.m<-melt(FN.pred.bar,id.vars = "SNR",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
+colnames(FN.pred.bar.m)[3]<-"FNR"
+ggplot(data = FN.pred.bar.m, mapping = aes(x = factor(SNR), y = FNR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge')+xlab("SNR")+ggtitle("TPR vs SNR")
+
+
 num.pred.bar<-sapply(rst.summary,function(x) x$num.pred)
 num.pred.bar<-data.frame(SNRlist,t(num.pred.bar))
 colnames(num.pred.bar)<-c("SNR",c("glasso","lasso","Stepwise","SIS","Random Forest"))
@@ -698,11 +714,11 @@ SSE<-list()
 L1<-list()
 L2<-list()
 TP.all<-list()
-TN.all<-list()
+FN.all<-list()
 TP.prog<-list()
 TP.pred<-list()
-TN.prog<-list()
-TN.pred<-list()
+FN.prog<-list()
+FN.pred<-list()
 
 n.method=5
 
@@ -729,11 +745,11 @@ for(j in 1){
   L1[[k]]<-matrix(0,ncol=n.method,nrow=100)
   L2[[k]]<-matrix(0,ncol=n.method,nrow=100)
   TP.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
-  TN.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
   TP.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
   TP.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
-  TN.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
-  TN.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
   
   for(i in 1:100){
     print(i)
@@ -773,22 +789,22 @@ for(j in 1){
     
     
     TP.all.glasso<-(length(which(beta.glasso*beta!=0))-m_X-m_W)/(length(instance.glasso)-m_X-m_W)
-    TN.all.glasso<-(length(which(beta.glasso+beta==0))-m_X-m_W)/(length(which(beta.glasso==0))-m_X-m_W)
+    FN.all.glasso<-(length(intersect(which(beta.glasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.glasso0<-split_beta(beta.glasso,m_X,m_W,m_G,m_I)
     TP.prog.glasso<-length(which(beta.glasso0$G*beta0$G!=0))/length(which(beta.glasso0$G!=0))
     TP.pred.glasso<-length(which(beta.glasso0$I*beta0$I!=0))/length(which(beta.glasso0$I!=0))
-    TN.prog.glasso<-length(which(beta.glasso0$G+beta0$G==0))/length(which(beta.glasso0$G==0))
-    TN.pred.glasso<-length(which(beta.glasso0$I+beta0$I==0))/length(which(beta.glasso0$I==0))
+    FN.prog.glasso<-(length(intersect(which(beta.glasso0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.glasso<-(length(intersect(which(beta.glasso0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,1]<-SSE.glasso
     L1[[k]][i,1]<-L1.glasso
     L2[[k]][i,1]<-L2.glasso
     TP.all[[k]][i,1]<-TP.all.glasso
-    TN.all[[k]][i,1]<-TN.all.glasso
+    FN.all[[k]][i,1]<-FN.all.glasso
     TP.prog[[k]][i,1]<-TP.prog.glasso
-    TN.prog[[k]][i,1]<-TN.prog.glasso
+    FN.prog[[k]][i,1]<-FN.prog.glasso
     TP.pred[[k]][i,1]<-TP.pred.glasso
-    TN.pred[[k]][i,1]<-TN.pred.glasso
+    FN.pred[[k]][i,1]<-FN.pred.glasso
     
     
     ## Lasso
@@ -806,23 +822,23 @@ for(j in 1){
     L2.lasso<-norm(as.matrix(beta.lasso-beta),"2")
     
     TP.all.lasso<-(length(which(beta.lasso*beta!=0))-m_X-m_W)/(length(instance.lasso)-m_X-m_W)
-    TN.all.lasso<-(length(which(beta.lasso+beta==0))-m_X-m_W)/(length(which(beta.lasso==0))-m_X-m_W)
+    FN.all.lasso<-(length(intersect(which(beta.lasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.lasso0<-split_beta(beta.lasso,m_X,m_W,m_G,m_I)
     TP.prog.lasso<-length(which(beta.lasso0$G*beta0$G!=0))/length(which(beta.lasso0$G!=0))
     TP.pred.lasso<-length(which(beta.lasso0$I*beta0$I!=0))/length(which(beta.lasso0$I!=0))
-    TN.prog.lasso<-length(which(beta.lasso0$G+beta0$G==0))/length(which(beta.lasso0$G==0))
-    TN.pred.lasso<-length(which(beta.lasso0$I+beta0$I==0))/length(which(beta.lasso0$I==0))
+    FN.prog.lasso<-(length(intersect(which(beta.lasso0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.lasso<-(length(intersect(which(beta.lasso0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     
     SSE[[k]][i,2]<-SSE.lasso
     L1[[k]][i,2]<-L1.lasso
     L2[[k]][i,2]<-L2.lasso
     TP.all[[k]][i,2]<-TP.all.lasso
-    TN.all[[k]][i,2]<-TN.all.lasso
+    FN.all[[k]][i,2]<-FN.all.lasso
     TP.prog[[k]][i,2]<-TP.prog.lasso
-    TN.prog[[k]][i,2]<-TN.prog.lasso
+    FN.prog[[k]][i,2]<-FN.prog.lasso
     TP.pred[[k]][i,2]<-TP.pred.lasso
-    TN.pred[[k]][i,2]<-TN.pred.lasso
+    FN.pred[[k]][i,2]<-FN.pred.lasso
     
     #     ## BMA
     #     instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
@@ -871,22 +887,22 @@ for(j in 1){
     L2.step<-norm(as.matrix(beta.step-beta),"2")
     
     TP.all.step<-(length(which(beta.step*beta!=0))-m_X-m_W)/(length(instance.step)-m_X-m_W)
-    TN.all.step<-(length(which(beta.step+beta==0))-m_X-m_W)/(length(which(beta.step==0))-m_X-m_W)
+    FN.all.step<-(length(intersect(which(beta.step==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.step0<-split_beta(beta.step,m_X,m_W,m_G,m_I)
     TP.prog.step<-length(which(beta.step0$G*beta0$G!=0))/length(which(beta.step0$G!=0))
     TP.pred.step<-length(which(beta.step0$I*beta0$I!=0))/length(which(beta.step0$I!=0))
-    TN.prog.step<-length(which(beta.step0$G+beta0$G==0))/length(which(beta.step0$G==0))
-    TN.pred.step<-length(which(beta.step0$I+beta0$I==0))/length(which(beta.step0$I==0))
+    FN.prog.step<-(length(intersect(which(beta.step0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.step<-(length(intersect(which(beta.step0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,3]<-SSE.step
     L1[[k]][i,3]<-L1.step
     L2[[k]][i,3]<-L2.step
     TP.all[[k]][i,3]<-TP.all.step
-    TN.all[[k]][i,3]<-TN.all.step
+    FN.all[[k]][i,3]<-FN.all.step
     TP.prog[[k]][i,3]<-TP.prog.step
-    TN.prog[[k]][i,3]<-TN.prog.step
+    FN.prog[[k]][i,3]<-FN.prog.step
     TP.pred[[k]][i,3]<-TP.pred.step
-    TN.pred[[k]][i,3]<-TN.pred.step
+    FN.pred[[k]][i,3]<-FN.pred.step
     
     ## SIS
     instance.sis<-union(c(1:(m_X+m_W)),sisrst[[i]])
@@ -902,22 +918,22 @@ for(j in 1){
     L2.sis<-norm(as.matrix(beta.sis-beta),"2")
     
     TP.all.sis<-(length(which(beta.sis*beta!=0))-m_X-m_W)/(length(instance.sis)-m_X-m_W)
-    TN.all.sis<-(length(which(beta.sis+beta==0))-m_X-m_W)/(length(which(beta.sis==0))-m_X-m_W)
+    FN.all.sis<-(length(intersect(which(beta.sis==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.sis0<-split_beta(beta.sis,m_X,m_W,m_G,m_I)
     TP.prog.sis<-length(which(beta.sis0$G*beta0$G!=0))/length(which(beta.sis0$G!=0))
     TP.pred.sis<-length(which(beta.sis0$I*beta0$I!=0))/length(which(beta.sis0$I!=0))
-    TN.prog.sis<-length(which(beta.sis0$G+beta0$G==0))/length(which(beta.sis0$G==0))
-    TN.pred.sis<-length(which(beta.sis0$I+beta0$I==0))/length(which(beta.sis0$I==0))
+    FN.prog.sis<-(length(intersect(which(beta.sis0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.sis<-(length(intersect(which(beta.sis0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,4]<-SSE.sis
     L1[[k]][i,4]<-L1.sis
     L2[[k]][i,4]<-L2.sis
     TP.all[[k]][i,4]<-TP.all.sis
-    TN.all[[k]][i,4]<-TN.all.sis
+    FN.all[[k]][i,4]<-FN.all.sis
     TP.prog[[k]][i,4]<-TP.prog.sis
-    TN.prog[[k]][i,4]<-TN.prog.sis
+    FN.prog[[k]][i,4]<-FN.prog.sis
     TP.pred[[k]][i,4]<-TP.pred.sis
-    TN.pred[[k]][i,4]<-TN.pred.sis
+    FN.pred[[k]][i,4]<-FN.pred.sis
     
     
     ## Random Forest
@@ -935,22 +951,22 @@ for(j in 1){
     L2.tree<-norm(as.matrix(beta.tree-beta),"2")
     
     TP.all.tree<-(length(which(beta.tree*beta!=0))-m_X-m_W)/(length(instance.tree)-m_X-m_W)
-    TN.all.tree<-(length(which(beta.tree+beta==0))-m_X-m_W)/(length(which(beta.tree==0))-m_X-m_W)
+    FN.all.tree<-(length(intersect(which(beta.tree==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.tree0<-split_beta(beta.tree,m_X,m_W,m_G,m_I)
     TP.prog.tree<-length(which(beta.tree0$G*beta0$G!=0))/length(which(beta.tree0$G!=0))
     TP.pred.tree<-length(which(beta.tree0$I*beta0$I!=0))/length(which(beta.tree0$I!=0))
-    TN.prog.tree<-length(which(beta.tree0$G+beta0$G==0))/length(which(beta.tree0$G==0))
-    TN.pred.tree<-length(which(beta.tree0$I+beta0$I==0))/length(which(beta.tree0$I==0))
+    FN.prog.tree<-(length(intersect(which(beta.tree0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.tree<-(length(intersect(which(beta.tree0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,5]<-SSE.tree
     L1[[k]][i,5]<-L1.tree
     L2[[k]][i,5]<-L2.tree
     TP.all[[k]][i,5]<-TP.all.tree
-    TN.all[[k]][i,5]<-TN.all.tree
+    FN.all[[k]][i,5]<-FN.all.tree
     TP.prog[[k]][i,5]<-TP.prog.tree
-    TN.prog[[k]][i,5]<-TN.prog.tree
+    FN.prog[[k]][i,5]<-FN.prog.tree
     TP.pred[[k]][i,5]<-TP.pred.tree
-    TN.pred[[k]][i,5]<-TN.pred.tree
+    FN.pred[[k]][i,5]<-FN.pred.tree
     
   }
   
@@ -966,11 +982,11 @@ for(k in 1){
   rst.summary[[k]]$L1<-apply(L1[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$SSE<-apply(SSE[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.all<-apply(TP.all[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.all<-apply(TN.all[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.all<-apply(FN.all[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.prog<-apply(TP.prog[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.pred<-apply(TP.pred[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.prog<-apply(TN.prog[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.pred<-apply(TN.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.prog<-apply(FN.prog[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.pred<-apply(FN.pred[[k]], 2, function(x) mean(x,na.rm=T))
   rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest")
 }
 
@@ -1012,11 +1028,11 @@ SSE<-list()
 L1<-list()
 L2<-list()
 TP.all<-list()
-TN.all<-list()
+FN.all<-list()
 TP.prog<-list()
 TP.pred<-list()
-TN.prog<-list()
-TN.pred<-list()
+FN.prog<-list()
+FN.pred<-list()
 
 n.method=5
 
@@ -1078,27 +1094,28 @@ for(j in 1){
     temp<-rep(0,length(beta))
     temp[instance.glasso]<-beta.glasso
     beta.glasso<-temp
+    beta.glasso[which(is.na(beta.glasso)==T)]<-0
     L1.glasso<-norm(as.matrix(beta.glasso-beta),"1")
     L2.glasso<-norm(as.matrix(beta.glasso-beta),"2")
     
     
     TP.all.glasso<-(length(which(beta.glasso*beta!=0))-m_X-m_W)/(length(instance.glasso)-m_X-m_W)
-    TN.all.glasso<-(length(which(beta.glasso+beta==0))-m_X-m_W)/(length(which(beta.glasso==0))-m_X-m_W)
+    FN.all.glasso<-(length(intersect(which(beta.glasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.glasso0<-split_beta(beta.glasso,m_X,m_W,m_G,m_I)
     TP.prog.glasso<-length(which(beta.glasso0$G*beta0$G!=0))/length(which(beta.glasso0$G!=0))
     TP.pred.glasso<-length(which(beta.glasso0$I*beta0$I!=0))/length(which(beta.glasso0$I!=0))
-    TN.prog.glasso<-length(which(beta.glasso0$G+beta0$G==0))/length(which(beta.glasso0$G==0))
-    TN.pred.glasso<-length(which(beta.glasso0$I+beta0$I==0))/length(which(beta.glasso0$I==0))
+    FN.prog.glasso<-(length(intersect(which(beta.glasso0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.glasso<-(length(intersect(which(beta.glasso0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,1]<-SSE.glasso
     L1[[k]][i,1]<-L1.glasso
     L2[[k]][i,1]<-L2.glasso
     TP.all[[k]][i,1]<-TP.all.glasso
-    TN.all[[k]][i,1]<-TN.all.glasso
+    FN.all[[k]][i,1]<-FN.all.glasso
     TP.prog[[k]][i,1]<-TP.prog.glasso
-    TN.prog[[k]][i,1]<-TN.prog.glasso
+    FN.prog[[k]][i,1]<-FN.prog.glasso
     TP.pred[[k]][i,1]<-TP.pred.glasso
-    TN.pred[[k]][i,1]<-TN.pred.glasso
+    FN.pred[[k]][i,1]<-FN.pred.glasso
     
     
     ## Lasso
@@ -1111,59 +1128,60 @@ for(j in 1){
     temp<-rep(0,length(beta))
     temp[instance.lasso]<-beta.lasso
     beta.lasso<-temp
+    beta.lasso[which(is.na(beta.lasso)==T)]<-0
     L1.lasso<-norm(as.matrix(beta.lasso-beta),"1")
     L2.lasso<-norm(as.matrix(beta.lasso-beta),"2")
     
     TP.all.lasso<-(length(which(beta.lasso*beta!=0))-m_X-m_W)/(length(instance.lasso)-m_X-m_W)
-    TN.all.lasso<-(length(which(beta.lasso+beta==0))-m_X-m_W)/(length(which(beta.lasso==0))-m_X-m_W)
+    FN.all.lasso<-(length(intersect(which(beta.lasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.lasso0<-split_beta(beta.lasso,m_X,m_W,m_G,m_I)
     TP.prog.lasso<-length(which(beta.lasso0$G*beta0$G!=0))/length(which(beta.lasso0$G!=0))
     TP.pred.lasso<-length(which(beta.lasso0$I*beta0$I!=0))/length(which(beta.lasso0$I!=0))
-    TN.prog.lasso<-length(which(beta.lasso0$G+beta0$G==0))/length(which(beta.lasso0$G==0))
-    TN.pred.lasso<-length(which(beta.lasso0$I+beta0$I==0))/length(which(beta.lasso0$I==0))
+    FN.prog.lasso<-(length(intersect(which(beta.lasso0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.lasso<-(length(intersect(which(beta.lasso0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     
     SSE[[k]][i,2]<-SSE.lasso
     L1[[k]][i,2]<-L1.lasso
     L2[[k]][i,2]<-L2.lasso
     TP.all[[k]][i,2]<-TP.all.lasso
-    TN.all[[k]][i,2]<-TN.all.lasso
+    FN.all[[k]][i,2]<-FN.all.lasso
     TP.prog[[k]][i,2]<-TP.prog.lasso
-    TN.prog[[k]][i,2]<-TN.prog.lasso
+    FN.prog[[k]][i,2]<-FN.prog.lasso
     TP.pred[[k]][i,2]<-TP.pred.lasso
-    TN.pred[[k]][i,2]<-TN.pred.lasso
+    FN.pred[[k]][i,2]<-FN.pred.lasso
     
-#     ## BMA
-#     instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
-#     instance.bic<-c(c(1:(m_X+m_W)),instance.bic)
-#     
-#     SSE.bic<- -logLik(lm(y~-1+x[,instance.bic]))
-#     
-#     beta.bic<-lm(y~-1+x[,instance.bic])$coef
-#     temp<-rep(0,length(beta))
-#     temp[instance.bic]<-beta.bic
-#     beta.bic<-temp
-#     L1.bic<-norm(as.matrix(beta.bic-beta),"1")
-#     L2.bic<-norm(as.matrix(beta.bic-beta),"2")
-#     
-#     TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
-#     TN.all.bic<-(length(which(beta.bic+beta==0))-m_X-m_W)/(length(which(beta.bic==0))-m_X-m_W)
-#     beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
-#     TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
-#     TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
-#     TN.prog.bic<-length(which(beta.bic0$G+beta0$G==0))/length(which(beta.bic0$G==0))
-#     TN.pred.bic<-length(which(beta.bic0$I+beta0$I==0))/length(which(beta.bic0$I==0))
-#     
-#     SSE[[k]][i,3]<-SSE.bic
-#     L1[[k]][i,3]<-L1.bic
-#     L2[[k]][i,3]<-L2.bic
-#     TP.all[[k]][i,3]<-TP.all.bic
-#     TN.all[[k]][i,3]<-TN.all.bic
-#     TP.prog[[k]][i,3]<-TP.prog.bic
-#     TN.prog[[k]][i,3]<-TN.prog.bic
-#     TP.pred[[k]][i,3]<-TP.pred.bic
-#     TN.pred[[k]][i,3]<-TN.pred.bic
-#     
+    #     ## BMA
+    #     instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
+    #     instance.bic<-c(c(1:(m_X+m_W)),instance.bic)
+    #     
+    #     SSE.bic<- -logLik(lm(y~-1+x[,instance.bic]))
+    #     
+    #     beta.bic<-lm(y~-1+x[,instance.bic])$coef
+    #     temp<-rep(0,length(beta))
+    #     temp[instance.bic]<-beta.bic
+    #     beta.bic<-temp
+    #     L1.bic<-norm(as.matrix(beta.bic-beta),"1")
+    #     L2.bic<-norm(as.matrix(beta.bic-beta),"2")
+    #     
+    #     TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
+    #     TN.all.bic<-(length(which(beta.bic+beta==0))-m_X-m_W)/(length(which(beta.bic==0))-m_X-m_W)
+    #     beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
+    #     TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
+    #     TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
+    #     TN.prog.bic<-length(which(beta.bic0$G+beta0$G==0))/length(which(beta.bic0$G==0))
+    #     TN.pred.bic<-length(which(beta.bic0$I+beta0$I==0))/length(which(beta.bic0$I==0))
+    #     
+    #     SSE[[k]][i,3]<-SSE.bic
+    #     L1[[k]][i,3]<-L1.bic
+    #     L2[[k]][i,3]<-L2.bic
+    #     TP.all[[k]][i,3]<-TP.all.bic
+    #     TN.all[[k]][i,3]<-TN.all.bic
+    #     TP.prog[[k]][i,3]<-TP.prog.bic
+    #     TN.prog[[k]][i,3]<-TN.prog.bic
+    #     TP.pred[[k]][i,3]<-TP.pred.bic
+    #     TN.pred[[k]][i,3]<-TN.pred.bic
+    #     
     
     
     ## Stepwise
@@ -1175,26 +1193,27 @@ for(j in 1){
     temp<-rep(0,length(beta))
     temp[instance.step]<-beta.step
     beta.step<-temp
+    beta.step[which(is.na(beta.step)==T)]<-0
     L1.step<-norm(as.matrix(beta.step-beta),"1")
     L2.step<-norm(as.matrix(beta.step-beta),"2")
     
     TP.all.step<-(length(which(beta.step*beta!=0))-m_X-m_W)/(length(instance.step)-m_X-m_W)
-    TN.all.step<-(length(which(beta.step+beta==0))-m_X-m_W)/(length(which(beta.step==0))-m_X-m_W)
+    FN.all.step<-(length(intersect(which(beta.step==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.step0<-split_beta(beta.step,m_X,m_W,m_G,m_I)
     TP.prog.step<-length(which(beta.step0$G*beta0$G!=0))/length(which(beta.step0$G!=0))
     TP.pred.step<-length(which(beta.step0$I*beta0$I!=0))/length(which(beta.step0$I!=0))
-    TN.prog.step<-length(which(beta.step0$G+beta0$G==0))/length(which(beta.step0$G==0))
-    TN.pred.step<-length(which(beta.step0$I+beta0$I==0))/length(which(beta.step0$I==0))
+    FN.prog.step<-(length(intersect(which(beta.step0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.step<-(length(intersect(which(beta.step0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,3]<-SSE.step
     L1[[k]][i,3]<-L1.step
     L2[[k]][i,3]<-L2.step
     TP.all[[k]][i,3]<-TP.all.step
-    TN.all[[k]][i,3]<-TN.all.step
+    FN.all[[k]][i,3]<-FN.all.step
     TP.prog[[k]][i,3]<-TP.prog.step
-    TN.prog[[k]][i,3]<-TN.prog.step
+    FN.prog[[k]][i,3]<-FN.prog.step
     TP.pred[[k]][i,3]<-TP.pred.step
-    TN.pred[[k]][i,3]<-TN.pred.step
+    FN.pred[[k]][i,3]<-FN.pred.step
     
     ## SIS
     instance.sis<-union(c(1:(m_X+m_W)),sisrst[[i]])
@@ -1205,26 +1224,27 @@ for(j in 1){
     temp<-rep(0,length(beta))
     temp[instance.sis]<-beta.sis
     beta.sis<-temp
+    beta.sis[which(is.na(beta.sis)==T)]<-0
     L1.sis<-norm(as.matrix(beta.sis-beta),"1")
     L2.sis<-norm(as.matrix(beta.sis-beta),"2")
     
     TP.all.sis<-(length(which(beta.sis*beta!=0))-m_X-m_W)/(length(instance.sis)-m_X-m_W)
-    TN.all.sis<-(length(which(beta.sis+beta==0))-m_X-m_W)/(length(which(beta.sis==0))-m_X-m_W)
+    FN.all.sis<-(length(intersect(which(beta.sis==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.sis0<-split_beta(beta.sis,m_X,m_W,m_G,m_I)
     TP.prog.sis<-length(which(beta.sis0$G*beta0$G!=0))/length(which(beta.sis0$G!=0))
     TP.pred.sis<-length(which(beta.sis0$I*beta0$I!=0))/length(which(beta.sis0$I!=0))
-    TN.prog.sis<-length(which(beta.sis0$G+beta0$G==0))/length(which(beta.sis0$G==0))
-    TN.pred.sis<-length(which(beta.sis0$I+beta0$I==0))/length(which(beta.sis0$I==0))
+    FN.prog.sis<-(length(intersect(which(beta.sis0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.sis<-(length(intersect(which(beta.sis0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,4]<-SSE.sis
     L1[[k]][i,4]<-L1.sis
     L2[[k]][i,4]<-L2.sis
     TP.all[[k]][i,4]<-TP.all.sis
-    TN.all[[k]][i,4]<-TN.all.sis
+    FN.all[[k]][i,4]<-FN.all.sis
     TP.prog[[k]][i,4]<-TP.prog.sis
-    TN.prog[[k]][i,4]<-TN.prog.sis
+    FN.prog[[k]][i,4]<-FN.prog.sis
     TP.pred[[k]][i,4]<-TP.pred.sis
-    TN.pred[[k]][i,4]<-TN.pred.sis
+    FN.pred[[k]][i,4]<-FN.pred.sis
     
     
     ## Random Forest
@@ -1237,26 +1257,27 @@ for(j in 1){
     temp<-rep(0,length(beta))
     temp[instance.tree]<-beta.tree
     beta.tree<-temp
+    beta.tree[which(is.na(beta.tree)==T)]<-0
     L1.tree<-norm(as.matrix(beta.tree-beta),"1")
     L2.tree<-norm(as.matrix(beta.tree-beta),"2")
     
     TP.all.tree<-(length(which(beta.tree*beta!=0))-m_X-m_W)/(length(instance.tree)-m_X-m_W)
-    TN.all.tree<-(length(which(beta.tree+beta==0))-m_X-m_W)/(length(which(beta.tree==0))-m_X-m_W)
+    FN.all.tree<-(length(intersect(which(beta.tree==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.tree0<-split_beta(beta.tree,m_X,m_W,m_G,m_I)
     TP.prog.tree<-length(which(beta.tree0$G*beta0$G!=0))/length(which(beta.tree0$G!=0))
     TP.pred.tree<-length(which(beta.tree0$I*beta0$I!=0))/length(which(beta.tree0$I!=0))
-    TN.prog.tree<-length(which(beta.tree0$G+beta0$G==0))/length(which(beta.tree0$G==0))
-    TN.pred.tree<-length(which(beta.tree0$I+beta0$I==0))/length(which(beta.tree0$I==0))
+    FN.prog.tree<-(length(intersect(which(beta.tree0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.tree<-(length(intersect(which(beta.tree0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,5]<-SSE.tree
     L1[[k]][i,5]<-L1.tree
     L2[[k]][i,5]<-L2.tree
     TP.all[[k]][i,5]<-TP.all.tree
-    TN.all[[k]][i,5]<-TN.all.tree
+    FN.all[[k]][i,5]<-FN.all.tree
     TP.prog[[k]][i,5]<-TP.prog.tree
-    TN.prog[[k]][i,5]<-TN.prog.tree
+    FN.prog[[k]][i,5]<-FN.prog.tree
     TP.pred[[k]][i,5]<-TP.pred.tree
-    TN.pred[[k]][i,5]<-TN.pred.tree
+    FN.pred[[k]][i,5]<-FN.pred.tree
     
   }
   
@@ -1272,11 +1293,11 @@ for(k in 1){
   rst.summary[[k]]$L1<-apply(L1[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$SSE<-apply(SSE[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.all<-apply(TP.all[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.all<-apply(TN.all[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.all<-apply(FN.all[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.prog<-apply(TP.prog[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$TP.pred<-apply(TP.pred[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.prog<-apply(TN.prog[[k]], 2, function(x) mean(x,na.rm=T))
-  rst.summary[[k]]$TN.pred<-apply(TN.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.prog<-apply(FN.prog[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.pred<-apply(FN.pred[[k]], 2, function(x) mean(x,na.rm=T))
   rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest")
 }
 
@@ -1316,11 +1337,11 @@ SSE<-list()
 L1<-list()
 L2<-list()
 TP.all<-list()
-TN.all<-list()
+FN.all<-list()
 TP.prog<-list()
 TP.pred<-list()
-TN.prog<-list()
-TN.pred<-list()
+FN.prog<-list()
+FN.pred<-list()
 
 n.method=6
 
@@ -1344,11 +1365,11 @@ for(j in 1){
   L1[[k]]<-matrix(0,ncol=n.method,nrow=100)
   L2[[k]]<-matrix(0,ncol=n.method,nrow=100)
   TP.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
-  TN.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
   TP.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
   TP.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
-  TN.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
-  TN.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
   
   for(i in 1:100){
     print(i)
@@ -1382,27 +1403,28 @@ for(j in 1){
     temp<-rep(0,length(beta))
     temp[instance.glasso]<-beta.glasso
     beta.glasso<-temp
+    beta.glasso[which(is.na(beta.glasso)==T)]<-0
     L1.glasso<-norm(as.matrix(beta.glasso-beta),"1")
     L2.glasso<-norm(as.matrix(beta.glasso-beta),"2")
-
+    
     
     TP.all.glasso<-(length(which(beta.glasso*beta!=0))-m_X-m_W)/(length(instance.glasso)-m_X-m_W)
-    TN.all.glasso<-(length(which(beta.glasso+beta==0))-m_X-m_W)/(length(which(beta.glasso==0))-m_X-m_W)
+    FN.all.glasso<-(length(intersect(which(beta.glasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.glasso0<-split_beta(beta.glasso,m_X,m_W,m_G,m_I)
     TP.prog.glasso<-length(which(beta.glasso0$G*beta0$G!=0))/length(which(beta.glasso0$G!=0))
     TP.pred.glasso<-length(which(beta.glasso0$I*beta0$I!=0))/length(which(beta.glasso0$I!=0))
-    TN.prog.glasso<-length(which(beta.glasso0$G+beta0$G==0))/length(which(beta.glasso0$G==0))
-    TN.pred.glasso<-length(which(beta.glasso0$I+beta0$I==0))/length(which(beta.glasso0$I==0))
+    FN.prog.glasso<-(length(intersect(which(beta.glasso0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.glasso<-(length(intersect(which(beta.glasso0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     SSE[[k]][i,1]<-SSE.glasso
     L1[[k]][i,1]<-L1.glasso
     L2[[k]][i,1]<-L2.glasso
     TP.all[[k]][i,1]<-TP.all.glasso
-    TN.all[[k]][i,1]<-TN.all.glasso
+    FN.all[[k]][i,1]<-FN.all.glasso
     TP.prog[[k]][i,1]<-TP.prog.glasso
-    TN.prog[[k]][i,1]<-TN.prog.glasso
+    FN.prog[[k]][i,1]<-FN.prog.glasso
     TP.pred[[k]][i,1]<-TP.pred.glasso
-    TN.pred[[k]][i,1]<-TN.pred.glasso
+    FN.pred[[k]][i,1]<-FN.pred.glasso
     
     
     ## Lasso
@@ -1415,59 +1437,60 @@ for(j in 1){
     temp<-rep(0,length(beta))
     temp[instance.lasso]<-beta.lasso
     beta.lasso<-temp
+    beta.lasso[which(is.na(beta.lasso)==T)]<-0
     L1.lasso<-norm(as.matrix(beta.lasso-beta),"1")
     L2.lasso<-norm(as.matrix(beta.lasso-beta),"2")
     
     TP.all.lasso<-(length(which(beta.lasso*beta!=0))-m_X-m_W)/(length(instance.lasso)-m_X-m_W)
-    TN.all.lasso<-(length(which(beta.lasso+beta==0))-m_X-m_W)/(length(which(beta.lasso==0))-m_X-m_W)
+    FN.all.lasso<-(length(intersect(which(beta.lasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.lasso0<-split_beta(beta.lasso,m_X,m_W,m_G,m_I)
     TP.prog.lasso<-length(which(beta.lasso0$G*beta0$G!=0))/length(which(beta.lasso0$G!=0))
     TP.pred.lasso<-length(which(beta.lasso0$I*beta0$I!=0))/length(which(beta.lasso0$I!=0))
-    TN.prog.lasso<-length(which(beta.lasso0$G+beta0$G==0))/length(which(beta.lasso0$G==0))
-    TN.pred.lasso<-length(which(beta.lasso0$I+beta0$I==0))/length(which(beta.lasso0$I==0))
+    FN.prog.lasso<-(length(intersect(which(beta.lasso0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.lasso<-(length(intersect(which(beta.lasso0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
     
     SSE[[k]][i,2]<-SSE.lasso
     L1[[k]][i,2]<-L1.lasso
     L2[[k]][i,2]<-L2.lasso
     TP.all[[k]][i,2]<-TP.all.lasso
-    TN.all[[k]][i,2]<-TN.all.lasso
+    FN.all[[k]][i,2]<-FN.all.lasso
     TP.prog[[k]][i,2]<-TP.prog.lasso
-    TN.prog[[k]][i,2]<-TN.prog.lasso
+    FN.prog[[k]][i,2]<-FN.prog.lasso
     TP.pred[[k]][i,2]<-TP.pred.lasso
-    TN.pred[[k]][i,2]<-TN.pred.lasso
+    FN.pred[[k]][i,2]<-FN.pred.lasso
     
-    ## BMA
-    instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
-    instance.bic<-c(c(1:(m_X+m_W)),instance.bic)
-    
-    SSE.bic<- -logLik(lm(y~-1+x[,instance.bic]))
-    
-    beta.bic<-lm(y~-1+x[,instance.bic])$coef
-    temp<-rep(0,length(beta))
-    temp[instance.bic]<-beta.bic
-    beta.bic<-temp
-    L1.bic<-norm(as.matrix(beta.bic-beta),"1")
-    L2.bic<-norm(as.matrix(beta.bic-beta),"2")
-    
-    TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
-    TN.all.bic<-(length(which(beta.bic+beta==0))-m_X-m_W)/(length(which(beta.bic==0))-m_X-m_W)
-    beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
-    TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
-    TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
-    TN.prog.bic<-length(which(beta.bic0$G+beta0$G==0))/length(which(beta.bic0$G==0))
-    TN.pred.bic<-length(which(beta.bic0$I+beta0$I==0))/length(which(beta.bic0$I==0))
-    
-    SSE[[k]][i,3]<-SSE.bic
-    L1[[k]][i,3]<-L1.bic
-    L2[[k]][i,3]<-L2.bic
-    TP.all[[k]][i,3]<-TP.all.bic
-    TN.all[[k]][i,3]<-TN.all.bic
-    TP.prog[[k]][i,3]<-TP.prog.bic
-    TN.prog[[k]][i,3]<-TN.prog.bic
-    TP.pred[[k]][i,3]<-TP.pred.bic
-    TN.pred[[k]][i,3]<-TN.pred.bic
-    
+    #     ## BMA
+    #     instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
+    #     instance.bic<-c(c(1:(m_X+m_W)),instance.bic)
+    #     
+    #     SSE.bic<- -logLik(lm(y~-1+x[,instance.bic]))
+    #     
+    #     beta.bic<-lm(y~-1+x[,instance.bic])$coef
+    #     temp<-rep(0,length(beta))
+    #     temp[instance.bic]<-beta.bic
+    #     beta.bic<-temp
+    #     L1.bic<-norm(as.matrix(beta.bic-beta),"1")
+    #     L2.bic<-norm(as.matrix(beta.bic-beta),"2")
+    #     
+    #     TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
+    #     TN.all.bic<-(length(which(beta.bic+beta==0))-m_X-m_W)/(length(which(beta.bic==0))-m_X-m_W)
+    #     beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
+    #     TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
+    #     TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
+    #     TN.prog.bic<-length(which(beta.bic0$G+beta0$G==0))/length(which(beta.bic0$G==0))
+    #     TN.pred.bic<-length(which(beta.bic0$I+beta0$I==0))/length(which(beta.bic0$I==0))
+    #     
+    #     SSE[[k]][i,3]<-SSE.bic
+    #     L1[[k]][i,3]<-L1.bic
+    #     L2[[k]][i,3]<-L2.bic
+    #     TP.all[[k]][i,3]<-TP.all.bic
+    #     TN.all[[k]][i,3]<-TN.all.bic
+    #     TP.prog[[k]][i,3]<-TP.prog.bic
+    #     TN.prog[[k]][i,3]<-TN.prog.bic
+    #     TP.pred[[k]][i,3]<-TP.pred.bic
+    #     TN.pred[[k]][i,3]<-TN.pred.bic
+    #     
     
     
     ## Stepwise
@@ -1479,26 +1502,27 @@ for(j in 1){
     temp<-rep(0,length(beta))
     temp[instance.step]<-beta.step
     beta.step<-temp
+    beta.step[which(is.na(beta.step)==T)]<-0
     L1.step<-norm(as.matrix(beta.step-beta),"1")
     L2.step<-norm(as.matrix(beta.step-beta),"2")
     
     TP.all.step<-(length(which(beta.step*beta!=0))-m_X-m_W)/(length(instance.step)-m_X-m_W)
-    TN.all.step<-(length(which(beta.step+beta==0))-m_X-m_W)/(length(which(beta.step==0))-m_X-m_W)
+    FN.all.step<-(length(intersect(which(beta.step==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.step0<-split_beta(beta.step,m_X,m_W,m_G,m_I)
     TP.prog.step<-length(which(beta.step0$G*beta0$G!=0))/length(which(beta.step0$G!=0))
     TP.pred.step<-length(which(beta.step0$I*beta0$I!=0))/length(which(beta.step0$I!=0))
-    TN.prog.step<-length(which(beta.step0$G+beta0$G==0))/length(which(beta.step0$G==0))
-    TN.pred.step<-length(which(beta.step0$I+beta0$I==0))/length(which(beta.step0$I==0))
+    FN.prog.step<-(length(intersect(which(beta.step0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.step<-(length(intersect(which(beta.step0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
-    SSE[[k]][i,4]<-SSE.step
-    L1[[k]][i,4]<-L1.step
-    L2[[k]][i,4]<-L2.step
-    TP.all[[k]][i,4]<-TP.all.step
-    TN.all[[k]][i,4]<-TN.all.step
-    TP.prog[[k]][i,4]<-TP.prog.step
-    TN.prog[[k]][i,4]<-TN.prog.step
-    TP.pred[[k]][i,4]<-TP.pred.step
-    TN.pred[[k]][i,4]<-TN.pred.step
+    SSE[[k]][i,3]<-SSE.step
+    L1[[k]][i,3]<-L1.step
+    L2[[k]][i,3]<-L2.step
+    TP.all[[k]][i,3]<-TP.all.step
+    FN.all[[k]][i,3]<-FN.all.step
+    TP.prog[[k]][i,3]<-TP.prog.step
+    FN.prog[[k]][i,3]<-FN.prog.step
+    TP.pred[[k]][i,3]<-TP.pred.step
+    FN.pred[[k]][i,3]<-FN.pred.step
     
     ## SIS
     instance.sis<-union(c(1:(m_X+m_W)),sisrst[[i]])
@@ -1509,26 +1533,27 @@ for(j in 1){
     temp<-rep(0,length(beta))
     temp[instance.sis]<-beta.sis
     beta.sis<-temp
+    beta.sis[which(is.na(beta.sis)==T)]<-0
     L1.sis<-norm(as.matrix(beta.sis-beta),"1")
     L2.sis<-norm(as.matrix(beta.sis-beta),"2")
     
     TP.all.sis<-(length(which(beta.sis*beta!=0))-m_X-m_W)/(length(instance.sis)-m_X-m_W)
-    TN.all.sis<-(length(which(beta.sis+beta==0))-m_X-m_W)/(length(which(beta.sis==0))-m_X-m_W)
+    FN.all.sis<-(length(intersect(which(beta.sis==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.sis0<-split_beta(beta.sis,m_X,m_W,m_G,m_I)
     TP.prog.sis<-length(which(beta.sis0$G*beta0$G!=0))/length(which(beta.sis0$G!=0))
     TP.pred.sis<-length(which(beta.sis0$I*beta0$I!=0))/length(which(beta.sis0$I!=0))
-    TN.prog.sis<-length(which(beta.sis0$G+beta0$G==0))/length(which(beta.sis0$G==0))
-    TN.pred.sis<-length(which(beta.sis0$I+beta0$I==0))/length(which(beta.sis0$I==0))
+    FN.prog.sis<-(length(intersect(which(beta.sis0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.sis<-(length(intersect(which(beta.sis0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
-    SSE[[k]][i,5]<-SSE.sis
-    L1[[k]][i,5]<-L1.sis
-    L2[[k]][i,5]<-L2.sis
-    TP.all[[k]][i,5]<-TP.all.sis
-    TN.all[[k]][i,5]<-TN.all.sis
-    TP.prog[[k]][i,5]<-TP.prog.sis
-    TN.prog[[k]][i,5]<-TN.prog.sis
-    TP.pred[[k]][i,5]<-TP.pred.sis
-    TN.pred[[k]][i,5]<-TN.pred.sis
+    SSE[[k]][i,4]<-SSE.sis
+    L1[[k]][i,4]<-L1.sis
+    L2[[k]][i,4]<-L2.sis
+    TP.all[[k]][i,4]<-TP.all.sis
+    FN.all[[k]][i,4]<-FN.all.sis
+    TP.prog[[k]][i,4]<-TP.prog.sis
+    FN.prog[[k]][i,4]<-FN.prog.sis
+    TP.pred[[k]][i,4]<-TP.pred.sis
+    FN.pred[[k]][i,4]<-FN.pred.sis
     
     
     ## Random Forest
@@ -1541,26 +1566,27 @@ for(j in 1){
     temp<-rep(0,length(beta))
     temp[instance.tree]<-beta.tree
     beta.tree<-temp
+    beta.tree[which(is.na(beta.tree)==T)]<-0
     L1.tree<-norm(as.matrix(beta.tree-beta),"1")
     L2.tree<-norm(as.matrix(beta.tree-beta),"2")
     
     TP.all.tree<-(length(which(beta.tree*beta!=0))-m_X-m_W)/(length(instance.tree)-m_X-m_W)
-    TN.all.tree<-(length(which(beta.tree+beta==0))-m_X-m_W)/(length(which(beta.tree==0))-m_X-m_W)
+    FN.all.tree<-(length(intersect(which(beta.tree==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
     beta.tree0<-split_beta(beta.tree,m_X,m_W,m_G,m_I)
     TP.prog.tree<-length(which(beta.tree0$G*beta0$G!=0))/length(which(beta.tree0$G!=0))
     TP.pred.tree<-length(which(beta.tree0$I*beta0$I!=0))/length(which(beta.tree0$I!=0))
-    TN.prog.tree<-length(which(beta.tree0$G+beta0$G==0))/length(which(beta.tree0$G==0))
-    TN.pred.tree<-length(which(beta.tree0$I+beta0$I==0))/length(which(beta.tree0$I==0))
+    FN.prog.tree<-(length(intersect(which(beta.tree0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.tree<-(length(intersect(which(beta.tree0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
     
-    SSE[[k]][i,6]<-SSE.tree
-    L1[[k]][i,6]<-L1.tree
-    L2[[k]][i,6]<-L2.tree
-    TP.all[[k]][i,6]<-TP.all.tree
-    TN.all[[k]][i,6]<-TN.all.tree
-    TP.prog[[k]][i,6]<-TP.prog.tree
-    TN.prog[[k]][i,6]<-TN.prog.tree
-    TP.pred[[k]][i,6]<-TP.pred.tree
-    TN.pred[[k]][i,6]<-TN.pred.tree
+    SSE[[k]][i,5]<-SSE.tree
+    L1[[k]][i,5]<-L1.tree
+    L2[[k]][i,5]<-L2.tree
+    TP.all[[k]][i,5]<-TP.all.tree
+    FN.all[[k]][i,5]<-FN.all.tree
+    TP.prog[[k]][i,5]<-TP.prog.tree
+    FN.prog[[k]][i,5]<-FN.prog.tree
+    TP.pred[[k]][i,5]<-TP.pred.tree
+    FN.pred[[k]][i,5]<-FN.pred.tree
     
   }
   
