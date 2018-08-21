@@ -91,7 +91,7 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     
     
     TP.all.glasso<-(length(which(beta.glasso*beta!=0))-m_X-m_W)/(length(instance.glasso)-m_X-m_W)
-    FN.all.glasso<-(length(intersect(which(beta.glasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.glasso<-(length(intersect(which(beta.glasso==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.glasso0<-split_beta(beta.glasso,m_X,m_W,m_G,m_I)
     TP.prog.glasso<-length(which(beta.glasso0$G*beta0$G!=0))/length(which(beta.glasso0$G!=0))
     TP.pred.glasso<-length(which(beta.glasso0$I*beta0$I!=0))/length(which(beta.glasso0$I!=0))
@@ -125,7 +125,7 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     L2.lasso<-norm(as.matrix(beta.lasso-beta),"2")
     
     TP.all.lasso<-(length(which(beta.lasso*beta!=0))-m_X-m_W)/(length(instance.lasso)-m_X-m_W)
-    FN.all.lasso<-(length(intersect(which(beta.lasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.lasso<-(length(intersect(which(beta.lasso==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.lasso0<-split_beta(beta.lasso,m_X,m_W,m_G,m_I)
     TP.prog.lasso<-length(which(beta.lasso0$G*beta0$G!=0))/length(which(beta.lasso0$G!=0))
     TP.pred.lasso<-length(which(beta.lasso0$I*beta0$I!=0))/length(which(beta.lasso0$I!=0))
@@ -162,7 +162,7 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     L2.step<-norm(as.matrix(beta.step-beta),"2")
     
     TP.all.step<-(length(which(beta.step*beta!=0))-m_X-m_W)/(length(instance.step)-m_X-m_W)
-    FN.all.step<-(length(intersect(which(beta.step==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.step<-(length(intersect(which(beta.step==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.step0<-split_beta(beta.step,m_X,m_W,m_G,m_I)
     TP.prog.step<-length(which(beta.step0$G*beta0$G!=0))/length(which(beta.step0$G!=0))
     TP.pred.step<-length(which(beta.step0$I*beta0$I!=0))/length(which(beta.step0$I!=0))
@@ -195,7 +195,7 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     L2.sis<-norm(as.matrix(beta.sis-beta),"2")
     
     TP.all.sis<-(length(which(beta.sis*beta!=0))-m_X-m_W)/(length(instance.sis)-m_X-m_W)
-    FN.all.sis<-(length(intersect(which(beta.sis==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.sis<-(length(intersect(which(beta.sis==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.sis0<-split_beta(beta.sis,m_X,m_W,m_G,m_I)
     TP.prog.sis<-length(which(beta.sis0$G*beta0$G!=0))/length(which(beta.sis0$G!=0))
     TP.pred.sis<-length(which(beta.sis0$I*beta0$I!=0))/length(which(beta.sis0$I!=0))
@@ -230,7 +230,7 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     L2.tree<-norm(as.matrix(beta.tree-beta),"2")
     
     TP.all.tree<-(length(which(beta.tree*beta!=0))-m_X-m_W)/(length(instance.tree)-m_X-m_W)
-    FN.all.tree<-(length(intersect(which(beta.tree==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.tree<-(length(intersect(which(beta.tree==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.tree0<-split_beta(beta.tree,m_X,m_W,m_G,m_I)
     TP.prog.tree<-length(which(beta.tree0$G*beta0$G!=0))/length(which(beta.tree0$G!=0))
     TP.pred.tree<-length(which(beta.tree0$I*beta0$I!=0))/length(which(beta.tree0$I!=0))
@@ -264,7 +264,7 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     L2.bic<-norm(as.matrix(beta.bic-beta),"2")
     
     TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
-    FN.all.bic<-(length(intersect(which(beta.bic==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.bic<-(length(intersect(which(beta.bic==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
     TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
     TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
@@ -305,38 +305,47 @@ for(k in 1:4){
   rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest","BMA")
 }
 
+portion<-c(0.05,0.1,0.15,0.2)
 # Ridge Plot
 TP.pred.m<-list()
-p<-list()
+q<-list()
 for(k in 1:4){
   TP.pred.m[[k]]<-data.frame("ID"=seq(1,100,1),TP.pred[[k]])
   colnames(TP.pred.m[[k]])<-c("ID","glasso","lasso","Stepwise","SIS","Random Forest","BMA")
-  TP.pred.m[[k]]<-melt(TP.pred.m[[k]],id.vars = "ID",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
-  p[[k]]<-ggplot(TP.pred.m[[k]],aes(x=value,y=Method))+geom_density_ridges(data=TP.pred.m[[k]], stat="binline",scale = 1, size = 0.25, rel_min_height = 0,fill="skyblue",alpha=.9,color="white")+ggtitle(paste0("Nonzero Interaction Proportion:",portion[k]))+xlab("Predictive Biomarkers TPR")
+  TP.pred.m[[k]]<-melt(TP.pred.m[[k]],id.vars = "ID",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
+  q[[k]]<-ggplot(TP.pred.m[[k]],aes(x=value,y=Method))+stat_density_ridges(data=TP.pred.m[[k]], quantile_lines = T,scale = 1, size = 0.25, rel_min_height = 0,fill="skyblue",alpha=.9,color="white")+ggtitle(paste0("Nonzero Interaction Proportion:",portion[k]))+xlab("Predictive Biomarkers PPV")
+}
+FN.pred.m<-list()
+p<-list()
+for(k in 1:4){
+  FN.pred.m[[k]]<-data.frame("ID"=seq(1,100,1),FN.pred[[k]])
+  colnames(FN.pred.m[[k]])<-c("ID","glasso","lasso","Stepwise","SIS","Random Forest","BMA")
+  FN.pred.m[[k]]<-melt(FN.pred.m[[k]],id.vars = "ID",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
+  p[[k]]<-ggplot(FN.pred.m[[k]],aes(x=value,y=Method))+stat_density_ridges(data=FN.pred.m[[k]], quantile_lines = T,scale = 1, size = 0.25, rel_min_height = 0,fill="skyblue",alpha=.9,color="white")+ggtitle(paste0("Nonzero Interaction Proportion:",portion[k]))+xlab("Predictive Biomarkers FNR")
 }
 
 # Bar Plot
 TP.pred.bar<-sapply(rst.summary,function(x) x$TP.pred)
 TP.pred.bar<-data.frame(portion,t(TP.pred.bar))
 colnames(TP.pred.bar)<-c("proportion",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA"))
-TP.pred.bar.m<-melt(TP.pred.bar,id.vars = "proportion",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
-colnames(TP.pred.bar.m)[3]<-"TPR"
-ggplot(data = TP.pred.bar.m, mapping = aes(x = factor(proportion), y = TPR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("Nonzero Interaction Proportion")+ggtitle("TPR vs Nonzero Interaction Proportion")
+TP.pred.bar.m<-melt(TP.pred.bar,id.vars = "proportion",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
+colnames(TP.pred.bar.m)[3]<-"PPV"
+ggplot(data = TP.pred.bar.m, mapping = aes(x = factor(proportion), y = PPV,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("Nonzero Interaction Proportion")+ggtitle("PPV vs Nonzero Interaction Proportion")+scale_fill_brewer()
 
 FN.pred.bar<-sapply(rst.summary,function(x) x$FN.pred)
 FN.pred.bar<-data.frame(portion,t(FN.pred.bar))
 colnames(FN.pred.bar)<-c("proportion",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA"))
-FN.pred.bar.m<-melt(FN.pred.bar,id.vars = "proportion",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
+FN.pred.bar.m<-melt(FN.pred.bar,id.vars = "proportion",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
 colnames(FN.pred.bar.m)[3]<-"FNR"
-ggplot(data = FN.pred.bar.m, mapping = aes(x = factor(proportion), y = FNR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("Nonzero Interaction Proportion")+ggtitle("TPR vs Nonzero Interaction Proportion")
+ggplot(data = FN.pred.bar.m, mapping = aes(x = factor(proportion), y = FNR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("Nonzero Interaction Proportion")+ggtitle("TPR vs Nonzero Interaction Proportion")+scale_fill_brewer()
 
 
 num.pred.bar<-sapply(rst.summary,function(x) x$num.pred)
 num.pred.bar<-data.frame(portion,t(num.pred.bar))
-colnames(num.pred.bar)<-c("proportion",c("glasso","lasso","Stepwise","SIS","Random Forest"))
-num.pred.bar.m<-melt(num.pred.bar,id.vars = "proportion",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
+colnames(num.pred.bar)<-c("proportion",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA"))
+num.pred.bar.m<-melt(num.pred.bar,id.vars = "proportion",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
 colnames(num.pred.bar.m)[3]<-"num"
-ggplot(data = num.pred.bar.m, mapping = aes(x = factor(proportion), y = num,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge')+xlab("Nonzero Interaction Proportion")+ggtitle("Model Size vs Nonzero Interaction Proportion")+ylab("Mean of Model Size on Predictive Biomarkers")
+ggplot(data = num.pred.bar.m, mapping = aes(x = factor(proportion), y = num/n,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("Nonzero Interaction Proportion")+ggtitle("Model Size vs Nonzero Interaction Proportion")+ylab("Estimated Nonzero Predictive Biomarker Proportion")+scale_fill_brewer()
 
 
 rst.summary<-list()
@@ -353,7 +362,7 @@ for(k in 1:4){
   rst.summary[[k]]$FN.pred<-apply(FN.pred[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$num.pred<-apply(num.pred[[k]], 2, function(x) mean(x,na.rm=T))
   rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest","BMA")
-  colnames(rst.summary[[k]])<-c("L2","L1","SSE","TPR all","FNR all","TPR prog","TPR pred","FNR prog","FNR pred","num pred")
+  colnames(rst.summary[[k]])<-c("L2","L1","SSE","PPV all","FNR all","PPV prog","PPV pred","FNR prog","FNR pred","num pred")
 }
 
 
@@ -390,7 +399,7 @@ num.pred<-list()
 
 SNRlist<-c(1,5,10,20,100)
 
-n.method=5
+n.method=6
 
 
 
@@ -403,14 +412,14 @@ for(SNR in SNRlist){
   load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/steprst_",SNR,".RData"))
   load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/sisrst_",SNR,".RData"))
   load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/treerst_",SNR,".RData"))
-  
+  load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/bicrst_",SNR,".RData"))
     
   # size[[k]]<-list()
   #  size[[k]][[1]]<-sapply(glassorst,length)+m_X+m_W
   #   size[[k]][[2]]<-sapply(lassorst,length)+m_X+m_W
   
   
-    SSE[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  SSE[[k]]<-matrix(0,ncol=n.method,nrow=100)
   L1[[k]]<-matrix(0,ncol=n.method,nrow=100)
   L2[[k]]<-matrix(0,ncol=n.method,nrow=100)
   TP.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
@@ -419,7 +428,7 @@ for(SNR in SNRlist){
   TP.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
   FN.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
   FN.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
-  num.pred[[k]]<-matrix(0,ncol=5,nrow=100)
+  num.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
 
   
   for(i in 1:100){
@@ -461,7 +470,7 @@ for(SNR in SNRlist){
     
     
     TP.all.glasso<-(length(which(beta.glasso*beta!=0))-m_X-m_W)/(length(instance.glasso)-m_X-m_W)
-    FN.all.glasso<-(length(intersect(which(beta.glasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.glasso<-(length(intersect(which(beta.glasso==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.glasso0<-split_beta(beta.glasso,m_X,m_W,m_G,m_I)
     TP.prog.glasso<-length(which(beta.glasso0$G*beta0$G!=0))/length(which(beta.glasso0$G!=0))
     TP.pred.glasso<-length(which(beta.glasso0$I*beta0$I!=0))/length(which(beta.glasso0$I!=0))
@@ -497,7 +506,7 @@ for(SNR in SNRlist){
     L2.lasso<-norm(as.matrix(beta.lasso-beta),"2")
     
     TP.all.lasso<-(length(which(beta.lasso*beta!=0))-m_X-m_W)/(length(instance.lasso)-m_X-m_W)
-    FN.all.lasso<-(length(intersect(which(beta.lasso==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.lasso<-(length(intersect(which(beta.lasso==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.lasso0<-split_beta(beta.lasso,m_X,m_W,m_G,m_I)
     TP.prog.lasso<-length(which(beta.lasso0$G*beta0$G!=0))/length(which(beta.lasso0$G!=0))
     TP.pred.lasso<-length(which(beta.lasso0$I*beta0$I!=0))/length(which(beta.lasso0$I!=0))
@@ -518,38 +527,6 @@ for(SNR in SNRlist){
     num.lasso<-length(which(beta.lasso0$I!=0))
     num.pred[[k]][i,2]<-num.lasso
     
-    #     ## BMA
-    #     instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
-    #     instance.bic<-c(c(1:(m_X+m_W)),instance.bic)
-    #     
-    #     SSE.bic<- -logLik(lm(y~-1+x[,instance.bic]))
-    #     
-    #     beta.bic<-lm(y~-1+x[,instance.bic])$coef
-    #     temp<-rep(0,length(beta))
-    #     temp[instance.bic]<-beta.bic
-    #     beta.bic<-temp
-    #     L1.bic<-norm(as.matrix(beta.bic-beta),"1")
-    #     L2.bic<-norm(as.matrix(beta.bic-beta),"2")
-    #     
-    #     TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
-    #     TN.all.bic<-(length(which(beta.bic+beta==0))-m_X-m_W)/(length(which(beta.bic==0))-m_X-m_W)
-    #     beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
-    #     TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
-    #     TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
-    #     TN.prog.bic<-length(which(beta.bic0$G+beta0$G==0))/length(which(beta.bic0$G==0))
-    #     TN.pred.bic<-length(which(beta.bic0$I+beta0$I==0))/length(which(beta.bic0$I==0))
-    #     
-    #     SSE[[k]][i,3]<-SSE.bic
-    #     L1[[k]][i,3]<-L1.bic
-    #     L2[[k]][i,3]<-L2.bic
-    #     TP.all[[k]][i,3]<-TP.all.bic
-    #     TN.all[[k]][i,3]<-TN.all.bic
-    #     TP.prog[[k]][i,3]<-TP.prog.bic
-    #     TN.prog[[k]][i,3]<-TN.prog.bic
-    #     TP.pred[[k]][i,3]<-TP.pred.bic
-    #     TN.pred[[k]][i,3]<-TN.pred.bic
-    #     
-    
     
     ## Stepwise
     instance.step<-steprst[[i]]
@@ -565,7 +542,7 @@ for(SNR in SNRlist){
     L2.step<-norm(as.matrix(beta.step-beta),"2")
     
     TP.all.step<-(length(which(beta.step*beta!=0))-m_X-m_W)/(length(instance.step)-m_X-m_W)
-    FN.all.step<-(length(intersect(which(beta.step==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.step<-(length(intersect(which(beta.step==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.step0<-split_beta(beta.step,m_X,m_W,m_G,m_I)
     TP.prog.step<-length(which(beta.step0$G*beta0$G!=0))/length(which(beta.step0$G!=0))
     TP.pred.step<-length(which(beta.step0$I*beta0$I!=0))/length(which(beta.step0$I!=0))
@@ -599,7 +576,7 @@ for(SNR in SNRlist){
     L2.sis<-norm(as.matrix(beta.sis-beta),"2")
     
     TP.all.sis<-(length(which(beta.sis*beta!=0))-m_X-m_W)/(length(instance.sis)-m_X-m_W)
-    FN.all.sis<-(length(intersect(which(beta.sis==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.sis<-(length(intersect(which(beta.sis==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.sis0<-split_beta(beta.sis,m_X,m_W,m_G,m_I)
     TP.prog.sis<-length(which(beta.sis0$G*beta0$G!=0))/length(which(beta.sis0$G!=0))
     TP.pred.sis<-length(which(beta.sis0$I*beta0$I!=0))/length(which(beta.sis0$I!=0))
@@ -635,7 +612,7 @@ for(SNR in SNRlist){
     L2.tree<-norm(as.matrix(beta.tree-beta),"2")
     
     TP.all.tree<-(length(which(beta.tree*beta!=0))-m_X-m_W)/(length(instance.tree)-m_X-m_W)
-    FN.all.tree<-(length(intersect(which(beta.tree==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    FN.all.tree<-(length(intersect(which(beta.tree==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
     beta.tree0<-split_beta(beta.tree,m_X,m_W,m_G,m_I)
     TP.prog.tree<-length(which(beta.tree0$G*beta0$G!=0))/length(which(beta.tree0$G!=0))
     TP.pred.tree<-length(which(beta.tree0$I*beta0$I!=0))/length(which(beta.tree0$I!=0))
@@ -655,6 +632,40 @@ for(SNR in SNRlist){
     num.tree<-length(which(beta.tree0$I!=0))
     num.pred[[k]][i,5]<-num.tree
     
+    ## BMA
+    instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
+    instance.bic<-c(c(1:(m_X+m_W)),instance.bic)
+    
+    SSE.bic<- -logLik(lm(y~-1+x[,instance.tree]))
+    
+    beta.bic<-lm(y~-1+x[,instance.bic])$coef
+    temp<-rep(0,length(beta))
+    temp[instance.bic]<-beta.bic
+    beta.bic<-temp
+    beta.bic[which(is.na(beta.bic)==T)]<-0
+    L1.bic<-norm(as.matrix(beta.bic-beta),"1")
+    L2.bic<-norm(as.matrix(beta.bic-beta),"2")
+    
+    TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
+    FN.all.bic<-(length(intersect(which(beta.bic==0),which(beta!=0))))/(length(which(beta!=0))-m_X-m_W)
+    beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
+    TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
+    TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
+    FN.prog.bic<-(length(intersect(which(beta.bic0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.bic<-(length(intersect(which(beta.bic0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
+    num.bic<-length(which(beta.bic0$I!=0))
+    
+    SSE[[k]][i,6]<-SSE.bic
+    L1[[k]][i,6]<-L1.bic
+    L2[[k]][i,6]<-L2.bic
+    TP.all[[k]][i,6]<-TP.all.bic
+    FN.all[[k]][i,6]<-FN.all.bic
+    TP.prog[[k]][i,6]<-TP.prog.bic
+    FN.prog[[k]][i,6]<-FN.prog.bic
+    TP.pred[[k]][i,6]<-TP.pred.bic
+    FN.pred[[k]][i,6]<-FN.pred.bic
+    num.pred[[k]][i,6]<-num.bic
+    
   }
   
   k=k+1
@@ -673,7 +684,66 @@ for(k in 1:5){
   rst.summary[[k]]$FN.prog<-apply(FN.prog[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$FN.pred<-apply(FN.pred[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$num.pred<-apply(num.pred[[k]], 2, function(x) mean(x,na.rm=T))
-  rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest")
+  rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest","BMA")
+}
+
+
+# Ridge Plot
+TP.pred.m<-list()
+q<-list()
+for(k in 1:5){
+  TP.pred.m[[k]]<-data.frame("ID"=seq(1,100,1),TP.pred[[k]])
+  colnames(TP.pred.m[[k]])<-c("ID","glasso","lasso","Stepwise","SIS","Random Forest","BMA")
+  TP.pred.m[[k]]<-melt(TP.pred.m[[k]],id.vars = "ID",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
+  q[[k]]<-ggplot(TP.pred.m[[k]],aes(x=value,y=Method))+stat_density_ridges(data=TP.pred.m[[k]], quantile_lines = T,scale = 1, size = 0.25, rel_min_height = 0,fill="skyblue",alpha=.9,color="white")+ggtitle(paste0("SNR:",SNRlist[k]))+xlab("Predictive Biomarkers PPV")
+}
+FN.pred.m<-list()
+p<-list()
+for(k in 1:5){
+  FN.pred.m[[k]]<-data.frame("ID"=seq(1,100,1),FN.pred[[k]])
+  colnames(FN.pred.m[[k]])<-c("ID","glasso","lasso","Stepwise","SIS","Random Forest","BMA")
+  FN.pred.m[[k]]<-melt(FN.pred.m[[k]],id.vars = "ID",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
+  p[[k]]<-ggplot(FN.pred.m[[k]],aes(x=value,y=Method))+stat_density_ridges(data=FN.pred.m[[k]], quantile_lines = T,scale = 1, size = 0.25, rel_min_height = 0,fill="skyblue",alpha=.9,color="white")+ggtitle(paste0("SNR:",SNRlist[k]))+xlab("Predictive Biomarkers FNR")
+}
+
+# Bar Plot
+TP.pred.bar<-sapply(rst.summary,function(x) x$TP.pred)
+TP.pred.bar<-data.frame(SNRlist,t(TP.pred.bar))
+colnames(TP.pred.bar)<-c("SNR",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA"))
+TP.pred.bar.m<-melt(TP.pred.bar,id.vars = "SNR",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
+colnames(TP.pred.bar.m)[3]<-"PPV"
+ggplot(data = TP.pred.bar.m, mapping = aes(x = factor(SNR), y = PPV,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("SNR")+ggtitle("PPV vs SNR")+scale_fill_brewer()
+
+FN.pred.bar<-sapply(rst.summary,function(x) x$FN.pred)
+FN.pred.bar<-data.frame(SNRlist,t(FN.pred.bar))
+colnames(FN.pred.bar)<-c("SNR",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA"))
+FN.pred.bar.m<-melt(FN.pred.bar,id.vars = "SNR",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
+colnames(FN.pred.bar.m)[3]<-"FNR"
+ggplot(data = FN.pred.bar.m, mapping = aes(x = factor(SNR), y = FNR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("SNR")+ggtitle("FNR vs SNR")+scale_fill_brewer()
+
+
+num.pred.bar<-sapply(rst.summary,function(x) x$num.pred)
+num.pred.bar<-data.frame(SNRlist,t(num.pred.bar))
+colnames(num.pred.bar)<-c("SNR",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA"))
+num.pred.bar.m<-melt(num.pred.bar,id.vars = "SNR",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
+colnames(num.pred.bar.m)[3]<-"num"
+ggplot(data = num.pred.bar.m, mapping = aes(x = factor(SNR), y = num/n,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("SNR")+ggtitle("Model Size vs SNR")+ylab("Estimated Nonzero Predictive Biomarker Proportion")+scale_fill_brewer()
+
+rst.summary<-list()
+for(k in 1:5){
+  rst.summary[[k]]<-data.frame(L2=apply(L2[[k]], 2, function(x) mean(x,na.rm=T)))
+  rst.summary[[k]]$L2<-apply(L2[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$L1<-apply(L1[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$SSE<-apply(SSE[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TP.all<-apply(TP.all[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.all<-apply(FN.all[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TP.prog<-apply(TP.prog[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TP.pred<-apply(TP.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.prog<-apply(FN.prog[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.pred<-apply(FN.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$num.pred<-apply(num.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest","BMA")
+  colnames(rst.summary[[k]])<-c("L2","L1","SSE","PPV all","FNR all","PPV prog","PPV pred","FNR prog","FNR pred","num pred")
 }
 
 
@@ -685,39 +755,6 @@ for(k in 1:5){
   grid.arrange(p)
   dev.off()
 }
-
-# Ridge Plot
-TP.pred.m<-list()
-p<-list()
-for(k in 1:5){
-  TP.pred.m[[k]]<-data.frame("ID"=seq(1,100,1),TP.pred[[k]])
-  colnames(TP.pred.m[[k]])<-c("ID","glasso","lasso","Stepwise","SIS","Random Forest")
-  TP.pred.m[[k]]<-melt(TP.pred.m[[k]],id.vars = "ID",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
-  p[[k]]<-ggplot(TP.pred.m[[k]],aes(x=value,y=Method))+geom_density_ridges(data=TP.pred.m[[k]], stat="binline",scale = 2.7, size = 0.25, rel_min_height = 0,fill="skyblue",alpha=.9,color="white")+ggtitle(paste0("SNR:",SNRlist[k]))+xlab("Predictive Biomarkers TPR")
-}
-
-# Bar Plot
-TP.pred.bar<-sapply(rst.summary,function(x) x$TP.pred)
-TP.pred.bar<-data.frame(SNRlist,t(TP.pred.bar))
-colnames(TP.pred.bar)<-c("SNR",c("glasso","lasso","Stepwise","SIS","Random Forest"))
-TP.pred.bar.m<-melt(TP.pred.bar,id.vars = "SNR",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
-colnames(TP.pred.bar.m)[3]<-"TPR"
-ggplot(data = TP.pred.bar.m, mapping = aes(x = factor(SNR), y = TPR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge')+xlab("SNR")+ggtitle("TPR vs SNR")
-
-FN.pred.bar<-sapply(rst.summary,function(x) x$FN.pred)
-FN.pred.bar<-data.frame(SNRlist,t(FN.pred.bar))
-colnames(FN.pred.bar)<-c("SNR",c("glasso","lasso","Stepwise","SIS","Random Forest"))
-FN.pred.bar.m<-melt(FN.pred.bar,id.vars = "SNR",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
-colnames(FN.pred.bar.m)[3]<-"FNR"
-ggplot(data = FN.pred.bar.m, mapping = aes(x = factor(SNR), y = FNR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge')+xlab("SNR")+ggtitle("TPR vs SNR")
-
-
-num.pred.bar<-sapply(rst.summary,function(x) x$num.pred)
-num.pred.bar<-data.frame(SNRlist,t(num.pred.bar))
-colnames(num.pred.bar)<-c("SNR",c("glasso","lasso","Stepwise","SIS","Random Forest"))
-num.pred.bar.m<-melt(num.pred.bar,id.vars = "SNR",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
-colnames(num.pred.bar.m)[3]<-"num"
-ggplot(data = num.pred.bar.m, mapping = aes(x = factor(SNR), y = num,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge')+xlab("SNR")+ggtitle("Model Size vs SNR")+ylab("Mean of Model Size on Predictive Biomarkers")
 
 
 ### SNP, p=100
