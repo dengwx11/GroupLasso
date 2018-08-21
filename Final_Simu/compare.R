@@ -336,11 +336,11 @@ for(i in 1:100){
   colnames(x)<-c(1:dim(x)[2])
   truth<-which(beta!=0)
  
-#   simu<-data.frame(X=x,Y=y)
-#   L<-lm(y~x[,c(1:(m_X+m_W))])
-#   y.res<-L$residuals
-#   simu$Y<-y.res
-#   simu<-simu[,-c(1:(m_X+m_W))]
+  simu<-data.frame(X=x,Y=y)
+  L<-lm(y~x[,c(1:(m_X+m_W))])
+  y.res<-L$residuals
+  simu$Y<-y.res
+  simu<-simu[,-c(1:(m_X+m_W))]
   
 #   ### Trees
 #   model <- randomForest(Y~.,   data=simu)
@@ -348,16 +348,17 @@ for(i in 1:100){
 #   #importance(model)
 #   treerst[[i]]<-order(importance(model),decreasing = T)[1:(length(truth)-m_X-m_W)]
   # 
-#   ### BMA
-#   bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
-#   bicrst[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
-#   bicrst[[i]]<-sapply(bicrst[[i]],function(x) strsplit(x,"X")[[1]][2])
-#   bicrst[[i]]<-as.integer(bicrst[[i]])
+  ### BMA
+  bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
+  bicrst[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
+  bicrst[[i]]<-sapply(bicrst[[i]],function(x) strsplit(x,"X")[[1]][2])
+  bicrst[[i]]<-as.integer(bicrst[[i]])
+  bicrst[[i]]<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
   
-  ### Stepwise
-  a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
-  steprst[[i]]<-a$vorder[-1][1:(length(truth))]-1
-  #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
+#   ### Stepwise
+#   a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
+#   steprst[[i]]<-a$vorder[-1][1:(length(truth))]-1
+#   #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
   # 
 #   x0<-rep(0,dim(x)[2])
 #   ### Group Lasso
@@ -384,8 +385,8 @@ for(i in 1:100){
  
  
 #save(truth,"C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//30//truth.RData")
-# save(bicrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//bicrst.RData")
-save(steprst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//steprst.RData")
+save(bicrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//bicrst.RData")
+# save(steprst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//steprst.RData")
 # save(glassorst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//glassorst.RData")
 # save(lassorst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//lassorst.RData")
 # save(sisrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//200//sisrst.RData")
