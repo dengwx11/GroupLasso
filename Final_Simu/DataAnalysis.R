@@ -37,6 +37,7 @@ for(portion in c(0.05,0.1,0.15,0.2)){
   load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/treerst",portion,".RData"))
   load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/steprst",portion,".RData"))
   load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/sisrst",portion,".RData"))
+  load(file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/bicrst",portion,".RData"))
   
 
   
