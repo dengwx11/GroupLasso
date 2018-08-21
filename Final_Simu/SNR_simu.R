@@ -7,18 +7,18 @@ SNR<-10
 tau1<-1
 
 
-SNRlist<-c(20)
+SNRlist<-c(1,5,20,100)
 
 
 for(SNR in SNRlist){
   
   #### Iteration
-  treerst<-list()
-#   bicrst<-list()
-   steprst<-list()
+#  treerst<-list()
+   bicrst<-list()
+#   steprst<-list()
 #  glassorst<-list()
 #  lassorst<-list()
-  sisrst<-list()
+#  sisrst<-list()
   
   for(i in 1:100){
     print(i)
@@ -47,22 +47,23 @@ for(SNR in SNRlist){
     simu$Y<-y.res
     simu<-simu[,-c(1:(m_X+m_W))]
     
-    ### Trees
-    model <- randomForest(Y~.,   data=simu)
-    #print(model) # view results 
-    #importance(model)
-    treerst[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
+#     ### Trees
+#     model <- randomForest(Y~.,   data=simu)
+#     #print(model) # view results 
+#     #importance(model)
+#     treerst[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
 #     
-#     ### BMA
-#     bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
-#     bicrst[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
-#     bicrst[[i]]<-sapply(bicrst[[i]],function(x) strsplit(x,"X")[[1]][2])
-#     bicrst[[i]]<-as.integer(bicrst[[i]])
+    ### BMA
+    bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
+    bicrst[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
+    bicrst[[i]]<-sapply(bicrst[[i]],function(x) strsplit(x,"X")[[1]][2])
+    bicrst[[i]]<-as.integer(bicrst[[i]])
+    bicrst[[i]]<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
 #     
-    ### Stepwise
-    a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
-    steprst[[i]]<-a$vorder[-1][1:(length(truth))]-1
-    #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
+#     ### Stepwise
+#     a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
+#     steprst[[i]]<-a$vorder[-1][1:(length(truth))]-1
+#     #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
     
 #     x0<-rep(0,dim(x)[2])
 #     ### Group Lasso
@@ -82,19 +83,19 @@ for(SNR in SNRlist){
 #                eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
 #     lassorst[[i]]<-order(abs(sol$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
    
-    ### SIS
-    #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
-    model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")
-    sisrst[[i]]<-model2$ix
+#     ### SIS
+#     #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
+#     model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")
+#     sisrst[[i]]<-model2$ix
   }
   
   
   #save(truth,"C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//30//truth.RData")
-#   save(bicrst,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//bicrst_",SNR,".RData")
-   save(steprst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//steprst_",SNR,".RData"))
-   save(treerst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//treerst_",SNR,".RData"))
+   save(bicrst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//bicrst_",SNR,".RData"))
+#   save(steprst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//steprst_",SNR,".RData"))
+#   save(treerst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//treerst_",SNR,".RData"))
 #  save(glassorst,file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/glassorst_",SNR,".RData"))
 #  save(lassorst,file=paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/lassorst_",SNR,".RData"))
-   save(sisrst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//sisrst_",SNR,".RData"))
+#   save(sisrst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//sisrst_",SNR,".RData"))
   
 }

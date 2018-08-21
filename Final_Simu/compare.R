@@ -239,43 +239,44 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     simu$Y<-y.res
     simu<-simu[,-c(1:(m_X+m_W))]
    
-    ### Trees
-    model <- randomForest(Y~.,   data=simu)
-    #print(model) # view results
-    #importance(model)
-    treerst[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
+#     ### Trees
+#     model <- randomForest(Y~.,   data=simu)
+#     #print(model) # view results
+#     #importance(model)
+#     treerst[[i]]<-order(importance(model),decreasing = T)[1:length(truth)]
 #    
-#     ### BMA
-#     bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
-#     bicrst[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
-#     bicrst[[i]]<-sapply(bicrst[[i]],function(x) strsplit(x,"X")[[1]][2])
-#     bicrst[[i]]<-as.integer(bicrst[[i]])
+    ### BMA
+    bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
+    bicrst[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
+    bicrst[[i]]<-sapply(bicrst[[i]],function(x) strsplit(x,"X")[[1]][2])
+    bicrst[[i]]<-as.integer(bicrst[[i]])
+    bicrst[[i]]<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
 #    
-    ### Stepwise
-    a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
-    steprst[[i]]<-a$vorder[-1][1:(length(truth))]-1
-    #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
-#  
-    
-    x0<-rep(0,dim(x)[2])
-    ### Group Lasso
-    lamb_opt_glasso<-15
-    lamb_opt2_glasso<-1
-    solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10,
-                backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
-                eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
-    glassorst[[i]]<-order(abs(solg$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
-   
-    ### Regular Lasso
-    L<-glmnet(x,y,family="gaussian",penalty.factor=rep(0:1,c(m_X+m_W,2*m_G)))
-    
-    lamb_opt_lasso<-180
-    lamb_opt2_lasso<-5
-    sol<-FASTA(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 300, w = 10,
-               backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
-               eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
-    lassorst[[i]]<-order(abs(sol$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
-   
+#     ### Stepwise
+#     a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
+#     steprst[[i]]<-a$vorder[-1][1:(length(truth))]-1
+#     #steprst[[i]]<-steprst[order(steprst[[i]])][[1]]
+# 
+#     
+#     x0<-rep(0,dim(x)[2])
+#     ### Group Lasso
+#     lamb_opt_glasso<-15
+#     lamb_opt2_glasso<-1
+#     solg<-FASTA(x,y,f, gradf, g, proxg, x0, tau1, max_iters = 300, w = 10,
+#                 backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
+#                 eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_glasso,lamb_opt2_glasso,restart=TRUE)
+#     glassorst[[i]]<-order(abs(solg$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
+#    
+#     ### Regular Lasso
+#     L<-glmnet(x,y,family="gaussian",penalty.factor=rep(0:1,c(m_X+m_W,2*m_G)))
+#     
+#     lamb_opt_lasso<-180
+#     lamb_opt2_lasso<-5
+#     sol<-FASTA(x,y,f, gradf, glasso, proxglasso, x0, tau1, max_iters = 300, w = 10,
+#                backtrack = TRUE, recordIterates = FALSE, stepsizeShrink = 0.5,
+#                eps_n = 1e-15,m_X,m_W,m_G,m_G,lamb_opt_lasso,lamb_opt2_lasso,restart=TRUE)
+#     lassorst[[i]]<-order(abs(sol$x[-c(1:(m_W+m_X))]),decreasing = T)[1:(length(truth)-m_X-m_W)]+m_X+m_W
+#    
 #     ### SIS
 #     #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
 #     model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")
@@ -284,9 +285,9 @@ for(portion in c(0.05,0.1,0.15,0.2)){
  
   
   #save(truth,"C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//30//truth.RData")
-#   save(bicrst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//bicrst",portion,".RData"))
-   save(steprst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//steprst",portion,".RData"))
-   save(treerst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//treerst",portion,".RData"))
+   save(bicrst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//bicrst",portion,".RData"))
+#   save(steprst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//steprst",portion,".RData"))
+#   save(treerst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//treerst",portion,".RData"))
    #  save(glassorst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//glassorst",portion,".RData"))
 #  save(lassorst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//lassorst",portion,".RData"))
 #   save(sisrst,file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//sisrst",portion,".RData"))
