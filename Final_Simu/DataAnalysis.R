@@ -27,7 +27,7 @@ FN.prog<-list()
 FN.pred<-list()
 num.pred<-list()
 
-n.method<-5
+n.method<-6
 
 for(portion in c(0.05,0.1,0.15,0.2)){
   
@@ -43,16 +43,16 @@ for(portion in c(0.05,0.1,0.15,0.2)){
   
   
   
-  SSE[[k]]<-matrix(0,ncol=5,nrow=100)
-  L1[[k]]<-matrix(0,ncol=5,nrow=100)
-  L2[[k]]<-matrix(0,ncol=5,nrow=100)
-  TP.all[[k]]<-matrix(0,ncol=5,nrow=100)
-  FN.all[[k]]<-matrix(0,ncol=5,nrow=100)
-  TP.prog[[k]]<-matrix(0,ncol=5,nrow=100)
-  TP.pred[[k]]<-matrix(0,ncol=5,nrow=100)
-  FN.prog[[k]]<-matrix(0,ncol=5,nrow=100)
-  FN.pred[[k]]<-matrix(0,ncol=5,nrow=100)
-  num.pred[[k]]<-matrix(0,ncol=5,nrow=100)
+  SSE[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  L1[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  L2[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  TP.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.all[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  TP.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  TP.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.prog[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  FN.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
+  num.pred[[k]]<-matrix(0,ncol=n.method,nrow=100)
   
   for(i in 1:100){
     print(i)
@@ -146,37 +146,6 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     num.lasso<-length(which(beta.lasso0$I!=0))
     num.pred[[k]][i,2]<-num.lasso
     
-    #     ## BMA
-    #     instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
-    #     instance.bic<-c(c(1:(m_X+m_W)),instance.bic)
-    #     
-    #     SSE.bic<- -logLik(lm(y~-1+x[,instance.bic]))
-    #     
-    #     beta.bic<-lm(y~-1+x[,instance.bic])$coef
-    #     temp<-rep(0,length(beta))
-    #     temp[instance.bic]<-beta.bic
-    #     beta.bic<-temp
-    #     L1.bic<-norm(as.matrix(beta.bic-beta),"1")
-    #     L2.bic<-norm(as.matrix(beta.bic-beta),"2")
-    #     
-    #     TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
-    #     TN.all.bic<-(length(which(beta.bic+beta==0))-m_X-m_W)/(length(which(beta.bic==0))-m_X-m_W)
-    #     beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
-    #     TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
-    #     TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
-    #     TN.prog.bic<-length(which(beta.bic0$G+beta0$G==0))/length(which(beta.bic0$G==0))
-    #     TN.pred.bic<-length(which(beta.bic0$I+beta0$I==0))/length(which(beta.bic0$I==0))
-    #     
-    #     SSE[[k]][i,3]<-SSE.bic
-    #     L1[[k]][i,3]<-L1.bic
-    #     L2[[k]][i,3]<-L2.bic
-    #     TP.all[[k]][i,3]<-TP.all.bic
-    #     TN.all[[k]][i,3]<-TN.all.bic
-    #     TP.prog[[k]][i,3]<-TP.prog.bic
-    #     TN.prog[[k]][i,3]<-TN.prog.bic
-    #     TP.pred[[k]][i,3]<-TP.pred.bic
-    #     TN.pred[[k]][i,3]<-TN.pred.bic
-    #     
     
     
     ## Stepwise
@@ -279,6 +248,41 @@ for(portion in c(0.05,0.1,0.15,0.2)){
     TP.pred[[k]][i,5]<-TP.pred.tree
     FN.pred[[k]][i,5]<-FN.pred.tree
     num.pred[[k]][i,5]<-num.tree
+
+            ## BMA
+        instance.bic<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
+        instance.bic<-c(c(1:(m_X+m_W)),instance.bic)
+        
+        SSE.bic<- -logLik(lm(y~-1+x[,instance.tree]))
+    
+    beta.bic<-lm(y~-1+x[,instance.bic])$coef
+    temp<-rep(0,length(beta))
+    temp[instance.bic]<-beta.bic
+    beta.bic<-temp
+    beta.bic[which(is.na(beta.bic)==T)]<-0
+    L1.bic<-norm(as.matrix(beta.bic-beta),"1")
+    L2.bic<-norm(as.matrix(beta.bic-beta),"2")
+    
+    TP.all.bic<-(length(which(beta.bic*beta!=0))-m_X-m_W)/(length(instance.bic)-m_X-m_W)
+    FN.all.bic<-(length(intersect(which(beta.bic==0),which(beta!=0)))-m_X-m_W)/(length(which(beta!=0))-m_X-m_W)
+    beta.bic0<-split_beta(beta.bic,m_X,m_W,m_G,m_I)
+    TP.prog.bic<-length(which(beta.bic0$G*beta0$G!=0))/length(which(beta.bic0$G!=0))
+    TP.pred.bic<-length(which(beta.bic0$I*beta0$I!=0))/length(which(beta.bic0$I!=0))
+    FN.prog.bic<-(length(intersect(which(beta.bic0$G==0),which(beta0$G!=0))))/(length(which(beta0$G!=0)))
+    FN.pred.bic<-(length(intersect(which(beta.bic0$I==0),which(beta0$I!=0))))/(length(which(beta0$I!=0)))
+    num.bic<-length(which(beta.bic0$I!=0))
+    
+    SSE[[k]][i,6]<-SSE.bic
+    L1[[k]][i,6]<-L1.bic
+    L2[[k]][i,6]<-L2.bic
+    TP.all[[k]][i,6]<-TP.all.bic
+    FN.all[[k]][i,6]<-FN.all.bic
+    TP.prog[[k]][i,6]<-TP.prog.bic
+    FN.prog[[k]][i,6]<-FN.prog.bic
+    TP.pred[[k]][i,6]<-TP.pred.bic
+    FN.pred[[k]][i,6]<-FN.pred.bic
+    num.pred[[k]][i,6]<-num.bic
+    
   }
   
   k=k+1
@@ -298,16 +302,7 @@ for(k in 1:4){
   rst.summary[[k]]$FN.prog<-apply(FN.prog[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$FN.pred<-apply(FN.pred[[k]], 2, function(x) mean(x,na.rm=T))
   rst.summary[[k]]$num.pred<-apply(num.pred[[k]], 2, function(x) mean(x,na.rm=T))
-  rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest")
-}
-
-
-portion<-c(0.05,0.1,0.15,0.2)
-for(k in 1:4){
-  png(paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/summary/proportion/",portion[k],".png"), height=200, width=700)
-  p<-tableGrob(round(rst.summary[[k]],digits=3))
-  grid.arrange(p)
-  dev.off()
+  rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest","BMA")
 }
 
 # Ridge Plot
@@ -315,7 +310,7 @@ TP.pred.m<-list()
 p<-list()
 for(k in 1:4){
   TP.pred.m[[k]]<-data.frame("ID"=seq(1,100,1),TP.pred[[k]])
-  colnames(TP.pred.m[[k]])<-c("ID","glasso","lasso","Stepwise","SIS","Random Forest")
+  colnames(TP.pred.m[[k]])<-c("ID","glasso","lasso","Stepwise","SIS","Random Forest","BMA")
   TP.pred.m[[k]]<-melt(TP.pred.m[[k]],id.vars = "ID",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
   p[[k]]<-ggplot(TP.pred.m[[k]],aes(x=value,y=Method))+geom_density_ridges(data=TP.pred.m[[k]], stat="binline",scale = 1, size = 0.25, rel_min_height = 0,fill="skyblue",alpha=.9,color="white")+ggtitle(paste0("Nonzero Interaction Proportion:",portion[k]))+xlab("Predictive Biomarkers TPR")
 }
@@ -323,14 +318,14 @@ for(k in 1:4){
 # Bar Plot
 TP.pred.bar<-sapply(rst.summary,function(x) x$TP.pred)
 TP.pred.bar<-data.frame(portion,t(TP.pred.bar))
-colnames(TP.pred.bar)<-c("proportion",c("glasso","lasso","Stepwise","SIS","Random Forest"))
+colnames(TP.pred.bar)<-c("proportion",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA"))
 TP.pred.bar.m<-melt(TP.pred.bar,id.vars = "proportion",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
 colnames(TP.pred.bar.m)[3]<-"TPR"
 ggplot(data = TP.pred.bar.m, mapping = aes(x = factor(proportion), y = TPR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("Nonzero Interaction Proportion")+ggtitle("TPR vs Nonzero Interaction Proportion")
 
 FN.pred.bar<-sapply(rst.summary,function(x) x$FN.pred)
 FN.pred.bar<-data.frame(portion,t(FN.pred.bar))
-colnames(FN.pred.bar)<-c("proportion",c("glasso","lasso","Stepwise","SIS","Random Forest"))
+colnames(FN.pred.bar)<-c("proportion",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA"))
 FN.pred.bar.m<-melt(FN.pred.bar,id.vars = "proportion",measure.vars = c(2:6),variable.name = "Method",na.rm=T)
 colnames(FN.pred.bar.m)[3]<-"FNR"
 ggplot(data = FN.pred.bar.m, mapping = aes(x = factor(proportion), y = FNR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("Nonzero Interaction Proportion")+ggtitle("TPR vs Nonzero Interaction Proportion")
@@ -343,6 +338,32 @@ num.pred.bar.m<-melt(num.pred.bar,id.vars = "proportion",measure.vars = c(2:6),v
 colnames(num.pred.bar.m)[3]<-"num"
 ggplot(data = num.pred.bar.m, mapping = aes(x = factor(proportion), y = num,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge')+xlab("Nonzero Interaction Proportion")+ggtitle("Model Size vs Nonzero Interaction Proportion")+ylab("Mean of Model Size on Predictive Biomarkers")
 
+
+rst.summary<-list()
+for(k in 1:4){
+  rst.summary[[k]]<-data.frame(L2=apply(L2[[k]], 2, function(x) mean(x,na.rm=T)))
+  rst.summary[[k]]$L2<-apply(L2[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$L1<-apply(L1[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$SSE<-apply(SSE[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TP.all<-apply(TP.all[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.all<-apply(FN.all[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TP.prog<-apply(TP.prog[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$TP.pred<-apply(TP.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.prog<-apply(FN.prog[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$FN.pred<-apply(FN.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rst.summary[[k]]$num.pred<-apply(num.pred[[k]], 2, function(x) mean(x,na.rm=T))
+  rownames(rst.summary[[k]])<-c("glasso","lasso","Stepwise","SIS","Random Forest","BMA")
+  colnames(rst.summary[[k]])<-c("L2","L1","SSE","TPR all","FNR all","TPR prog","TPR pred","FNR prog","FNR pred","num pred")
+}
+
+
+portion<-c(0.05,0.1,0.15,0.2)
+for(k in 1:4){
+  png(paste0("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/summary/proportion/",portion[k],".png"), height=200, width=700)
+  p<-tableGrob(round(rst.summary[[k]],digits=3))
+  grid.arrange(p)
+  dev.off()
+}
 
 ######## SNR, p=100
 n=100
