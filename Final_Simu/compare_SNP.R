@@ -178,12 +178,12 @@ for(i in 1:100){
 #   #importance(model)
 #   treerst_SNP[[i]]<-order(importance(model),decreasing = T)[1:(length(truth)-m_X-m_W)]
   
-#   ### BMA
-#   bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
-#   bicrst_SNP[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
-#   bicrst_SNP[[i]]<-sapply(bicrst_SNP[[i]],function(x) strsplit(x,"X")[[1]][2])
-#   bicrst_SNP[[i]]<-as.integer(bicrst_SNP[[i]])
-  
+  ### BMA
+  bicfit<-bicreg(x[,-c(1:(m_X+m_W))],y.res,strict = T)
+  bicrst_SNP[[i]]<-bicfit$namesx[order(bicfit$probne0,decreasing = T)][1:length(truth)]
+  bicrst_SNP[[i]]<-sapply(bicrst_SNP[[i]],function(x) strsplit(x,"X")[[1]][2])
+  bicrst_SNP[[i]]<-as.integer(bicrst_SNP[[i]])
+  bicrst[[i]]<-bicrst[[i]][which(is.na(bicrst[[i]])==F)]
 #   ### Stepwise
 #   a<-regsubsets(x=x,y=y,method="forward",nvmax = 3*length(truth),force.in = c(1:(m_X+m_W)))
 #   steprst_SNP[[i]]<-a$vorder[-1][1:(length(truth))]-1
@@ -209,24 +209,24 @@ for(i in 1:100){
    
 #   ## SIS
 #   #model1<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic")
-  T=1
-  tryCatch({model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")},error=function(c) T=2)
-  if(T==1){
-    sisrst_SNP[[i]]<-model2$ix
-  }else{
-    sisrst_SNP[[i]]<-NULL
-  }
+#   T=1
+#   tryCatch({model2<-SIS(x,y,family = "gaussian", penalty = "lasso", tune="bic",varISIS = "aggr")},error=function(c) T=2)
+#   if(T==1){
+#     sisrst_SNP[[i]]<-model2$ix
+#   }else{
+#     sisrst_SNP[[i]]<-NULL
+#   }
   
 #   
 }
 
   
   #save(truth,"C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//30//truth.RData")
-# save(bicrst_SNP,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//bicrst_SNP.RData")
-save(steprst_SNP,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//steprst_SNP.RData")
+save(bicrst_SNP,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//bicrst_SNP.RData")
+# save(steprst_SNP,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//steprst_SNP.RData")
 #save(glassorst_SNP,file="/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/glassorst_SNP.RData")
 # save(lassorst_SNP,file="/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu/100/lassorst_SNP.RData")
-saveRDS(sisrst_SNP,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//sisrst_SNP.RData")
-save(treerst_SNP,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//treerst_SNP.RData")
+#saveRDS(sisrst_SNP,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//sisrst_SNP.RData")
+#save(treerst_SNP,file="C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//treerst_SNP.RData")
 
 
