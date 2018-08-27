@@ -59,11 +59,11 @@ opt_lambda<-function(X,y,f, gradf, g, proxg, x0, tau1, max_iters = 100, w = 10,
   lamb_candidate2<-lamb_candidate2[order(lamb_candidate2,decreasing = T)]
   
   
-  TestErr_pred<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
-  MSE_beta<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
-  SDErr_pred<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
-  Mean_num<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
-  Var_num<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2))
+  TestErr_pred<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2)) ## Mean of prediction error in K-fold 
+  MSE_beta<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2)) ## Mean of MSE in K-fold
+  SDErr_pred<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2)) ## SD of prediction error in K-fold
+  Mean_num<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2)) ## Mean of estimated model size in K-fold
+  Var_num<-matrix(0,nrow=length(lamb_candidate),ncol=length(lamb_candidate2)) ## Variance of estimated model size in K-fold
   
   for(i in seq_along(lamb_candidate)){
     for(j in seq_along(lamb_candidate2)){
