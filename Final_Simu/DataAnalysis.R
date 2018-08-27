@@ -1438,7 +1438,7 @@ FN.pred.bar<-data.frame(dim,t(FN.pred.bar))
 colnames(FN.pred.bar)<-c("Dimension",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA"))
 FN.pred.bar.m<-melt(FN.pred.bar,id.vars = "Dimension",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
 colnames(FN.pred.bar.m)[3]<-"FNR"
-ggplot(data = FN.pred.bar.m, mapping = aes(x = factor(Dimension), y = FNR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("Number of Biomarkers")+ggtitle("FNR vs Number of Biomarkers")+scale_fill_brewer(palette="Spectral")
+ggplot(data = FN.pred.bar.m, mapping = aes(x = factor(Dimension), y = FNR,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="black")+xlab("Number of Biomarkers")+ggtitle("FNR vs Number of Biomarkers")+scale_fill_brewer(palette="Set1")
 
 
 num.pred.bar<-sapply(rst.summary,function(x) x$num.pred)
@@ -1447,7 +1447,7 @@ num.pred.bar<-data.frame(dim,t(num.pred.bar))
 colnames(num.pred.bar)<-c("Dimension",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA","Truth"))
 num.pred.bar.m<-melt(num.pred.bar,id.vars = "Dimension",measure.vars = c(2:8),variable.name = "Method",na.rm=T)
 colnames(num.pred.bar.m)[3]<-"num"
-ggplot(data = num.pred.bar.m, mapping = aes(x = factor(Dimension), y = num/dim,color=Method,group=Method,size=Method)) + geom_line()+xlab("Number of Biomarkers")+ggtitle("Model Size vs Number of Biomarkers")+ylab("Estimated Nonzero Predictive Biomarker Proportion")+scale_size_manual(values=c(1.5,0.8,0.8,.8,.8,.8,1.5))+theme_bw() +scale_colour_manual(breaks=levels(num.pred.bar.m$Method), values=c("red","green","orange","blue","pink","purple","black"))
+ggplot(data = num.pred.bar.m[which(num.pred.bar.m$Method!="BMA"),], mapping = aes(x = factor(Dimension), y = num/dim,color=Method,group=Method,size=Method)) + geom_line()+xlab("Number of Biomarkers")+ggtitle("Model Size vs Number of Biomarkers")+ylab("Estimated Nonzero Predictive Biomarker Proportion")+scale_size_manual(values=c(1.5,0.8,0.8,.8,.8,1.5))+theme_bw() +scale_colour_manual(breaks=levels(num.pred.bar.m$Method), values=c("red","green","blue","pink","purple","black"))
 theme(plot.background = element_blank(), panel.grid.minor = element_blank(), axis.line = element_blank(),
       legend.key = element_blank(), legend.title = element_blank())
 
