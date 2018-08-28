@@ -123,7 +123,7 @@ g <- function(X,beta,m_X,m_W,m_G,m_I,lambda) {
   #   g() value
   
   beta <- split_beta(beta,m_X,m_W,m_G,m_I)
-  para < -group_penalty(X,m_X,m_W,m_G,m_I)
+  para <- group_penalty(X,m_X,m_W,m_G,m_I)
   penalty <- lambda*norm(as.matrix(para$I*beta$I),'1')+lambda*sum(para$mI*sqrt(beta$G^2+beta$I^2))
   return(penalty)
 }
