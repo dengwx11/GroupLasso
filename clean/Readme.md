@@ -1,4 +1,4 @@
-Clean Version for Group Elastic Net.
+# Clean Version for Group Elastic Net.
 
 func.R - loss function and proximal operators
 
