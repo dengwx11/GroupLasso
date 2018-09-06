@@ -10,4 +10,7 @@ x<-c(x,rev(x))
 y<-c(y,rev(-y))
 x<-c(x,-x)
 y<-c(y,rev(y))
-plot(y,x,type="line",ylab="gamma",xlab="alpha",main="Contour plot for alpha and gamma")
+
+
+
+plot(y,x,type="line",ylab="beta 2",xlab="beta 1",main="Contour plot for beta_1 and beta_2")

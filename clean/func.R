@@ -101,7 +101,7 @@ group_penalty <- function(X,m_X,m_W,m_G,m_I){
   para_mI <- sapply(X_split[-1:-2], function(x) norm(cbind(x[,1],sqrt(1.4*(1-sqrt(2/pi)))*x[,2]),'F'))
   } else if ( m_X == 0 && m_W != 0 ) { ## If we only have treatment covariate
     para_I <- sapply(X_split[-1], function(x) norm(as.matrix(x[,2]),'2'))
-    para_mI <- sapply(X_split[-1], function(x) norm(cbind(x[,1],sqrt(1.4*(1-sqrt(2/pi)))*x[,2]),'F'))
+    para_mI <- sapply(X_split[-1], function(x) norm(cbind(x[,1],sqrt(1.03-2*sqrt(2/pi)*exp(-0.5))*x[,2]),'F'))
   }
   para <- list("I"=para_I,"MI"=para_mI) # I=feature weights of Interaction terms, MI=feature weights for Main and Interaction terms
   return(para)

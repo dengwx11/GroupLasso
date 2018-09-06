@@ -9,6 +9,10 @@
 % reference calls and reference-list numbers.
 
 \usepackage{scicite}
+\usepackage[]{algorithm2e}
+
+\usepackage{graphicx}
+\graphicspath{ {/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures/} }
 
 % Use times if you have the font installed; otherwise, comment out the
 % following line.
@@ -26,6 +30,7 @@
 
 \topmargin 0.0cm
 \oddsidemargin 0.2cm
+
 \textwidth 16cm 
 \textheight 21cm
 \footskip 1.0cm
@@ -63,7 +68,7 @@
 
 % Include your paper's title here
 
-\title{A simple {\it Science\/} Template} 
+\title{Generalized Group Elastic Net for Predictive Biomarker Identification} 
 
 
 % Place the author information here.  Please hand-code the contact
@@ -73,13 +78,10 @@
 % settings shown here.
 
 \author
-{John Smith,$^{1\ast}$ Jane Doe,$^{1}$ Joe Scientist$^{2}$\\
+{Wenxuan Deng$^{1}$
 \\
-\normalsize{$^{1}$Department of Chemistry, University of Wherever,}\\
-\normalsize{An Unknown Address, Wherever, ST 00000, USA}\\
-\normalsize{$^{2}$Another Unknown Address, Palookaville, ST 99999, USA}\\
 \\
-\normalsize{$^\ast$To whom correspondence should be addressed; E-mail:  jsmith@wherever.edu.}
+\normalsize{$^{1}$Department of Biostatistics, Yale University,}
 }
 
 % Include the date command, but leave its argument blank.
@@ -107,12 +109,12 @@
 % Place your abstract within the special {sciabstract} environment.
 
 \begin{sciabstract}
-  This document presents a number of hints about how to set up your
-  {\it Science\/} paper in \LaTeX\ .  We provide a template file,
-  \texttt{scifile.tex}, that you can use to set up the \LaTeX\ source
-  for your article.  An example of the style is the special
-  \texttt{\{sciabstract\}} environment used to set up the abstract you
-  see here.
+  Predictive biomarker identification is a significant problem when targeting
+  patient subpopulation who gets an enhanced benefit under treatment. This paper proposed
+  a new method, Predictive Effects Net (PEN), based on group lasso and special hierarchical structure for figuring
+  out predictive effects. The new approach takes predictive biomarkers as interaction effects between
+  treatment and biomarker. To show PEN has an supreme performance, this paper shows simulations
+  in different scenerios and comparisons with several other variable selection methods.
 \end{sciabstract}
 
 
@@ -129,206 +131,103 @@
 
 \section*{Introduction}
 
-In this file, we present some tips and sample mark-up to assure your
-\LaTeX\ file of the smoothest possible journey from review manuscript
-to published {\it Science\/} paper.  We focus here particularly on
-issues related to style files, citation, and math, tables, and
-figures, as those tend to be the biggest sticking points.  Please use
-the source file for this document, \texttt{scifile.tex}, as a template
-for your manuscript, cutting and pasting your content into the file at
-the appropriate places.
+Prognostic biomarkers and predictive biomarkers.
 
-{\it Science\/}'s publication workflow relies on Microsoft Word.  To
-translate \LaTeX\ files into Word, we use an intermediate MS-DOS
-routine \cite{tth} that converts the \TeX\ source into HTML\@.  The
-routine is generally robust, but it works best if the source document
-is clean \LaTeX\ without a significant freight of local macros or
-\texttt{.sty} files.  Use of the source file \texttt{scifile.tex} as a
-template, and calling {\it only\/} the \texttt{.sty} and \texttt{.bst}
-files specifically mentioned here, will generate a manuscript that
-should be eminently reviewable, and yet will allow your paper to
-proceed quickly into our production flow upon acceptance \cite{use2e}.
+Why decision trees is not workable? Because the sample size in real clinical datasets is too small, typically no more than 100 patients.
 
+Group lasso \cite{yuan2006model}
 
-\section*{Formatting Citations}
+Elastic net \cite{zou2005regularization} adaptive weights for elastic net \cite{zou2009adaptive}
 
-Citations can be handled in one of three ways.  The most
-straightforward (albeit labor-intensive) would be to hardwire your
-citations into your \LaTeX\ source, as you would if you were using an
-ordinary word processor.  Thus, your code might look something like
-this:
+Hierarchical Group lasso for interactions \cite{lim2015learning}
 
+Overlapping group lasso \cite{jacob2009group}\cite{percival2012theoretical}\cite{obozinski2011group}
 
-\begin{quote}
-\begin{verbatim}
-However, this record of the solar nebula may have been
-partly erased by the complex history of the meteorite
-parent bodies, which includes collision-induced shock,
-thermal metamorphism, and aqueous alteration
-({\it 1, 2, 5--7\/}).
-\end{verbatim}
-\end{quote}
+Sparse Group Lasso \cite{friedman2010note} \cite{simon2013sparse}
+
+Structured group lasso \cite{zhao2009composite}
+Group lasso for logistic regression \cite{meier2008group}
+
+Other variable selection methods:
+
+GUIDE: a regression tree \cite{loh2015regression}\cite{loh2002regression}
+
+SIS: screening \cite{fan2008sure}\cite{fan2009ultrahigh}
+
+SIR: \cite{jiang2013sliced}\cite{li2018robust}
+
+Stepwise selection: \cite{miller1984selection}
+
+\section*{Methods}
+
+\subsection*{Model}
 
 
-\noindent Compiled, the last two lines of the code above, of course, would give notecalls in {\it Science\/} style:
-
-\begin{quote}
-\ldots thermal metamorphism, and aqueous alteration ({\it 1, 2, 5--7\/}).
-\end{quote}
-
-Under the same logic, the author could set up his or her reference list as a simple enumeration,
-
-\begin{quote}
-\begin{verbatim}
-{\bf References and Notes}
-
-\begin{enumerate}
-\item G. Gamow, {\it The Constitution of Atomic Nuclei
-and Radioactivity\/} (Oxford Univ. Press, New York, 1931).
-\item W. Heisenberg and W. Pauli, {\it Zeitschr.\ f.\ 
-Physik\/} {\bf 56}, 1 (1929).
-\end{enumerate}
-\end{verbatim}
-\end{quote}
-
-\noindent yielding
-
-\begin{quote}
-{\bf References and Notes}
-
-\begin{enumerate}
-\item G. Gamow, {\it The Constitution of Atomic Nuclei and
-Radioactivity\/} (Oxford Univ. Press, New York, 1931).
-\item W. Heisenberg and W. Pauli, {\it Zeitschr.\ f.\ Physik} {\bf 56},
-1 (1929).
-\end{enumerate}
-\end{quote}
-
-That's not a solution that's likely to appeal to everyone, however ---
-especially not to users of B{\small{IB}}\TeX\ \cite{inclme}.  If you
-are a B{\small{IB}}\TeX\ user, we suggest that you use the
-\texttt{Science.bst} bibliography style file and the
-\texttt{scicite.sty} package, both of which we are downloadable from our author help site
-(http://www.sciencemag.org/about/authors/prep/TeX\_help/).  You can also
-generate your reference lists by using the list environment
-\texttt{\{thebibliography\}} at the end of your source document; here
-again, you may find the \texttt{scicite.sty} file useful.
-
-Whether you use B{\small{IB}}\TeX\ or \texttt{\{thebibliography\}}, be
-very careful about how you set up your in-text reference calls and
-notecalls.  In particular, observe the following requirements:
-
-\begin{enumerate}
-\item Please follow the style for references outlined at our author
-  help site and embodied in recent issues of {\it Science}.  Each
-  citation number should refer to a single reference; please do not
-  concatenate several references under a single number.
-\item Please cite your references and notes in text {\it only\/} using
-  the standard \LaTeX\ \verb+\cite+ command, not another command
-  driven by outside macros.
-\item Please separate multiple citations within a single \verb+\cite+
-  command using commas only; there should be {\it no space\/}
-  between reference keynames.  That is, if you are citing two
-  papers whose bibliography keys are \texttt{keyname1} and
-  \texttt{keyname2}, the in-text cite should read
-  \verb+\cite{keyname1,keyname2}+, {\it not\/}
-  \verb+\cite{keyname1, keyname2}+.
-\end{enumerate}
-
-\noindent Failure to follow these guidelines could lead
-to the omission of the references in an accepted paper when the source
-file is translated to Word via HTML.
-
-\section*{Handling Math, Tables, and Figures}
-
-Following are a few things to keep in mind in coding equations,
-tables, and figures for submission to {\it Science}.
-
-\paragraph*{In-line math.}  The utility that we use for converting
-from \LaTeX\ to HTML handles in-line math relatively well.  It is best
-to avoid using built-up fractions in in-line equations, and going for
-the more boring ``slash'' presentation whenever possible --- that is,
-for \verb+$a/b$+ (which comes out as $a/b$) rather than
-\verb+$\frac{a}{b}$+ (which compiles as $\frac{a}{b}$).  Likewise,
-HTML isn't tooled to handle certain overaccented special characters
-in-line; for $\hat{\alpha}$ (coded \verb+$\hat{\alpha}$+), for
-example, the HTML translation code will return [\^{}$(\alpha)$].
-Don't drive yourself crazy --- but if it's possible to avoid such
-constructs, please do so.  Please do not code arrays or matrices as
-in-line math; display them instead.  And please keep your coding as
-\TeX-y as possible --- avoid using specialized math macro packages
-like \texttt{amstex.sty}.
-
-\paragraph*{Displayed math.} Our HTML converter sets up \TeX\
-displayed equations using nested HTML tables.  That works well for an
-HTML presentation, but Word chokes when it comes across a nested
-table in an HTML file.  We surmount that problem by simply cutting the
-displayed equations out of the HTML before it's imported into Word,
-and then replacing them in the Word document using either images or
-equations generated by a Word equation editor.  Strictly speaking,
-this procedure doesn't bear on how you should prepare your manuscript
---- although, for reasons best consigned to a note \cite{nattex}, we'd
-prefer that you use native \TeX\ commands within displayed-math
-environments, rather than \LaTeX\ sub-environments.
-
-\paragraph*{Tables.}  The HTML converter that we use seems to handle
-reasonably well simple tables generated using the \LaTeX\
-\texttt{\{tabular\}} environment.  For very complicated tables, you
-may want to consider generating them in a word processing program and
-including them as a separate file.
-
-\paragraph*{Figures.}  Figure callouts within the text should not be
-in the form of \LaTeX\ references, but should simply be typed in ---
-that is, \verb+(Fig. 1)+ rather than \verb+\ref{fig1}+.  For the
-figures themselves, treatment can differ depending on whether the
-manuscript is an initial submission or a final revision for acceptance
-and publication.  For an initial submission and review copy, you can
-use the \LaTeX\ \verb+{figure}+ environment and the
-\verb+\includegraphics+ command to include your PostScript figures at
-the end of the compiled PostScript file.  For the final revision,
-however, the \verb+{figure}+ environment should {\it not\/} be used;
-instead, the figure captions themselves should be typed in as regular
-text at the end of the source file (an example is included here), and
-the figures should be uploaded separately according to the Art
-Department's instructions.
+$$Y=X_0\beta_0 + X_T\beta_\tau + X_1\beta_1 + X_T\otimes X_1 \beta_2+\epsilon$$
 
 
-\section*{What to Send In}
+Where $X_0$ is the baseline variables, $X_T$ is the treatment variable, $X_1$ is the high dimensional design matrix of genes, i.e. gene expression levels, SNP and mutations, and $X_T\otimes X_1$ is the interaction between genes and treatment. $\beta=(\beta_0, \beta_\tau, \beta_1, \beta_2)$ is the corresponding coefficients. $\epsilon$ is random error.
 
-What you should send to {\it Science\/} will depend on the stage your manuscript is in:
+Let $$X=[X_0,X_T,X_1^{(1)},\dots,X_m^{(1)},X_TX_1^{(1)},\dots,X_TX_1^{(m)}]$$ and $$\beta=[\beta_0,\beta_\tau,\beta_1^{(1)},\dots,\beta_1^{(m)},\beta_2^{(1)},\dots,\beta_2^{(m)}]$$ For each gene $l$, its prognostic and predictive design matrix is denoted as $X^{(l)}=[X_1^{(l)},X_TX_1^{(l)}]$ and its corresponding coefficients are $\beta^{(l)}=[\beta_1^{(l)},\beta_2^{(l)}]$
 
-\begin{itemize}
-\item {\bf Important:} If you're sending in the initial submission of
-  your manuscript (that is, the copy for evaluation and peer review),
-  please send in {\it only\/} a PostScript or PDF version of the
-  compiled file (including figures).  Please do not send in the \TeX\ 
-  source, \texttt{.sty}, \texttt{.bbl}, or other associated files with
-  your initial submission.  (For more information, please see the
-  instructions at our Web submission site,
-  http://www.submit2science.org/ .)
-\item When the time comes for you to send in your revised final
-  manuscript (i.e., after peer review), we require that you include
-  all source files and generated files in your upload.  Thus, if the
-  name of your main source document is \texttt{ltxfile.tex}, you
-  need to include:
-\begin{itemize}
-\item \texttt{ltxfile.tex}.
-\item \texttt{ltxfile.aux}, the auxilliary file generated by the
-  compilation.
-\item A PostScript file (compiled using \texttt{dvips} or some other
-  driver) of the \texttt{.dvi} file generated from
-  \texttt{ltxfile.tex}, or a PDF file distilled from that
-  PostScript.  You do not need to include the actual \texttt{.dvi}
-  file in your upload.
-\item From B{\small{IB}}\TeX\ users, your bibliography (\texttt{.bib})
-  file, {\it and\/} the generated file \texttt{ltxfile.bbl} created
-  when you run B{\small{IB}}\TeX.
-\item Any additional \texttt{.sty} and \texttt{.bst} files called by
-  the source code (though, for reasons noted earlier, we {\it
-    strongly\/} discourage the use of such files beyond those
-  mentioned in this document).
-\end{itemize}
-\end{itemize}
+\subsection*{Loss Function}
+
+We used group lasso and elastic net for variables selection when $n\ll p$, and assumed the hierarchical relationship between prognostic biomarkers and predictive biomarkers, that is the predictive biomarkers should be a prognostic biomarkers. The loss function is 
+
+$$\min_{\theta} f(\beta|Y,X_0,X_T,X_1) + g(\beta)$$
+
+$$g(\beta)=\lambda_1\sum_i\phi_i|\beta_2^{(i)}|+\lambda_1\sum_i\psi_i\sqrt{(\beta_1^{(1)})^2+(\beta_1^{(1)})^2}+\lambda_2(\parallel\beta_1\parallel_2^2+\parallel\beta_2\parallel_2^2)$$
+
+Where $\beta=(\beta_0,\beta_\tau,\beta_1,\beta_2)$ is the parameter, and $f(\beta|Y,X_0,X_T,X_1) $ is $L$-2 loss function. When the model is the ordinary linear model, the $L$-2 loss function is $\parallel Y-(X_0\beta_0 + X_T\beta_\tau + X_1\beta_1+ X_T\otimes X_1 \beta_2) \parallel^2$. Penalty function $g(\beta)$ can construct a complex hierarchical selection of $\beta_1$ and $\beta_2$, that nonzero $\beta_2$ is a sufficient but not necessary condition for nonzero $\beta_1$. The contour plot for a pair of $\beta_1$ and $\beta_2$ is shown in Figure 1. $\lambda_1$ and $\lambda_2$ are regularization parameters.
+
+\begin{figure}[t]
+\includegraphics[scale=0.5]{Contour.png}
+\centering
+\end{figure}
+
+
+\subsection*{Criterion and Adaptive Weights} 
+
+KKT \cite{tibshirani2013lasso}
+
+For group $\hat{\beta^{(l)}}$, the KKT condition is 
+
+$${X^{(l)}}^T(Y-X\hat{\beta})=\lambda_1\phi_l$$ 
+
+\subsection*{Algorithms}
+
+Fast iterative shrinkage-thresholding algorithm with backtracking \cite{beck2009fast}
+
+Proximal operator for group lasso \cite{liu2010fast}
+
+Adaptive restart for rippling behavior \cite{o2015adaptive}
+
+Adaptive stepwise of cyclic Barzilai-Borwein spectral approach \cite{wright2009sparse}
+
+
+
+
+\begin{algorithm}[H]
+  initialization $\theta_0=0$ or warm start from previous run, $\tau_0=0.1$, stepsize $\eta=0.5$\;
+  \While{$i\le k$}{
+  $u_{i}=\theta_{i-1}-\tau_i \bigtriangledown f(\theta_{i-1})$
+ Find the smallest nonnegative integers $s_i$ such that with $\tau_{i}=\eta^{s_{i-1}}\tau_{i-1}$, $(f+g)(P_{\tau_i,g}(u_i))\le  Q_{\tau_i,g}(P_{\tau_i,g}(u_i),u_i)$\;
+ Then, we compute $t_{i}=P_{\tau_i,g}(u_i)$
+ And accelarate the computation by setting 
+ \eIf{$f(\theta_{i}+g(\theta_i))>f(\theta_{i-1})+g(\theta_{i-1})$}{  $\rho_i=1$
+    }{
+    $\rho_i=\frac{1+\sqrt{1+4\rho_{i-1}^2}}{2}$
+   }
+   $\theta_i=t_i+(\frac{\rho_{i-1}-1}{\rho_i})(t_i-t_{i-1})$ and find $\tau_{i+1}$ that $\tau_{i+1}I$ can mimic the Hessian $ \bigtriangledown^2f(\theta_i)$
+  }
+  \caption{Patient Subgroup Identification Group Lasso Algorithm}
+ \end{algorithm}
+ 
+
+\subsection*{Experiments}
+
+Signal to noise ratio: $SNR=\frac{Var(X\beta)}{Var(\epsilon)}$
+
 
 % Your references go at the end of the main text, and before the
 % figures.  For this document we've used BibTeX, the .bib file
@@ -337,9 +236,12 @@ What you should send to {\it Science\/} will depend on the stage your manuscript
 % style.
 
 
-\bibliography{scibib}
+% \bibliography{scibib}
 
-\bibliographystyle{Science}
+%  te\bibliographystyle{Science}
+
+\bibliographystyle{unsrt}
+\bibliography{scibib}
 
 
 
@@ -348,14 +250,7 @@ What you should send to {\it Science\/} will depend on the stage your manuscript
 % list that's not signaled in the text; such references are used in
 % *Science* for acknowledgments of funding, help, etc.
 
-\begin{scilastnote}
-\item We've included in the template file \texttt{scifile.tex} a new
-environment, \texttt{\{scilastnote\}}, that generates a numbered final
-citation without a corresponding signal in the text.  This environment
-can be used to generate a final numbered reference containing
-acknowledgments, sources of funding, and the like, per {\it Science\/}
-style.
-\end{scilastnote}
+
 
 
 
@@ -374,14 +269,7 @@ style.
 
 \clearpage
 
-\noindent {\bf Fig. 1.} Please do not use figure environments to set
-up your figures in the final (post-peer-review) draft, do not include graphics in your
-source code, and do not cite figures in the text using \LaTeX\
-\verb+\ref+ commands.  Instead, simply refer to the figure numbers in
-the text per {\it Science\/} style, and include the list of captions at
-the end of the document, coded as ordinary paragraphs as shown in the
-\texttt{scifile.tex} template file.  Your actual figure files should
-be submitted separately.
+
 
 
 
