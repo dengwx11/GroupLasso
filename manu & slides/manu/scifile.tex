@@ -10,6 +10,7 @@
 
 \usepackage{scicite}
 \usepackage[]{algorithm2e}
+\usepackage{amsmath}
 
 \usepackage{graphicx}
 \graphicspath{ {/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures/} }
@@ -176,7 +177,7 @@ We used group lasso and elastic net for variables selection when $n\ll p$, and a
 
 $$\min_{\theta} f(\beta|Y,X_0,X_T,X_1) + g(\beta)$$
 
-$$g(\beta)=\lambda_1\sum_i\phi_i|\beta_2^{(i)}|+\lambda_1\sum_i\psi_i\sqrt{(\beta_1^{(1)})^2+(\beta_1^{(1)})^2}+\lambda_2(\parallel\beta_1\parallel_2^2+\parallel\beta_2\parallel_2^2)$$
+$$g(\beta)=\lambda_1\sum_i\phi_i|\beta_2^{(i)}|+\lambda_1\sum_i\psi_i\sqrt{(\beta_1^{(1)})^2+(\beta_2^{(1)})^2}+\lambda_2(\parallel\beta_1\parallel_2^2+\parallel\beta_2\parallel_2^2)$$
 
 Where $\beta=(\beta_0,\beta_\tau,\beta_1,\beta_2)$ is the parameter, and $f(\beta|Y,X_0,X_T,X_1) $ is $L$-2 loss function. When the model is the ordinary linear model, the $L$-2 loss function is $\parallel Y-(X_0\beta_0 + X_T\beta_\tau + X_1\beta_1+ X_T\otimes X_1 \beta_2) \parallel^2$. Penalty function $g(\beta)$ can construct a complex hierarchical selection of $\beta_1$ and $\beta_2$, that nonzero $\beta_2$ is a sufficient but not necessary condition for nonzero $\beta_1$. The contour plot for a pair of $\beta_1$ and $\beta_2$ is shown in Figure 1. $\lambda_1$ and $\lambda_2$ are regularization parameters.
 
@@ -188,11 +189,120 @@ Where $\beta=(\beta_0,\beta_\tau,\beta_1,\beta_2)$ is the parameter, and $f(\bet
 
 \subsection*{Criterion and Adaptive Weights} 
 
+\subsubsection*{KKT conditions}
+
 KKT \cite{tibshirani2013lasso}
 
 For group $\hat{\beta^{(l)}}$, the KKT condition is 
 
-$${X^{(l)}}^T(Y-X\hat{\beta})=\lambda_1\phi_l$$ 
+\begin{align}
+  {X^{(l)}}^T(Y-X\hat{\beta}) &= \lambda_1\phi_l \begin{bmatrix}
+         0 \\
+         v 
+       \end{bmatrix}
+       + \lambda_1\psi_lu+\frac{1}{2}\lambda_2\hat{\beta}^{(l)}
+\end{align}
+
+where
+
+\begin{align}
+v & = \begin{cases}
+  \text{sign}(\hat{\beta}_2^{(l)}) & \text{ \qquad  if $\hat{\beta_2}^{(l)}\neq 0$} \\
+  \in\{v:|v|_1\leq 1\}&  \text{ \qquad  if $\hat{\beta_2}^{(l)}= 0$} 
+\end{cases}
+\\
+u & = \begin{cases} 
+  \hat{\beta}^{(l)}/\parallel \hat{\beta}^{(l)} \parallel_2 & 
+  \text{ \qquad  if $\hat{\beta}^{(l)}\neq 0$} \\
+  \in \{u:\parallel u\parallel_2\leq 1\} & \text{\qquad if $\hat{\beta}^{(l)}= 0$}
+\end{cases} 
+\end{align}
+
+\begin{itemize}
+\item $\hat{\beta}^{(l)}=0$ if 
+\begin{align}
+S(X_1^{(l)}r_{(-l)},0)^2+S(X_2^{(l)}r_{(-l)},\lambda_1\phi_l)^2\leq \lambda_1^2\phi_l^2
+\end{align}
+where $$S(z,a)=\text{sign}(z)(|z|-a)$$ and $$r_{(-l)}=Y-X^{(-l)}\hat{\beta}^{(-l)}$$
+We can find 
+\begin{align}
+  u & = \begin{bmatrix}
+    \frac{X_1^{(l)}r_{(-l)}}{\lambda_1\phi_l} \\
+    \frac{S(X_2^{(l)}r_{(-l)},\lambda_1\phi_l)}{\lambda_1\phi_l}
+  \end{bmatrix}
+  \\
+  v & = \begin{bmatrix}
+    0 \\
+    \frac{X^{(l)}r_{(-l)}-S(X_2^{(-l)}r_{(-l)},\lambda_1\phi_l)}{\lambda_1\phi_l}
+  \end{bmatrix}
+\end{align}
+
+Thus, we have $\parallel u\parallel_2\leq 1$ and $|v|_{\infty}\leq 1$, so that subgradient equation (1)
+was satisfied with $\hat{\beta}^{(l)}=0$
+
+\item we have $\hat{\beta}^{(l)}\neq 0$ but $\hat{\beta}_2^{(l)}$, we have 
+\begin{align}
+  {X^{(l)}}^T(Y-X^{(-I(l))}\hat{\beta}^{(-I(l))})=\lambda_1\phi_l \begin{bmatrix}
+    0 \\
+    v 
+  \end{bmatrix}
+  + \lambda_1\psi_l \frac{\hat{\beta}^{(l)}}{\parallel \hat{\beta}^{(l)} \parallel_2 } +\frac{1}{2}\lambda_2\hat{\beta}^{(l)}
+\end{align}
+
+we have $\hat{\beta}_2^{(l)}=0$ if
+\begin{align}
+ {X_2^{(l)}}^T r_{(-I(l))}\leq \lambda_1\phi_l  
+\end{align}
+and $r_{(-I(l))}=Y-X^{(-I(l))}\hat{\beta}^{(-I(l))}$ and $I(l)$ is the interaction effect
+nested in biomarker $l$th group.
+\item $\hat{\beta}^{(l)}\neq 0$ as well as $\hat{\beta}_2^{(l)}\neq 0$, we have
+
+\begin{align}
+  {X^{(l)}}^T(Y-X^{(-I(l))}\hat{\beta}^{(-I(l))})=\lambda_1\phi_l \begin{bmatrix}
+    0 \\
+    \text{sign}(\hat{\beta}_2^{(l)})
+  \end{bmatrix}
+  + \lambda_1\psi_l \frac{\hat{\beta}^{(l)}}{\parallel \hat{\beta}^{(l)} \parallel_2 } +\frac{1}{2}\lambda_2\hat{\beta}^{(l)}
+\end{align}
+
+Then we get
+
+\begin{align}
+  \hat{\beta}_2^{(l)} & =\frac{X_2^{(l)}(Y-X\hat{\beta}^{(-I(l))})-\lambda_1\phi_l\text{sign}(\hat{\beta}_2^{(l)})}{{X_2^{(l)}}^TX_2^{(l)}+\frac{\lambda_1\psi_l}{\parallel \hat{\beta}^{(l)} \parallel_2} + \frac{1}{2}\lambda_2} \\
+  & = \frac{ S( {X_2^{(l)}}^Tr_{(-I(l))}, \lambda_1\phi_l ) }{ {X_2^{(l)}}^TX_2^{(l)}+\frac{\lambda_1\psi_l}{\parallel \hat{\beta}^{(l)} \parallel_2} + \frac{1}{2}\lambda_2 } \\
+  \hat{\beta}_1^{(l)} & =  \frac{ X_2^{(l)}r_{(-G(l))} }{ {X_1^{(l)}}^TX_1^{(l)}+\frac{\lambda_1\psi_l}{\parallel \hat{\beta}^{(l)} \parallel_2} + \frac{1}{2}\lambda_2 } \\
+  \hat{\beta}_0 & = \frac{ X_0^T r_{(-0)} }{ X_0^TX_0 } \\
+  \hat{\beta}_{\tau} & = \frac{ X_T^T r_{-T} }{ X_T^TX_T }
+\end{align}
+
+\end{itemize}
+
+\subsubsection*{Adaptive Weights}
+
+To give each biomarker equal probability to be prognostic or predictive,
+we define adaptive weights via a null model that the residual $\epsilon=r_{(-l)}$ 
+is a normal random error where $\epsilon\sim N(0,\sigma^2)$ when $\beta_2^{(l)}=0$.
+We let
+\begin{align}
+  \parallel X_2^{(l)}r_{(-I(l))} \parallel_2 & = \lambda_1\phi_l \\
+  E[(X_2^{(l)}r_{(-I(l))})^2] & = \lambda_1^2\phi_l^2
+\end{align}
+Since $\lambda_1^2\phi_l^2 = \text{Var}(X_2^{(l)}r_{(-I(l))})$, we can get
+\begin{align}
+  \phi_l & \propto \parallel X_2^{(l)} \parallel_2 
+\end{align}
+Since $\lambda_1$ is regularization parameter, we define $\phi_l=\parallel X_2^{(l)} \parallel_2$
+without loss generality.
+
+On the other hand, based on inequality (4) and results from (16), we let
+\begin{align}
+  S(X_1^{(l)}r_{(-l)},0)^2+S(X_2^{(l)}r_{(-l)},\lambda_1\phi_l)^2= \lambda_1^2\phi_l^2
+\end{align}
+and assume $ r_{(-l)} = \epsilon  \sim N(0,\sigma^2)$.
+ 
+
+
+
 
 \subsection*{Algorithms}
 
@@ -228,6 +338,10 @@ Adaptive stepwise of cyclic Barzilai-Borwein spectral approach \cite{wright2009s
 
 Signal to noise ratio: $SNR=\frac{Var(X\beta)}{Var(\epsilon)}$
 
+
+\subsection*{Future Steps}
+
+check KKT condition
 
 % Your references go at the end of the main text, and before the
 % figures.  For this document we've used BibTeX, the .bib file
