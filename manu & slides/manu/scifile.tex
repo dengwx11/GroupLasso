@@ -170,13 +170,13 @@ $$Y=X_0\beta_0 + X_T\beta_\tau + X_1\beta_1 + X_T\otimes X_1 \beta_2+\epsilon$$
 
 Where $X_0$ is the baseline variables, $X_T$ is the treatment variable, $X_1$ is the high dimensional design matrix of genes, i.e. gene expression levels, SNP and mutations, and $X_T\otimes X_1$ is the interaction between genes and treatment. $\beta=(\beta_0, \beta_\tau, \beta_1, \beta_2)$ is the corresponding coefficients. $\epsilon$ is random error.
 
-Let $$X=[X_0,X_T,X_1^{(1)},\dots,X_m^{(1)},X_TX_1^{(1)},\dots,X_TX_1^{(m)}]$$ and $$\beta=[\beta_0,\beta_\tau,\beta_1^{(1)},\dots,\beta_1^{(m)},\beta_2^{(1)},\dots,\beta_2^{(m)}]$$ For each gene $l$, its prognostic and predictive design matrix is denoted as $X^{(l)}=[X_1^{(l)},X_TX_1^{(l)}]$ and its corresponding coefficients are $\beta^{(l)}=[\beta_1^{(l)},\beta_2^{(l)}]$
+Let $$X=[X_0,X_T,X_1^{(1)},\dots,X_m^{(1)},X_TX_1^{(1)},\dots,X_TX_1^{(m)}]$$ and $$\beta=[\beta_0,\beta_\tau,\beta_1^{(1)},\dots,\beta_1^{(m)},\beta_2^{(1)},\dots,\beta_2^{(m)}]$$ For each gene $l$, its prognostic and predictive design matrix is denoted as $X^{(l)}=[X_1^{(l)},X_2^{(l)}]$ where $X_2^{(l)}=X_TX_1^{(l)}$ and its corresponding coefficients are $\beta^{(l)}=[\beta_1^{(l)},\beta_2^{(l)}]$
 
 \subsection*{Loss Function}
 
 We used group lasso and elastic net for variables selection when $n\ll p$, and assumed the hierarchical relationship between prognostic biomarkers and predictive biomarkers, that is the predictive biomarkers should be a prognostic biomarkers. The loss function is 
 
-$$\min_{\theta} f(\beta|Y,X_0,X_T,X_1) + g(\beta)$$
+$$\min_{\beta} f(\beta|Y,X_0,X_T,X_1) + g(\beta)$$
 
 $$g(\beta)=\lambda_1\sum_i\phi_i|\beta_2^{(i)}|+\lambda_1\sum_i\psi_i\sqrt{(\beta_1^{(1)})^2+(\beta_2^{(1)})^2}+\lambda_2(\parallel\beta_1\parallel_2^2+\parallel\beta_2\parallel_2^2)$$
 
@@ -194,11 +194,11 @@ Where $\beta=(\beta_0,\beta_\tau,\beta_1,\beta_2)$ is the parameter, and $f(\bet
 
 KKT \cite{tibshirani2013lasso}
 
-For group $\hat{\beta^{(l)}}$, the KKT condition is 
+For group $\hat{\beta}^{(l)}$, the KKT condition is 
 
 \begin{equation} \label{KKT}
   \begin{split}
-  {X^{(l)}}^T(Y-X\hat{\beta}) &= \lambda_1\phi_l \begin{bmatrix}
+  {X^{(l)}}^T(Y-X^T\hat{\beta}) &= \lambda_1\phi_l \begin{bmatrix}
          0 \\
          v 
        \end{bmatrix}
@@ -222,7 +222,7 @@ u & = \begin{cases}
 \end{align}
 
 \begin{itemize}
-\item $\hat{\beta}^{(l)}=0$ if 
+\item We now investigate when $\hat{\beta}^{(l)}=0$ satisfies KKT condition \ref{KKT}. We propose the following condition
 \begin{equation} \label{zero}
   \begin{split}
 S(  {X_1^{(l)}}^T  r_{(-l)},0)^2+S(  {X_2^{(l)} }^T  r_{(-l)},\lambda_1\phi_l)^2\leq \lambda_1^2\psi_l^2
@@ -239,7 +239,7 @@ and
 r_{(-l)}=Y- {X^{(-l)}}^T  \hat{\beta}^{(-l)}
 \end{align}
 
-We can find 
+Under this condition, we can find 
 \begin{align}
   u & = \begin{bmatrix}
     \frac{X_1^{(l)}r_{(-l)}}{\lambda_1\psi_l} \\
@@ -252,10 +252,10 @@ We can find
   \end{bmatrix}
 \end{align}
 
-Thus, we have $\parallel u\parallel_2\leq 1$ and $|v|_{\infty}\leq 1$, so that subgradient equation \ref{KKT}
+such that $\parallel u\parallel_2\leq 1$ and $|v|_{\infty}\leq 1$. By simple algebra, the subgradient equation \ref{KKT}
 was satisfied with $\hat{\beta}^{(l)}=0$
 
-\item if $\hat{\beta}^{(l)}\neq 0$ but $\hat{\beta}_2^{(l)} = 0 $, we need to satisfy 
+\item if KKT condition holds with $\hat{\beta}^{(l)}\neq 0$ but $\hat{\beta}_2^{(l)} = 0 $, the KKT condition can be reformulated as following 
 \begin{align}
   {X^{(l)}}^T(Y- {X^{(-I(l))}}^T \hat{\beta}^{(-I(l))})=\lambda_1\phi_l \begin{bmatrix}
     0 \\
@@ -264,15 +264,15 @@ was satisfied with $\hat{\beta}^{(l)}=0$
   + \lambda_1\psi_l \frac{\hat{\beta}^{(l)}}{\parallel \hat{\beta}^{(l)} \parallel_2 } +\frac{1}{2}\lambda_2\hat{\beta}^{(l)}
 \end{align}
 
-we have $\hat{\beta}_2^{(l)}=0$ if
+To satisfy $\hat{\beta}_2^{(l)}=0$ and KKT condtion, we should have
 \begin{align}
  {X_2^{(l)}}^T r_{(-I(l))}\leq \lambda_1\phi_l  
 \end{align}
-and $r_{(-I(l))}=Y- {X^{(-I(l))}}^T \hat{\beta}^{(-I(l))}$ and $I(l)$ is the interaction effect
+where $r_{(-I(l))}=Y- {X^{(-I(l))}}^T \hat{\beta}^{(-I(l))}$ and $I(l)$ is the interaction effect
 nested in biomarker $l$th group.
 
 
-\item $\hat{\beta}^{(l)}\neq 0$ as well as $\hat{\beta}_2^{(l)}\neq 0$, we have
+\item if KKT condition holds with $\hat{\beta}^{(l)}\neq 0$ as well as $\hat{\beta}_2^{(l)}\neq 0$, the KKT condition is reformulated as
 
 \begin{align}
   {X^{(l)}}^T(Y-  {X^{(-I(l))}}^T \hat{\beta}^{(-I(l))})=\lambda_1\phi_l \begin{bmatrix}
@@ -315,7 +315,7 @@ Then we get
 
 To give each biomarker equal probability to be prognostic and predictive,
 we define adaptive weights via a null model that the residual $\epsilon=r_{(-I(l))}$ 
-is a normal random error where $\epsilon\sim N(0,\sigma^2)$ when $\beta_2^{(l)}=0$.
+is a normal random error where $\epsilon\sim N(0,\sigma^2)$ when $\hat{\beta}_2^{(l)}=0$.
 Let
 \begin{equation} \label{phil}
   \begin{split}

@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex scifile"] 1536718160 "scifile.aux" "scifile.bbl" "scifile" 1536718185
+["bibtex scifile"] 1536722684 "scifile.aux" "scifile.bbl" "scifile" 1536723471
   "/usr/local/texlive/2018/texmf-dist/bibtex/bst/base/unsrt.bst" 1480098433 18030 1376b4b231b50c66211e47e42eda2875 ""
   "scibib.bib" 1536169037 6805 2409999319c225a911fec176022c2100 ""
-  "scifile.aux" 1536718184 1741 1056ae467a1686960e261fc1e09a0011 ""
+  "scifile.aux" 1536723470 1741 d4d6dc091a655cba30908763c2fb6ec6 ""
   (generated)
   "scifile.blg"
   "scifile.bbl"
-["pdflatex"] 1536718184 "/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/manu & slides/manu/scifile.tex" "scifile.pdf" "scifile" 1536718185
+["pdflatex"] 1536723470 "/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/manu & slides/manu/scifile.tex" "scifile.pdf" "scifile" 1536723471
   "/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures/Contour.png" 1535564851 32559 fb7045f20a94ebd2c16f101479d7517e ""
-  "/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/manu & slides/manu/scifile.tex" 1536718184 17168 3c1b891181212e033743b749aa5202d2 ""
+  "/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/manu & slides/manu/scifile.tex" 1536723470 17475 e45c9cfc895cd73904cb138c20272dff ""
   "/Users/wenxuandeng/Library/texlive/2018/texmf-var/fonts/pk/ljfour/public/bbm/bbm12.600pk" 1536700166 8424 96c44445a5bd78eaa01dd899646e4ddd ""
   "/usr/local/texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
@@ -102,10 +102,10 @@
   "/usr/local/texlive/2018/texmf-var/web2c/pdftex/pdflatex.fmt" 1523934516 4220280 10cab8fbd7c5a7c52aba9917e190d018 ""
   "/usr/local/texlive/2018/texmf.cnf" 1523934483 577 0b39adfd7c93507ff20c9c14c2f1a33f ""
   "scicite.sty" 1289999392 21940 f3b9f4a675770828af17c69b198998fc ""
-  "scifile.aux" 1536718184 1741 1056ae467a1686960e261fc1e09a0011 ""
-  "scifile.bbl" 1536718160 5032 d778dd645337f2338c13ec72a8e87d64 "bibtex scifile"
-  "scifile.tex" 1536718184 17168 3c1b891181212e033743b749aa5202d2 ""
+  "scifile.aux" 1536723470 1741 d4d6dc091a655cba30908763c2fb6ec6 ""
+  "scifile.bbl" 1536722684 5032 d778dd645337f2338c13ec72a8e87d64 "bibtex scifile"
+  "scifile.tex" 1536723470 17475 e45c9cfc895cd73904cb138c20272dff ""
   (generated)
-  "scifile.aux"
-  "scifile.log"
   "scifile.pdf"
+  "scifile.log"
+  "scifile.aux"
