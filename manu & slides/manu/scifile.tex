@@ -10,7 +10,8 @@
 
 \usepackage{scicite}
 \usepackage[]{algorithm2e}
-\usepackage{amsmath}
+\usepackage{amsmath,amssymb}
+\usepackage{bbm}
 
 \usepackage{graphicx}
 \graphicspath{ {/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures/} }
@@ -195,13 +196,15 @@ KKT \cite{tibshirani2013lasso}
 
 For group $\hat{\beta^{(l)}}$, the KKT condition is 
 
-\begin{align}
+\begin{equation} \label{KKT}
+  \begin{split}
   {X^{(l)}}^T(Y-X\hat{\beta}) &= \lambda_1\phi_l \begin{bmatrix}
          0 \\
          v 
        \end{bmatrix}
        + \lambda_1\psi_lu+\frac{1}{2}\lambda_2\hat{\beta}^{(l)}
-\end{align}
+  \end{split}
+\end{equation}
 
 where
 
@@ -220,29 +223,41 @@ u & = \begin{cases}
 
 \begin{itemize}
 \item $\hat{\beta}^{(l)}=0$ if 
+\begin{equation} \label{zero}
+  \begin{split}
+S(  {X_1^{(l)}}^T  r_{(-l)},0)^2+S(  {X_2^{(l)} }^T  r_{(-l)},\lambda_1\phi_l)^2\leq \lambda_1^2\psi_l^2
+\end{split}
+\end{equation}
+where 
+
 \begin{align}
-S(X_1^{(l)}r_{(-l)},0)^2+S(X_2^{(l)}r_{(-l)},\lambda_1\phi_l)^2\leq \lambda_1^2\phi_l^2
+S(z,a)=\text{sign}(z)(|z|-a)_+
 \end{align}
-where $$S(z,a)=\text{sign}(z)(|z|-a)$$ and $$r_{(-l)}=Y-X^{(-l)}\hat{\beta}^{(-l)}$$
+and 
+
+\begin{align}
+r_{(-l)}=Y- {X^{(-l)}}^T  \hat{\beta}^{(-l)}
+\end{align}
+
 We can find 
 \begin{align}
   u & = \begin{bmatrix}
-    \frac{X_1^{(l)}r_{(-l)}}{\lambda_1\phi_l} \\
-    \frac{S(X_2^{(l)}r_{(-l)},\lambda_1\phi_l)}{\lambda_1\phi_l}
+    \frac{X_1^{(l)}r_{(-l)}}{\lambda_1\psi_l} \\
+    \frac{S(  {X_2^{(l)} }^T r_{(-l)},\lambda_1\phi_l)}{\lambda_1\psi_l}
   \end{bmatrix}
   \\
   v & = \begin{bmatrix}
     0 \\
-    \frac{X^{(l)}r_{(-l)}-S(X_2^{(-l)}r_{(-l)},\lambda_1\phi_l)}{\lambda_1\phi_l}
+    \frac{  {X^{(l)}}^T  r_{(-l)}-S( {X_2^{(-l)}}^T r_{(-l)},\lambda_1\phi_l)}{\lambda_1\psi_l}
   \end{bmatrix}
 \end{align}
 
-Thus, we have $\parallel u\parallel_2\leq 1$ and $|v|_{\infty}\leq 1$, so that subgradient equation (1)
+Thus, we have $\parallel u\parallel_2\leq 1$ and $|v|_{\infty}\leq 1$, so that subgradient equation \ref{KKT}
 was satisfied with $\hat{\beta}^{(l)}=0$
 
-\item we have $\hat{\beta}^{(l)}\neq 0$ but $\hat{\beta}_2^{(l)}$, we have 
+\item if $\hat{\beta}^{(l)}\neq 0$ but $\hat{\beta}_2^{(l)} = 0 $, we need to satisfy 
 \begin{align}
-  {X^{(l)}}^T(Y-X^{(-I(l))}\hat{\beta}^{(-I(l))})=\lambda_1\phi_l \begin{bmatrix}
+  {X^{(l)}}^T(Y- {X^{(-I(l))}}^T \hat{\beta}^{(-I(l))})=\lambda_1\phi_l \begin{bmatrix}
     0 \\
     v 
   \end{bmatrix}
@@ -253,12 +268,14 @@ we have $\hat{\beta}_2^{(l)}=0$ if
 \begin{align}
  {X_2^{(l)}}^T r_{(-I(l))}\leq \lambda_1\phi_l  
 \end{align}
-and $r_{(-I(l))}=Y-X^{(-I(l))}\hat{\beta}^{(-I(l))}$ and $I(l)$ is the interaction effect
+and $r_{(-I(l))}=Y- {X^{(-I(l))}}^T \hat{\beta}^{(-I(l))}$ and $I(l)$ is the interaction effect
 nested in biomarker $l$th group.
+
+
 \item $\hat{\beta}^{(l)}\neq 0$ as well as $\hat{\beta}_2^{(l)}\neq 0$, we have
 
 \begin{align}
-  {X^{(l)}}^T(Y-X^{(-I(l))}\hat{\beta}^{(-I(l))})=\lambda_1\phi_l \begin{bmatrix}
+  {X^{(l)}}^T(Y-  {X^{(-I(l))}}^T \hat{\beta}^{(-I(l))})=\lambda_1\phi_l \begin{bmatrix}
     0 \\
     \text{sign}(\hat{\beta}_2^{(l)})
   \end{bmatrix}
@@ -267,41 +284,117 @@ nested in biomarker $l$th group.
 
 Then we get
 
-\begin{align}
-  \hat{\beta}_2^{(l)} & =\frac{X_2^{(l)}(Y-X\hat{\beta}^{(-I(l))})-\lambda_1\phi_l\text{sign}(\hat{\beta}_2^{(l)})}{{X_2^{(l)}}^TX_2^{(l)}+\frac{\lambda_1\psi_l}{\parallel \hat{\beta}^{(l)} \parallel_2} + \frac{1}{2}\lambda_2} \\
-  & = \frac{ S( {X_2^{(l)}}^Tr_{(-I(l))}, \lambda_1\phi_l ) }{ {X_2^{(l)}}^TX_2^{(l)}+\frac{\lambda_1\psi_l}{\parallel \hat{\beta}^{(l)} \parallel_2} + \frac{1}{2}\lambda_2 } \\
-  \hat{\beta}_1^{(l)} & =  \frac{ X_2^{(l)}r_{(-G(l))} }{ {X_1^{(l)}}^TX_1^{(l)}+\frac{\lambda_1\psi_l}{\parallel \hat{\beta}^{(l)} \parallel_2} + \frac{1}{2}\lambda_2 } \\
-  \hat{\beta}_0 & = \frac{ X_0^T r_{(-0)} }{ X_0^TX_0 } \\
-  \hat{\beta}_{\tau} & = \frac{ X_T^T r_{-T} }{ X_T^TX_T }
-\end{align}
+\begin{equation} 
+  \begin{split}
+  \hat{\beta}_2^{(l)} & =\frac{ {X_2^{(l)}}^T (Y-X^T\hat{\beta}^{(-I(l))})-\lambda_1\phi_l\text{sign}(\hat{\beta}_2^{(l)})}{{X_2^{(l)}}^TX_2^{(l)}+\frac{\lambda_1\psi_l}{\parallel \hat{\beta}^{(l)} \parallel_2} + \frac{1}{2}\lambda_2} \\
+  & = \frac{ S( {X_2^{(l)}}^Tr_{(-I(l))}, \lambda_1\phi_l ) }{ {X_2^{(l)}}^TX_2^{(l)}+\frac{\lambda_1\psi_l}{\parallel \hat{\beta}^{(l)} \parallel_2} + \frac{1}{2}\lambda_2 } 
+\end{split}
+\end{equation}
+  
+  \begin{equation} 
+    \begin{split}
+  \hat{\beta}_1^{(l)} & =  \frac{ {X_2^{(l)}}^T r_{(-G(l))} }{ {X_1^{(l)}}^TX_1^{(l)}+\frac{\lambda_1\psi_l}{\parallel \hat{\beta}^{(l)} \parallel_2} + \frac{1}{2}\lambda_2 } 
+\end{split}
+\end{equation}
+  
+  \begin{equation} 
+    \begin{split}
+  \hat{\beta}_0 & = \frac{ X_0^T r_{(-0)} }{ X_0^TX_0 } 
+\end{split}
+\end{equation}
+  
+  \begin{equation} 
+    \begin{split}
+  \hat{\beta}_{\tau} & = \frac{ X_T^T r_{(-T)} }{ X_T^TX_T }
+\end{split}
+\end{equation}
 
 \end{itemize}
 
 \subsubsection*{Adaptive Weights}
 
-To give each biomarker equal probability to be prognostic or predictive,
-we define adaptive weights via a null model that the residual $\epsilon=r_{(-l)}$ 
+To give each biomarker equal probability to be prognostic and predictive,
+we define adaptive weights via a null model that the residual $\epsilon=r_{(-I(l))}$ 
 is a normal random error where $\epsilon\sim N(0,\sigma^2)$ when $\beta_2^{(l)}=0$.
-We let
-\begin{align}
-  \parallel X_2^{(l)}r_{(-I(l))} \parallel_2 & = \lambda_1\phi_l \\
-  E[(X_2^{(l)}r_{(-I(l))})^2] & = \lambda_1^2\phi_l^2
-\end{align}
-Since $\lambda_1^2\phi_l^2 = \text{Var}(X_2^{(l)}r_{(-I(l))})$, we can get
+Let
+\begin{equation} \label{phil}
+  \begin{split}
+  \parallel {X_2^{(l)}}^T r_{(-I(l))} \parallel_2 & = \lambda_1\phi_l \\
+  E[( {X_2^{(l)}}^T r_{(-I(l))})^2] & = \lambda_1^2\phi_l^2
+\end{split}
+\end{equation}
+Thus, we can get $\lambda_1^2\phi_l^2 = \text{Var}( {X_2^{(l)}}^T r_{(-I(l))})$ and 
+
 \begin{align}
   \phi_l & \propto \parallel X_2^{(l)} \parallel_2 
 \end{align}
+
 Since $\lambda_1$ is regularization parameter, we define $\phi_l=\parallel X_2^{(l)} \parallel_2$
 without loss generality.
 
-On the other hand, based on inequality (4) and results from (16), we let
+On the other hand, based on inequality \ref{zero} and results from formula \ref{phil}, we let
 \begin{align}
-  S(X_1^{(l)}r_{(-l)},0)^2+S(X_2^{(l)}r_{(-l)},\lambda_1\phi_l)^2= \lambda_1^2\phi_l^2
+  \mathbb{E} [ S( {X_1^{(l)}}^T r_{(-l)},0)^2+S( {X_2^{(l)}}^T r_{(-l)},\lambda_1\phi_l)^2  ] = \lambda_1^2\psi_l^2
 \end{align}
-and assume $ r_{(-l)} = \epsilon  \sim N(0,\sigma^2)$.
- 
+and assume $ r_{(-l)} = \epsilon  \sim N(0,\sigma^2)$ if $\beta^{(l)}=0$, thus $\epsilon_1= {X_2^{(l)}}^T r_{(-l)} \sim N(0,\lambda_1^2\phi_l^2)$ and 
+$\epsilon_0=\epsilon_1/\lambda_1\phi_l\sim N(0,1)$.
 
 
+
+\begin{equation} \label{equ_1}
+  \begin{split}
+ \mathbb{E}[S( {X_2^{(l)}}^T r_{(-l)},\lambda_1\phi_l)^2] &  =  \mathbb{E}[\parallel \epsilon_1 \parallel_2^2 \mathbbm{1}_{|\epsilon_1|>\lambda_1\phi_l}]-2\lambda_1\phi_l\mathbb{E}[|\epsilon_1|\mathbbm{1}_{|\epsilon_1|>\lambda_1\phi_l}]  \\
+  &  + \lambda_1^2\phi_l^2\mathbb{E}[\mathbbm{1}_{|\epsilon_1|>\lambda_1\phi_l}] \\
+\end{split}
+\end{equation}
+  
+  \begin{equation} \label{equ_2}
+    \begin{split}
+  \mathbb{E}[\parallel \epsilon_1 \parallel_2^2 \mathbbm{1}_{|\epsilon_1|>\lambda_1\phi_l}] & = 
+  \mathbb{E}[\parallel \epsilon_1 \parallel_2^2 (1-  \mathbbm{1}_{|\epsilon_1|\leq\lambda_1\phi_l})] \\
+  & = \lambda_1\phi_l^2(1- \mathbb{E}[ \parallel \epsilon_0 \parallel_2^2 ] \mathbbm{1}_{|\epsilon_0|\leq 1}  ) \\
+  & \approx \lambda_1\phi_l^2(1- ( 0.68- 2 \frac{1}{\sqrt{2\pi}} \exp{(-0.5)} )  ) \\
+  & = (0.32 +\sqrt{\frac{2}{\pi}}\exp(-0.5) ) \lambda_1^2\phi_l^2 \\
+\end{split}
+\end{equation}
+  
+  \begin{equation} \label{equ_3}
+    \begin{split}
+  \mathbb{E}[|\epsilon_1|\mathbbm{1}_{|\epsilon_1|>\lambda_1\phi_l}] & = \lambda_1\phi_l \mathbb{E}[|\epsilon_0|\mathbbm{1}_{|\epsilon_0|>1}]  \\
+  & = \lambda_1\phi_l (\mathbb{E}|\epsilon_0| - \mathbb{E}|\epsilon_0| \mathbbm{1}_{|\epsilon_0|\leq 1} ) \\
+  & =  \lambda_1\phi_l( \sqrt{\frac{2}{\pi}} - \sqrt{\frac{2}{\pi}} (1-\exp{(-0.5)}) )    \\ 
+  & = \sqrt{\frac{2}{\pi}}\exp(-0.5) \lambda_1\phi_l \\
+\end{split}
+\end{equation}
+  
+  \begin{equation} \label{equ_4}
+    \begin{split}
+  \mathbb{E}[\mathbbm{1}_{|\epsilon_1|>\lambda_1\phi_l}] & = \mathbb{P}(|\epsilon_0|>1) \approx 0.32 
+  \end{split}
+\end{equation}
+
+Take equations \ref{equ_2} - \ref{equ_4} to equation \ref{equ_1}, we can get
+
+\begin{equation} \label{equ_5}
+  \begin{split}
+    \mathbb{E}[S( {X_2^{(l)}}^2 r_{(-l)},\lambda_1\phi_l)^2] &  \approx (0.64- \sqrt{\frac{2}{\pi}}\exp(-0.5) ) \lambda_1^2\phi_l^2
+  \end{split}
+\end{equation}
+
+Insert results of equation (23) into (18), we define
+
+\begin{equation}
+  \begin{split}
+\psi_l = \sqrt{\parallel X_1^{(l)} \parallel_2 + \{0.64 - \sqrt{\frac{2}{\pi}}\exp(-0.5) \} \parallel X_2^{(l)} \parallel_2} 
+\end{split}
+\end{equation}
+
+such that
+\begin{equation}
+  \begin{split}
+    \lambda_1^2\psi_l^2 = \lambda_1^2  [ \parallel X_1^{(l)} \parallel_2 + \{0.64 - \sqrt{\frac{2}{\pi}}\exp(-0.5) \} \parallel X_2^{(l)} \parallel_2 ]
+  \end{split}
+\end{equation}
 
 
 \subsection*{Algorithms}
