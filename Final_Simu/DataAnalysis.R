@@ -5,6 +5,11 @@ library(gridExtra)
 library(ggridges)
 ##### p=100, nonzero proportion
 
+setwd("/Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/Final_Simu")
+source('opt3.R')
+source("func3.R")
+source("sim4.R")
+source("cv3.R")
 
 n=100
 m_X<-5
@@ -32,12 +37,12 @@ n.method<-6
 for(portion in c(0.05,0.1,0.15,0.2)){
   
   
-  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//glassorst",portion,".RData"))
-  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//lassorst",portion,".RData"))
-  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//treerst",portion,".RData"))
-  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//steprst",portion,".RData"))
-  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//sisrst",portion,".RData"))
-  load(file=paste0("C://Users//auz5836//Documents//GitHub//GroupLasso//Final_Simu//100//bicrst",portion,".RData"))
+  load(file=paste0("./100/glassorst",portion,".RData"))
+  load(file=paste0("./100/lassorst",portion,".RData"))
+  load(file=paste0("./100/treerst",portion,".RData"))
+  load(file=paste0("./100/steprst",portion,".RData"))
+  load(file=paste0("./100/sisrst",portion,".RData"))
+  load(file=paste0("./100/bicrst",portion,".RData"))
   
 
   
