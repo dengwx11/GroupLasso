@@ -109,16 +109,16 @@ Ryan~J Tibshirani et~al.
 \newblock The lasso problem and uniqueness.
 \newblock {\em Electronic Journal of Statistics}, 7:1456--1490, 2013.
 
+\bibitem{liu2010fast}
+Jun Liu and Jieping Ye.
+\newblock Fast overlapping group lasso.
+\newblock {\em arXiv preprint arXiv:1009.0306}, 2010.
+
 \bibitem{beck2009fast}
 Amir Beck and Marc Teboulle.
 \newblock A fast iterative shrinkage-thresholding algorithm for linear inverse
   problems.
 \newblock {\em SIAM journal on imaging sciences}, 2(1):183--202, 2009.
-
-\bibitem{liu2010fast}
-Jun Liu and Jieping Ye.
-\newblock Fast overlapping group lasso.
-\newblock {\em arXiv preprint arXiv:1009.0306}, 2010.
 
 \bibitem{o2015adaptive}
 Brendan O’donoghue and Emmanuel Candes.

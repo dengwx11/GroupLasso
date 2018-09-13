@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  11 SEP 2018 23:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  13 SEP 2018 16:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -153,6 +153,18 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2017/10/31 v2.20.4
+\thm@style=\toks19
+\thm@bodyfont=\toks20
+\thm@headfont=\toks21
+\thm@notefont=\toks22
+\thm@headpunct=\toks23
+\thm@preskip=\skip65
+\thm@postskip=\skip66
+\thm@headsep=\skip67
+\dth@everypar=\toks24
+)
 (/usr/local/texlive/2018/texmf-dist/tex/latex/bbm-macros/bbm.sty
 Package: bbm 1999/03/15 V 1.2 provides fonts for set symbols - TH
 LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
@@ -160,13 +172,99 @@ LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
 LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
 (Font)                  U/bbmss/m/n --> U/bbmss/bx/n on input line 35.
 )
-(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/graphicx.sty
-Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2018/04/06 v1.3b Input encoding file
+\inpenc@prehook=\toks25
+\inpenc@posthook=\toks26
+)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2018/02/14 3.18 The Babel package
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/babel/switch.def
+File: switch.def 2018/02/14 3.18 Babel switching mechanism
+)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/babel-english/english.ldf
+Language: english 2017/06/06 v3.3r English support from the babel system
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2018/02/14 3.18 Babel common definitions
+\babel@savecnt=\count105
+\U@D=\dimen118
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@dirlevel=\count106
+)
+\l@canadian = a dialect from \language\l@american 
+\l@australian = a dialect from \language\l@british 
+\l@newzealand = a dialect from \language\l@british 
+))
+(/usr/local/texlive/2018/texmf-dist/tex/generic/ulem/ulem.sty
+\UL@box=\box36
+\UL@hyphenbox=\box37
+\UL@skip=\skip68
+\UL@hook=\toks27
+\UL@height=\dimen119
+\UL@pe=\count107
+\UL@pixel=\dimen120
+\ULC@box=\box38
+Package: ulem 2012/05/18
+\ULdepth=\dimen121
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
+\LTleft=\skip69
+\LTright=\skip70
+\LTpre=\skip71
+\LTpost=\skip72
+\LTchunksize=\count108
+\LTcapwidth=\dimen122
+\LT@head=\box39
+\LT@firsthead=\box40
+\LT@foot=\box41
+\LT@lastfoot=\box42
+\LT@cols=\count109
+\LT@rows=\count110
+\c@LT@tables=\count111
+\c@LT@chunks=\count112
+\LT@p@ftn=\toks28
+)
+(/usr/local/texlive/2018/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2016/05/22 v1.1-161 Sub-captions (AR)
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
-\KV@toks@=\toks19
+\KV@toks@=\toks29
 )
+\captionmargin=\dimen123
+\captionmargin@=\dimen124
+\captionwidth=\dimen125
+\caption@tempdima=\dimen126
+\caption@indent=\dimen127
+\caption@parindent=\dimen128
+\caption@hangindent=\dimen129
+)
+\c@ContinuedFloat=\count113
+Package caption Info: longtable package is loaded.
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2013/06/09 v1.4-94 longtable captions (AR)
+))
+\c@subfigure=\count114
+\c@subtable=\count115
+)
+\c@theorem=\count116
+\c@corollary=\count117
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
+
 (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
 
@@ -181,45 +279,49 @@ Package graphics Info: Driver file: pdftex.def on input line 99.
 (/usr/local/texlive/2018/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen118
-\Gin@req@width=\dimen119
+\Gin@req@height=\dimen130
+\Gin@req@width=\dimen131
 )
 (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/times.sty
 Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
 )
-\c@lastnote=\count105
+\c@lastnote=\count118
  (./scifile.aux)
 \openout1 = `scifile.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 99.
-LaTeX Font Info:    ... okay on input line 99.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 99.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 112.
+LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 112.
+
 (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+
 (/usr/local/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count106
-\scratchdimen=\dimen120
-\scratchbox=\box36
-\nofMPsegments=\count107
-\nofMParguments=\count108
-\everyMPshowfont=\toks20
-\MPscratchCnt=\count109
-\MPscratchDim=\dimen121
-\MPnumerator=\count110
-\makeMPintoPDFobject=\count111
-\everyMPtoPDFconversion=\toks21
+\scratchcounter=\count119
+\scratchdimen=\dimen132
+\scratchbox=\box43
+\nofMPsegments=\count120
+\nofMParguments=\count121
+\everyMPshowfont=\toks30
+\MPscratchCnt=\count122
+\MPscratchDim=\dimen133
+\MPnumerator=\count123
+\makeMPintoPDFobject=\count124
+\everyMPtoPDFconversion=\toks31
 ) (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -276,25 +378,25 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Try loading font information for U+msa on input line 107.
+LaTeX Font Info:    Try loading font information for U+msa on input line 120.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 107.
+LaTeX Font Info:    Try loading font information for U+msb on input line 120.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 113.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 126.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 134.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 147.
  [1
 
 {/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 165.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 177.
  [2]
 </Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
 ures/Contour.png, id=18, 702.625pt x 468.75125pt>
@@ -303,54 +405,297 @@ orFigures/Contour.png Graphic file (type png)
 <use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
 rFigures/Contour.png>
 Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
-de/GroupLasso/CodeForFigures/Contour.png  used on input line 186.
+de/GroupLasso/CodeForFigures/Contour.png  used on input line 214.
 (pdftex.def)             Requested size: 351.31163pt x 234.37505pt.
- [3 </Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
-rFigures/Contour.png>]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 225.
+ [3]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 254.
 
- (/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/omsptm.fd
+
+(/usr/local/texlive/2018/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 225.
- [4]
-[5] [6]
-LaTeX Font Info:    Try loading font information for U+bbm on input line 348.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 254.
+ [4 </Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/Contour.png>] [5] [6]
+LaTeX Font Info:    Try loading font information for U+bbm on input line 377.
  (/usr/local/texlive/2018/texmf-dist/tex/latex/bbm-macros/ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
-)
-[7] (./scifile.bbl [8] [9] [10]) [11] (./scifile.aux) ) 
+) [7] [8] [9] [10] [11]
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/proportion/005.png, id=56, 702.625pt x 200.75pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/proportion/005.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/proportion/005.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/proportion/005.png  used on input line 6
+11.
+(pdftex.def)             Requested size: 409.71689pt x 117.06609pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/proportion/01.png, id=57, 702.625pt x 200.75pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/proportion/01.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/proportion/01.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/proportion/01.png  used on input line 61
+5.
+(pdftex.def)             Requested size: 409.71689pt x 117.06609pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/proportion/015.png, id=58, 702.625pt x 200.75pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/proportion/015.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/proportion/015.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/proportion/015.png  used on input line 6
+19.
+(pdftex.def)             Requested size: 409.71689pt x 117.06609pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/proportion/02.png, id=59, 702.625pt x 200.75pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/proportion/02.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/proportion/02.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/proportion/02.png  used on input line 62
+3.
+(pdftex.def)             Requested size: 409.71689pt x 117.06609pt.
+
+
+LaTeX Warning: Float too large for page by 49.15642pt on input line 635.
+
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/proportion/PPV.png, id=60, 674.52pt x 569.12625pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/proportion/PPV.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/proportion/PPV.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/proportion/PPV.png  used on input line 6
+39.
+(pdftex.def)             Requested size: 204.85844pt x 172.84944pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/proportion/FNR.png, id=61, 674.52pt x 569.12625pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/proportion/FNR.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/proportion/FNR.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/proportion/FNR.png  used on input line 6
+43.
+(pdftex.def)             Requested size: 204.85844pt x 172.84944pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/proportion/num.png, id=62, 674.52pt x 569.12625pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/proportion/num.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/proportion/num.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/proportion/num.png  used on input line 6
+47.
+(pdftex.def)             Requested size: 204.85844pt x 172.84944pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/proportion/PPV005.png, id=63, 544.0325pt x 468.75125pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/proportion/PPV005.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/proportion/PPV005.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/proportion/PPV005.png  used on input lin
+e 651.
+(pdftex.def)             Requested size: 204.85844pt x 176.51083pt.
+[12]
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/SNR/1.png, id=67, 702.625pt x 200.75pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/SNR/1.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNR/1.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/SNR/1.png  used on input line 669.
+(pdftex.def)             Requested size: 409.71689pt x 117.06609pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/SNR/5.png, id=68, 702.625pt x 200.75pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/SNR/5.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNR/5.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/SNR/5.png  used on input line 673.
+(pdftex.def)             Requested size: 409.71689pt x 117.06609pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/SNR/10.png, id=69, 702.625pt x 200.75pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/SNR/10.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNR/10.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/SNR/10.png  used on input line 677.
+(pdftex.def)             Requested size: 409.71689pt x 117.06609pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/SNR/20.png, id=70, 702.625pt x 200.75pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/SNR/20.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNR/20.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/SNR/20.png  used on input line 689.
+(pdftex.def)             Requested size: 409.71689pt x 117.06609pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/SNR/100.png, id=71, 702.625pt x 200.75pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/SNR/100.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNR/100.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/SNR/100.png  used on input line 693.
+(pdftex.def)             Requested size: 409.71689pt x 117.06609pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/SNR/PPV.png, id=72, 674.52pt x 569.12625pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/SNR/PPV.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNR/PPV.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/SNR/PPV.png  used on input line 705.
+(pdftex.def)             Requested size: 204.85844pt x 172.84944pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/SNR/FNR.png, id=73, 674.52pt x 569.12625pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/SNR/FNR.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNR/FNR.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/SNR/FNR.png  used on input line 709.
+(pdftex.def)             Requested size: 204.85844pt x 172.84944pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/SNR/num.png, id=74, 674.52pt x 569.12625pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/SNR/num.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNR/num.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/SNR/num.png  used on input line 713.
+(pdftex.def)             Requested size: 204.85844pt x 172.84944pt.
+
+Overfull \hbox (0.19946pt too wide) in paragraph at lines 722--729
+\OT1/ptm/m/n/12 biomark-ers are 50, 100, and 200, re-spec-tively. PEN is un-abl
+e to deal with ul-tra high-dimensional
+ []
+
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/n/PPV.png, id=75, 1143.27126pt x 571.13374pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/n/PPV.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/n/PPV.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/n/PPV.png  used on input line 732.
+(pdftex.def)             Requested size: 341.43306pt x 170.56583pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/n/FNR.png, id=76, 1152.305pt x 568.1225pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/n/FNR.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/n/FNR.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/n/FNR.png  used on input line 736.
+(pdftex.def)             Requested size: 341.43306pt x 168.3402pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/n/num.png, id=77, 1243.64626pt x 674.52pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/n/num.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/n/num.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/n/num.png  used on input line 740.
+(pdftex.def)             Requested size: 341.43306pt x 185.17966pt.
+
+LaTeX Warning: Float too large for page by 11.87776pt on input line 747.
+
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/SNP/PPV.png, id=78, 674.52pt x 569.12625pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/SNP/PPV.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNP/PPV.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/SNP/PPV.png  used on input line 757.
+(pdftex.def)             Requested size: 341.43306pt x 288.0882pt.
+</Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFig
+ures/./summary/SNP/FNR.png, id=79, 674.52pt x 569.12625pt>
+File: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeF
+orFigures/./summary/SNP/FNR.png Graphic file (type png)
+<use /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNP/FNR.png>
+Package pdftex.def Info: /Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/co
+de/GroupLasso/CodeForFigures/./summary/SNP/FNR.png  used on input line 761.
+(pdftex.def)             Requested size: 341.43306pt x 288.0882pt.
+
+LaTeX Warning: Float too large for page by 43.36848pt on input line 768.
+
+[13] (./scifile.bbl [14] [15]) [16] [17 </Users/wenxuandeng/GoogleDrive/sucksal
+t/group_lasso/code/GroupLasso/CodeForFigures/./summary/proportion/005.png> </Us
+ers/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures
+/./summary/proportion/01.png> </Users/wenxuandeng/GoogleDrive/sucksalt/group_la
+sso/code/GroupLasso/CodeForFigures/./summary/proportion/015.png> </Users/wenxua
+ndeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures/./summary
+/proportion/02.png>] [18 </Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/c
+ode/GroupLasso/CodeForFigures/./summary/proportion/PPV.png> </Users/wenxuandeng
+/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures/./summary/prop
+ortion/FNR.png> </Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/Group
+Lasso/CodeForFigures/./summary/proportion/num.png> </Users/wenxuandeng/GoogleDr
+ive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures/./summary/proportion/PP
+V005.png>] [19 </Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupL
+asso/CodeForFigures/./summary/SNR/1.png> </Users/wenxuandeng/GoogleDrive/sucksa
+lt/group_lasso/code/GroupLasso/CodeForFigures/./summary/SNR/5.png> </Users/wenx
+uandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures/./summa
+ry/SNR/10.png>] [20 </Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/G
+roupLasso/CodeForFigures/./summary/SNR/20.png> </Users/wenxuandeng/GoogleDrive/
+sucksalt/group_lasso/code/GroupLasso/CodeForFigures/./summary/SNR/100.png>]
+[21 </Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeFo
+rFigures/./summary/SNR/PPV.png> </Users/wenxuandeng/GoogleDrive/sucksalt/group_
+lasso/code/GroupLasso/CodeForFigures/./summary/SNR/FNR.png> </Users/wenxuandeng
+/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures/./summary/SNR/
+num.png>] [22 </Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/GroupLa
+sso/CodeForFigures/./summary/n/PPV.png> </Users/wenxuandeng/GoogleDrive/sucksal
+t/group_lasso/code/GroupLasso/CodeForFigures/./summary/n/FNR.png> </Users/wenxu
+andeng/GoogleDrive/sucksalt/group_lasso/code/GroupLasso/CodeForFigures/./summar
+y/n/num.png>] [23 </Users/wenxuandeng/GoogleDrive/sucksalt/group_lasso/code/Gro
+upLasso/CodeForFigures/./summary/SNP/PPV.png> </Users/wenxuandeng/GoogleDrive/s
+ucksalt/group_lasso/code/GroupLasso/CodeForFigures/./summary/SNP/FNR.png>]
+(./scifile.aux) ) 
 Here is how much of TeX's memory you used:
- 3561 strings out of 492649
- 51215 string characters out of 6129622
- 127153 words of memory out of 5000000
- 7363 multiletter control sequences out of 15000+600000
- 24762 words of font info for 66 fonts, out of 8000000 for 9000
+ 5606 strings out of 492649
+ 92101 string characters out of 6129622
+ 164918 words of memory out of 5000000
+ 9343 multiletter control sequences out of 15000+600000
+ 27549 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,21n,27p,719b,356s stack positions out of 5000i,500n,10000p,200000b,80000s
- </Users/wenxuandeng/Lib
-rary/texlive/2018/texmf-var/fonts/pk/ljfour/public/bbm/bbm12.600pk>{/usr/local/
-texlive/2018/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2018/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2018/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2018/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2018/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2018/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2018/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2018/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2018/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2018/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/
-public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2018/texmf-dist/fonts/ty
-pe1/urw/times/utmb8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/ti
-mes/utmr8a.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/urw/times/utmri8
-a.pfb>
-Output written on scifile.pdf (11 pages, 194778 bytes).
+ 42i,21n,46p,807b,428s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </Users/wenxuandeng/Library/texlive/2018/texmf-var/fonts/pk/l
+jfour/public/bbm/bbm12.600pk>{/usr/local/texlive/2018/texmf-dist/fonts/enc/dvip
+s/base/8r.enc}</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmex10.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmmi12.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmmi6.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mi8.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
+0.pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.
+pfb></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb
+></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></
+usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></u
+sr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr
+/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/l
+ocal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></u
+sr/local/texlive/2018/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/t
+exlive/2018/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/201
+8/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on scifile.pdf (23 pages, 569785 bytes).
 PDF statistics:
- 109 PDF objects out of 1000 (max. 8388607)
- 77 compressed objects within 1 object stream
+ 190 PDF objects out of 1000 (max. 8388607)
+ 103 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 111 words of extra memory for PDF output out of 10000 (max. 10000000)
 
