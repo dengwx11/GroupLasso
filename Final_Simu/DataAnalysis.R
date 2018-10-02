@@ -721,8 +721,7 @@ TP.pred.bar.m<-melt(TP.pred.bar,id.vars = "SNR",measure.vars = c(2:7),variable.n
 colnames(TP.pred.bar.m)[3]<-"PPV"
 ggplot(data = TP.pred.bar.m, mapping = aes(x = factor(SNR), y = PPV,fill = Method)) + geom_bar(stat = 'identity', position = 'dodge',color="blue")+xlab("SNR")+ggtitle("PPV vs SNR")+scale_fill_brewer(palette = "Spectral")
 
-FN.pred.bar<-sapply(rst.summary,function(x) x$FN.pred)
-FN.pred.bar<-data.frame(SNRlist,t(FN.pred.bar))
+FN.pred.bar<-sapply(rst.summary,function(x) x$FN.pred)FN.pred.bar<-data.frame(SNRlist,t(FN.pred.bar))
 colnames(FN.pred.bar)<-c("SNR",c("glasso","lasso","Stepwise","SIS","Random Forest","BMA"))
 FN.pred.bar.m<-melt(FN.pred.bar,id.vars = "SNR",measure.vars = c(2:7),variable.name = "Method",na.rm=T)
 colnames(FN.pred.bar.m)[3]<-"FNR"
